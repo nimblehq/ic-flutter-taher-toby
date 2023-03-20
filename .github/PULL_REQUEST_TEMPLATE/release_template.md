@@ -1,15 +1,13 @@
-Link to the milestone on Github e.g. https://github.com/nimblehq/flutter-templates/milestone/41?closed=1
-or Link to the project management tool for the release
+Link to the milestone on Github e.g. https://github.com/nimblehq/ic-flutter-taher-toby/milestone/??
 
 ## Features
 
-Provide the ID and title of the issue in the section for each type (feature, chore and bug). The link is optional.
+Provide the ID and title of the issue in the section for each type (feature, chore and bug).
 
-- [#1] As a user, I can log in or
-- [[#1](https://github.com/nimblehq/flutter-templates/issues/1)] As a user, I can log in
+Ex: [#1] As a user, I can log in
 
 ## Chores
-- Same structure as in  ## Feature
+Same structure as in  ## Feature
 
 ## Bugs
-- Same structure as in  ## Feature
+Same structure as in  ## Feature
