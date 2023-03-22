@@ -4,11 +4,15 @@ import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';
 
-@RestApi()
 abstract class ApiService {
-  factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
+  Future<List<UserResponse>> getUsers();
+}
 
-  // TODO add API endpoint
-  @GET('users')
+@RestApi()
+abstract class ApiServiceImpl extends ApiService {
+  factory ApiServiceImpl(Dio dio, {String baseUrl}) = _ApiServiceImpl;
+
+  @override
+  @GET('/users')
   Future<List<UserResponse>> getUsers();
 }
