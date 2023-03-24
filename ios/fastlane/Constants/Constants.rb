@@ -17,12 +17,12 @@ class Constants
 
   # bundle ID for Staging app
   def self.BUNDLE_ID_STAGING
-    'co.nimblehq.flutter.template.staging'
+    'co.nimblehq.ic.flutter.taher.toby.staging'
   end
 
   # bundle ID for Production app
   def self.BUNDLE_ID_PRODUCTION
-    'co.nimblehq.flutter.template'
+    'co.nimblehq.ic.flutter.taher.toby'
   end
 
   #################
@@ -67,21 +67,21 @@ class Constants
 
   # an staging product name
   def self.PRODUCT_NAME_STAGING
-    'Flutter Template Staging'
+    'Runner'
   end
 
   # a staging TestFlight product name
   def self.PRODUCT_NAME_STAGING_TEST_FLIGHT
-    'Flutter Template Staging'
+    'Flutter Survey Staging'
   end
 
   # a Production product name
   def self.PRODUCT_NAME_PRODUCTION
-    'Flutter Template'
+    'Runner'
   end
 
   # a main target name
   def self.MAIN_TARGET_NAME
-    'Flutter Template'
+    'Flutter Survey'
   end
 end
