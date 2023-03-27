@@ -12,9 +12,9 @@ jobs:
     runs-on: macOS-latest
     env:
       TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
-      API_KEY_ID: ${{ secrets.API_KEY_ID }}
-      APPSTORE_CONNECT_API_KEY: ${{ secrets.APPSTORE_CONNECT_API_KEY }}
-      ISSUER_ID: ${{ secrets.ISSUER_ID }}
+      APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}
+      APP_STORE_CONNECT_API_KEY_IS_KEY_CONTENT_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_IS_KEY_CONTENT_BASE64 }}
+      APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       MATCH_REPO: ${{ secrets.MATCH_REPO }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
@@ -41,8 +41,8 @@ jobs:
     - name: Bundle install
       run: cd ./ios && bundle install
 
-    - name: Pod install
-      run: cd ./ios && pod install
+    #- name: Pod install
+      #run: cd ./ios && pod install
 
     - name: Match AppStore
       run: cd ./ios && bundle exec fastlane sync_appstore_staging_signing
@@ -51,10 +51,18 @@ jobs:
       run: cd ./ios && bundle exec fastlane match development
 
     - name: Increament Build Number
-      run: cd ./ios && bundle exec fastlane run increment_build_number
+      run: cd ./ios && bundle exec fastlane increment_app_build_version
     
     - name: Build with flutter cmd
       run: flutter build ipa --flavor staging
 
     - name: Deploy to TestFlight
       run: cd ./ios && bundle exec fastlane futter_build_and_upload_testflight_app
+      env:
+        TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
+        APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}
+        APP_STORE_CONNECT_API_KEY_IS_KEY_CONTENT_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_IS_KEY_CONTENT_BASE64 }}
+        APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        MATCH_REPO: ${{ secrets.MATCH_REPO }}
+        MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
