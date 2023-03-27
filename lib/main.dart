@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// TODO Remove this later, as it's only for testing purposes
 final credentialRepository = CredentialRepositoryImpl(getIt.get<ApiService>());
 
 class HomeScreen extends StatelessWidget {
