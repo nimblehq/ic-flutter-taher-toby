@@ -11,6 +11,7 @@ jobs:
     name: Build And Upload iOS Application To TestFlight
     runs-on: macOS-latest
     env:
+      TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
       API_KEY_ID: ${{ secrets.API_KEY_ID }}
       APPSTORE_CONNECT_API_KEY: ${{ secrets.APPSTORE_CONNECT_API_KEY }}
       ISSUER_ID: ${{ secrets.ISSUER_ID }}

@@ -59,7 +59,15 @@ platform :ios do
       skip_build_archive: true,
       archive_path: "../build/ios/archive/Runner.xcarchive",
     )
-    upload_build_to_testflight
+    #upload_build_to_testflight
+    api_key = app_store_connect_api_key(
+      key_id: ENV["API_KEY_ID"],
+      issuer_id: ENV["ISSUER_ID"],
+      key_content: ENV["APPSTORE_CONNECT_API_KEY"],
+      duration: 1200, # optional (maximum 1200)
+      in_house: false # optional but may be required if using match/sigh
+    )
+    pilot(api_key: api_key)
   end
 
 
