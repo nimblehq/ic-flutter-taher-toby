@@ -83,6 +83,10 @@ class HomeScreen extends StatelessWidget {
               FlutterConfig.get('SECRET'),
               style: const TextStyle(color: Colors.black, fontSize: 24),
             ),
+            Text(
+              FlutterConfig.get('REST_API_ENDPOINT'),
+              style: const TextStyle(color: Colors.black, fontSize: 24),
+            ),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () => context.go('/$routePathSecondScreen'),
