@@ -55,4 +55,6 @@ jobs:
 
     - name: Deploy to TestFlight
       run: |
+        export FASTLANE_ITUNES_TRANSPORTER_USE_SHELL_SCRIPT=1
+        export FASTLANE_ITUNES_TRANSPORTER_PATH=/Applications/Transporter.app/Contents/itms
         cd ./ios && bundle exec fastlane futter_build_and_upload_testflight_app
