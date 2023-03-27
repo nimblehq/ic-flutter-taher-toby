@@ -45,7 +45,10 @@ jobs:
 
     - name: Match AppStore
       run: cd ./ios && bundle exec fastlane sync_appstore_staging_signing
-    
+
+    - name: Match Development
+      run: cd ./ios && bundle exec fastlane match development
+
     - name: Build with flutter cmd
       run: flutter build ipa --flavor staging
 
