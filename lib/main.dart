@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_survey/api/api_service.dart';
+import 'package:flutter_survey/api/repository/credential_repository.dart';
+import 'package:flutter_survey/di/provider/di.dart';
 import 'package:flutter_survey/gen/assets.gen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -8,6 +11,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
+  configureDependencyInjection();
   runApp(MyApp());
 }
 
@@ -51,6 +55,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// TODO Remove this later, as it's only for testing purposes
+final credentialRepository = CredentialRepositoryImpl(getIt.get<ApiService>());
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -91,6 +98,11 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () => context.go('/$routePathSecondScreen'),
               child: const Text("Navigate to Second Screen"),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () => credentialRepository.getUsers(),
+              child: const Text("Get Users"),
             ),
           ],
         ),
