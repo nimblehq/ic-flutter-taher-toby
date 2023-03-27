@@ -50,9 +50,11 @@ jobs:
     - name: Match Development
       run: cd ./ios && bundle exec fastlane match development
 
+    - name: Increament Build Number
+      run: cd ./ios && bundle exec fastlane run increment_build_number
+    
     - name: Build with flutter cmd
       run: flutter build ipa --flavor staging
 
     - name: Deploy to TestFlight
-      run: |
-        cd ./ios && bundle exec fastlane futter_build_and_upload_testflight_app
+      run: cd ./ios && bundle exec fastlane futter_build_and_upload_testflight_app
