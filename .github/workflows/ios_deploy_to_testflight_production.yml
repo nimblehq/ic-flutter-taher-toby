@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - chore/4-cd-for-ios
+      - main
 
 jobs:
   build_and_upload_to_testflight:
