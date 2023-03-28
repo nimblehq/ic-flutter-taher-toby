@@ -1,4 +1,4 @@
-name: ios-deploy-to-testflight
+name: ios-deploy-to-testflight-production
 on:
   # Trigger the workflow on push action
   workflow_dispatch:
@@ -34,9 +34,9 @@ jobs:
 
     - name: Create Env file
       run: |
-        touch .env.staging
-        echo "SECRET=\"MY_SECRET\"" >> .env.staging
-        echo "REST_API_ENDPOINT=\"MY_ENDPOINT\"" >> .env.staging
+        touch .env
+        echo "SECRET=\"MY_SECRET\"" >> .env
+        echo "REST_API_ENDPOINT=\"MY_ENDPOINT\"" >> .env
 
     - name: Get flutter dependencies
       run: flutter pub get
@@ -48,7 +48,7 @@ jobs:
       run: cd ./ios && bundle install
 
     - name: Match AppStore
-      run: cd ./ios && bundle exec fastlane sync_appstore_staging_signing
+      run: cd ./ios && bundle exec fastlane sync_appstore_production_signing
 
     - name: Match Development
       run: cd ./ios && bundle exec fastlane match development
@@ -57,10 +57,10 @@ jobs:
       run: cd ./ios && bundle exec fastlane increment_app_build_version
     
     - name: Build with flutter cmd
-      run: flutter build ipa --flavor staging
+      run: flutter build ipa --flavor production
 
     - name: Deploy to TestFlight
-      run: cd ./ios && bundle exec fastlane futter_build_and_upload_testflight_app
+      run: cd ./ios && bundle exec fastlane futter_build_and_upload_testflight_production_app
       env:
         TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
         APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}

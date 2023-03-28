@@ -60,10 +60,11 @@ platform :ios do
   # Testflight
 
   desc 'Build and upload Flutter Staging app to Test Flight'
-  lane :futter_build_and_upload_testflight_app do
-    bump_build
+  lane :futter_build_and_upload_testflight_staging_app do
+    #bump_build
     build_app(
-      scheme: "staging",
+      scheme: Constants.SCHEME_NAME_STAGING,
+      output_name: Constants.PRODUCT_NAME_STAGING,
       skip_build_archive: true,
       archive_path: "../build/ios/archive/Runner.xcarchive"
     )
@@ -78,18 +79,23 @@ platform :ios do
     pilot(api_key: api_key)
   end
 
-
-  desc 'Build and upload Staging app to Test Flight'
-  lane :build_and_upload_testflight_app do
-    set_app_version
-    bump_build
-    builder.build_app_store(
-      Constants.SCHEME_NAME_STAGING,
-      Constants.PRODUCT_NAME_STAGING,
-      Constants.BUNDLE_ID_STAGING,
-      false
+  desc 'Build and upload Flutter Production app to Test Flight'
+  lane :futter_build_and_upload_testflight_production_app do
+    build_app(
+      scheme: Constants.SCHEME_NAME_PRODUCTION,
+      output_name: Constants.PRODUCT_NAME_PRODUCTION,
+      skip_build_archive: true,
+      archive_path: "../build/ios/archive/Runner.xcarchive"
     )
-    upload_build_to_testflight
+    #upload_build_to_testflight
+    api_key = app_store_connect_api_key(
+      key_id: ENV['APP_STORE_CONNECT_API_KEY_KEY_ID'],
+      issuer_id: ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+      key_content: ENV['APP_STORE_CONNECT_API_KEY_IS_KEY_CONTENT_BASE64'],
+      is_key_content_base64: true,
+      in_house: true
+    )
+    pilot(api_key: api_key)
   end
 
   desc 'upload develop build to Test Flight'
