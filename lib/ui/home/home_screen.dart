@@ -78,6 +78,7 @@ class HomeScreen extends StatelessWidget {
     return Stack(
       children: [
         const HomeHeader(),
+        const HomeSurveyPageIndicator(),
       ],
     );
   }
