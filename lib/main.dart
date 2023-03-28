@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_survey/di/provider/di.dart';
@@ -9,7 +10,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
   configureDependencyInjection();
+  _setTransparentStatusBar();
   runApp(const SurveyApp());
+}
+
+void _setTransparentStatusBar() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
 }
 
 class SurveyApp extends StatelessWidget {
