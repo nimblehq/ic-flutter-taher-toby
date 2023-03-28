@@ -32,6 +32,12 @@ jobs:
         channel: 'stable'
         flutter-version: '3.3.10'
 
+    - name: Create Env file
+      run: |
+        touch .env.staging
+        echo "SECRET=\"MY_SECRET\"" >> .env.staging
+        echo "REST_API_ENDPOINT=\"MY_ENDPOINT\"" >> .env.staging
+
     - name: Get flutter dependencies
       run: flutter pub get
 
@@ -40,9 +46,6 @@ jobs:
 
     - name: Bundle install
       run: cd ./ios && bundle install
-
-    #- name: Pod install
-      #run: cd ./ios && pod install
 
     - name: Match AppStore
       run: cd ./ios && bundle exec fastlane sync_appstore_staging_signing
