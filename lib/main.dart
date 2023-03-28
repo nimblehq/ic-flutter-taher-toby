@@ -5,6 +5,8 @@ import 'package:flutter_survey/api/api_service.dart';
 import 'package:flutter_survey/api/repository/credential_repository.dart';
 import 'package:flutter_survey/di/provider/di.dart';
 import 'package:flutter_survey/gen/assets.gen.dart';
+import 'package:flutter_survey/theme/app_dimensions.dart';
+import 'package:flutter_survey/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -41,11 +43,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.light,
-        fontFamily: Assets.fonts.neuzeit,
-      ),
+      theme: AppTheme.light(),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routeInformationProvider: _router.routeInformationProvider,
@@ -69,14 +67,17 @@ class HomeScreen extends StatelessWidget {
             future: PackageInfo.fromPlatform(),
             builder: (context, snapshot) {
               return snapshot.hasData
-                  ? Text(snapshot.data?.appName ?? "")
+                  ? Text(
+                      snapshot.data?.appName ?? "",
+                      style: Theme.of(context).textTheme.labelMedium,
+                    )
                   : const SizedBox.shrink();
             }),
       ),
       body: Center(
         child: Column(
           children: [
-            const SizedBox(height: 24),
+            const SizedBox(height: AppDimensions.spacing24),
             FractionallySizedBox(
               widthFactor: 0.5,
               child: Image.asset(
@@ -84,25 +85,36 @@ class HomeScreen extends StatelessWidget {
                 fit: BoxFit.fitWidth,
               ),
             ),
-            const SizedBox(height: 24),
-            Text(AppLocalizations.of(context)!.hello),
+            const SizedBox(height: AppDimensions.spacing24),
+            Text(
+              AppLocalizations.of(context)!.hello,
+              style: Theme.of(context).textTheme.displayLarge,
+            ),
+            const SizedBox(height: AppDimensions.spacing24),
             Text(
               FlutterConfig.get('SECRET'),
-              style: const TextStyle(color: Colors.black, fontSize: 24),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
+            const SizedBox(height: AppDimensions.spacing24),
             Text(
               FlutterConfig.get('REST_API_ENDPOINT'),
-              style: const TextStyle(color: Colors.black, fontSize: 24),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppDimensions.spacing24),
             ElevatedButton(
               onPressed: () => context.go('/$routePathSecondScreen'),
-              child: const Text("Navigate to Second Screen"),
+              child: Text(
+                "Navigate to Second Screen",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppDimensions.spacing24),
             ElevatedButton(
               onPressed: () => credentialRepository.getUsers(),
-              child: const Text("Get Users"),
+              child: Text(
+                "Get Users",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
             ),
           ],
         ),
