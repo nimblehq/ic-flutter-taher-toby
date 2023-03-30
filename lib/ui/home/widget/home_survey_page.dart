@@ -18,41 +18,45 @@ class HomeSurveyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      DimmedBackground(background: Assets.images.dummyBackground.path),
-      Padding(
-        padding: const EdgeInsets.only(
-            left: AppDimensions.spacing20,
-            bottom: AppDimensions.spacing54,
-            right: AppDimensions.spacing20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                Text(
-                  "Career training and development",
-                  style: Theme.of(context).textTheme.displayLarge,
-                  maxLines: _maxLines,
-                  overflow: TextOverflow.ellipsis,
+    return Stack(
+      children: [
+        DimmedBackground(background: Assets.images.dummyBackground.path),
+        Padding(
+          padding: const EdgeInsets.only(
+              left: AppDimensions.spacing20,
+              bottom: AppDimensions.spacing54,
+              right: AppDimensions.spacing20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Career training and development",
+                      style: Theme.of(context).textTheme.displayLarge,
+                      maxLines: _maxLines,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: AppDimensions.spacing16),
+                    Text(
+                      "We would like to know what are your goals and skills you wanted to improve this upcoming year.",
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.white.withOpacity(_descriptionOpacity)),
+                      maxLines: _maxLines,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: AppDimensions.spacing16),
-                Text(
-                  "We would like to know what are your goals and skills you wanted to improve this upcoming year.",
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white.withOpacity(_descriptionOpacity)),
-                  maxLines: _maxLines,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ]),
-            ),
-            NextButton(
-              onNextButtonPressed: onNextButtonPressed,
-            ),
-          ],
+              ),
+              NextButton(
+                onNextButtonPressed: onNextButtonPressed,
+              ),
+            ],
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }

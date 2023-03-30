@@ -12,31 +12,37 @@ class HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Padding(
-      padding: const EdgeInsets.only(
-          left: AppDimensions.spacing20,
-          top: AppDimensions.spacing28,
-          right: AppDimensions.spacing20),
-      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Expanded(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(formatCurrentDate(),
-                style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(height: AppDimensions.spacing4),
-            Text(AppLocalizations.of(context)!.today,
-                style: Theme.of(context).textTheme.titleLarge),
-          ]),
+      child: Padding(
+        padding: const EdgeInsets.only(
+            left: AppDimensions.spacing20,
+            top: AppDimensions.spacing28,
+            right: AppDimensions.spacing20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(formatCurrentDate(),
+                      style: Theme.of(context).textTheme.titleSmall),
+                  const SizedBox(height: AppDimensions.spacing4),
+                  Text(AppLocalizations.of(context)!.today,
+                      style: Theme.of(context).textTheme.titleLarge),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: AppDimensions.spacing20),
+              child: CircleAvatar(
+                radius: AppDimensions.homeAvatarSize,
+                backgroundImage: AssetImage(Assets.images.dummyAvatar.path),
+              ),
+            ),
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: AppDimensions.spacing20),
-          child: CircleAvatar(
-            radius: AppDimensions.homeAvatarSize,
-            backgroundImage: AssetImage(Assets.images.dummyAvatar.path),
-          ),
-        ),
-      ]),
-    ));
+      ),
+    );
   }
 
   String formatCurrentDate() {

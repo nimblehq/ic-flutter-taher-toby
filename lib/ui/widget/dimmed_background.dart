@@ -13,24 +13,29 @@ class DimmedBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Container(
+    return Stack(
+      children: [
+        Container(
           decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(background),
-          fit: BoxFit.cover,
+            image: DecorationImage(
+              image: AssetImage(background),
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
-      )),
-      Container(
+        Container(
           decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.black.withOpacity(_startOpacity),
-              Colors.black.withOpacity(_endOpacity),
-            ]),
-      )),
-    ]);
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.black.withOpacity(_startOpacity),
+                Colors.black.withOpacity(_endOpacity),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

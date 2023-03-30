@@ -10,24 +10,26 @@ class HomeSurveyPageIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      const Expanded(child: SizedBox.shrink()),
-      PageViewDotIndicator(
-        currentItem: 1,
-        count: 3,
-        selectedColor: Colors.white,
-        unselectedColor: Colors.white.withOpacity(_opacityUnselectedColor),
-        size: const Size(
-          AppDimensions.homeSurveyPageIndicatorSize,
-          AppDimensions.homeSurveyPageIndicatorSize,
+    return Column(
+      children: [
+        const Expanded(child: SizedBox.shrink()),
+        PageViewDotIndicator(
+          currentItem: 1,
+          count: 3,
+          selectedColor: Colors.white,
+          unselectedColor: Colors.white.withOpacity(_opacityUnselectedColor),
+          size: const Size(
+            AppDimensions.homeSurveyPageIndicatorSize,
+            AppDimensions.homeSurveyPageIndicatorSize,
+          ),
+          unselectedSize: const Size(
+            AppDimensions.homeSurveyPageIndicatorSize,
+            AppDimensions.homeSurveyPageIndicatorSize,
+          ),
+          alignment: Alignment.bottomLeft,
         ),
-        unselectedSize: const Size(
-          AppDimensions.homeSurveyPageIndicatorSize,
-          AppDimensions.homeSurveyPageIndicatorSize,
-        ),
-        alignment: Alignment.bottomLeft,
-      ),
-      const SizedBox(height: AppDimensions.spacing200),
-    ]);
+        const SizedBox(height: AppDimensions.spacing200),
+      ],
+    );
   }
 }
