@@ -18,7 +18,8 @@ class AppInterceptor extends Interceptor {
       RequestOptions options, RequestInterceptorHandler handler) async {
     if (_requireAuthentication) {
       // TODO: Integrate log-in https://github.com/nimblehq/ic-flutter-taher-toby/issues/10
-      options.headers.putIfAbsent(_authorizationHeader, () => "Bearer add your token here");
+      options.headers.putIfAbsent(
+          _authorizationHeader, () => "Bearer add your token here");
     }
     return super.onRequest(options, handler);
   }
