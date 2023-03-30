@@ -26,7 +26,7 @@ void main() {
           .call(GetSurveysInput(pageNumber: 1, pageSize: 2));
 
       expect(result, isA<Success>());
-      expect((result as Success).value, surveysModels);
+      expect((result as Success).value, surveysModels.surveys);
     });
 
     test('When execution has failed, it returns a Failed result', () async {
