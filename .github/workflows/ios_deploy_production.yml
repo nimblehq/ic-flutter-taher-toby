@@ -32,11 +32,11 @@ jobs:
         channel: 'stable'
         flutter-version: '3.3.10'
 
-    - name: Create Env file
+    - name: Setup .env
+      env:
+        ENV_PRODUCTION: ${{ secrets.ENV_PRODUCTION }}
       run: |
-        touch .env
-        echo "SECRET=\"MY_SECRET\"" >> .env
-        echo "REST_API_ENDPOINT=\"MY_ENDPOINT\"" >> .env
+        echo "$ENV_PRODUCTION" > .env
 
     - name: Get flutter dependencies
       run: flutter pub get
@@ -61,11 +61,3 @@ jobs:
 
     - name: Deploy to TestFlight
       run: cd ./ios && bundle exec fastlane futter_build_and_upload_testflight_production_app
-      env:
-        TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
-        APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}
-        APP_STORE_CONNECT_API_KEY_IS_KEY_CONTENT_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_IS_KEY_CONTENT_BASE64 }}
-        APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        MATCH_REPO: ${{ secrets.MATCH_REPO }}
-        MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
