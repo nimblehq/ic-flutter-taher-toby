@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_survey/api/api_service.dart';
+import 'package:flutter_survey/api/repository/survey_repository.dart';
+import 'package:flutter_survey/api/survey_service.dart';
 import 'package:mockito/annotations.dart';
 
 @GenerateMocks([
-  ApiService,
+  SurveyService,
+  SurveyRepository,
   DioError,
 ])
-main() {
-  // empty class to generate mock repository classes
-}
+main() {}
