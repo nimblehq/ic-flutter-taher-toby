@@ -31,6 +31,7 @@ class HomeSkeletonLoading extends StatelessWidget {
               _buildSkeleton(width: screenWidth / 1.2),
               const SizedBox(height: AppDimensions.spacing10),
               _buildSkeleton(width: screenWidth / 1.5),
+              const SizedBox(height: AppDimensions.spacing54),
             ],
           ),
         ),
