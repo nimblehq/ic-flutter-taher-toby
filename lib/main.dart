@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/di/provider/di.dart';
 import 'package:flutter_survey/theme/app_theme.dart';
 import 'package:flutter_survey/app_navigator.dart';
@@ -11,7 +12,9 @@ void main() async {
   await FlutterConfig.loadEnvVariables();
   configureDependencyInjection();
   _setTransparentStatusBar();
-  runApp(const SurveyApp());
+  runApp(const ProviderScope(
+    child: SurveyApp(),
+  ));
 }
 
 void _setTransparentStatusBar() {
