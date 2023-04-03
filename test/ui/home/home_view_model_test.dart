@@ -55,10 +55,15 @@ void main() {
       final surveysStream = homeViewModel.surveys;
       final stateStream = homeViewModel.stream;
 
-      homeViewModel.loadSurveys();
-
       expect(surveysStream, emitsInOrder([surveys]));
-      expect(stateStream, emitsInOrder([const HomeState.loadSurveysSuccess()]));
+      expect(
+          stateStream,
+          emitsInOrder([
+            const HomeState.loading(),
+            const HomeState.loadSurveysSuccess(),
+          ]));
+
+      homeViewModel.loadSurveys();
     });
 
     test(
@@ -69,17 +74,22 @@ void main() {
       final errorStream = homeViewModel.error;
       final stateStream = homeViewModel.stream;
 
-      homeViewModel.loadSurveys();
-
       expect(
           errorStream,
           emitsInOrder(
               [NetworkExceptions.getErrorMessage(exception.actualException)]));
-      expect(stateStream, emitsInOrder([const HomeState.loadSurveysError()]));
+      expect(
+          stateStream,
+          emitsInOrder([
+            const HomeState.loading(),
+            const HomeState.loadSurveysError(),
+          ]));
+
+      homeViewModel.loadSurveys();
     });
 
     tearDown(() {
-      addTearDown(providerContainer.dispose);
+      providerContainer.dispose;
     });
   });
 }
