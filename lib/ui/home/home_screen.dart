@@ -6,6 +6,7 @@ import 'package:flutter_survey/model/survey_model.dart';
 import 'package:flutter_survey/ui/home/home_state.dart';
 import 'package:flutter_survey/ui/home/home_view_model.dart';
 import 'package:flutter_survey/ui/home/widget/home_header.dart';
+import 'package:flutter_survey/ui/home/widget/home_skeleton_loading.dart';
 import 'package:flutter_survey/ui/home/widget/home_survey_page_indicator.dart';
 import 'package:flutter_survey/ui/home/widget/home_survey_page_viewer.dart';
 import 'package:flutter_survey/usecases/get_surveys_use_case.dart';
@@ -43,8 +44,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     final surveys = ref.watch(_surveysStreamProvider).value ?? [];
     final errorMessage = ref.watch(_errorStreamProvider).value ?? "";
     return ref.watch(homeViewModelProvider).when(
-          init: () =>
-              _buildHomeScreen(surveys: surveys, errorMessage: errorMessage),
+          init: () => const HomeSkeletonLoading(),
+          loading: () => const HomeSkeletonLoading(),
           loadSurveysSuccess: () =>
               _buildHomeScreen(surveys: surveys, errorMessage: errorMessage),
           loadSurveysError: () =>

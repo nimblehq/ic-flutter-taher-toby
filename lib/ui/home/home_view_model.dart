@@ -22,6 +22,7 @@ class HomeViewModel extends StateNotifier<HomeState> {
   Stream<String?> get error => _error.stream;
 
   void loadSurveys() async {
+    state = const HomeState.loading();
     final result = await _getSurveysUseCase.call(GetSurveysInput(
       pageNumber: _surveysPageNumber,
       pageSize: _surveysPageSize,
