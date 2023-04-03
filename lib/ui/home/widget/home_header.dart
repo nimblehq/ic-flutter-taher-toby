@@ -35,7 +35,7 @@ class HomeHeader extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: AppDimensions.spacing20),
               child: CircleAvatar(
-                radius: AppDimensions.homeAvatarSize,
+                radius: AppDimensions.homeAvatarSize / 2,
                 backgroundImage: AssetImage(Assets.images.dummyAvatar.path),
               ),
             ),
