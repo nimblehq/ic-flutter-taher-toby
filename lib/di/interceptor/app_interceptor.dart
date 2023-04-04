@@ -1,3 +1,4 @@
+// ignore: unused_import
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -26,27 +27,25 @@ class AppInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    final statusCode = err.response?.statusCode;
-    if ((statusCode == HttpStatus.forbidden ||
-            statusCode == HttpStatus.unauthorized) &&
-        _requireAuthentication) {
-      _doRefreshToken(err, handler);
-    } else {
-      handler.next(err);
-    }
+    handler.next(err);
+    // TODO: Integrate refresh-token https://github.com/nimblehq/ic-flutter-taher-toby/issues/20
+    // final statusCode = err.response?.statusCode;
+    // if ((statusCode == HttpStatus.forbidden ||
+    //         statusCode == HttpStatus.unauthorized) &&
+    //     _requireAuthentication) {
+    //   _doRefreshToken(err, handler);
+    // } else {
+    // }
   }
 
+  // ignore: unused_element
   Future<void> _doRefreshToken(
     DioError err,
     ErrorInterceptorHandler handler,
   ) async {
     try {
-      // TODO Request new token
-
       // if (result is Success) {
-      // TODO Update new token header
       // err.requestOptions.headers[_headerAuthorization] = newToken;
-
       // Create request with new access token
       final options = Options(
           method: err.requestOptions.method,

@@ -18,7 +18,7 @@ class DimmedBackground extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(background),
+              image: NetworkImage(background),
               fit: BoxFit.cover,
             ),
           ),
