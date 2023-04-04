@@ -1,3 +1,4 @@
+// ignore: unused_import
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -37,6 +38,7 @@ class AppInterceptor extends Interceptor {
     // }
   }
 
+  // ignore: unused_element
   Future<void> _doRefreshToken(
     DioError err,
     ErrorInterceptorHandler handler,
