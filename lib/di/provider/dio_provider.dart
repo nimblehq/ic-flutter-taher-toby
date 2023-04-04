@@ -11,14 +11,14 @@ class DioProvider {
   Dio? _dio;
 
   Dio getDio() {
-    _dio ??= _createDio();
+    _dio ??= _createDio(requireAuthentication: true);
     return _dio!;
   }
 
-  Dio _createDio({bool requireAuthenticate = false}) {
+  Dio _createDio({bool requireAuthentication = false}) {
     final dio = Dio();
     final appInterceptor = AppInterceptor(
-      requireAuthenticate,
+      requireAuthentication,
       dio,
     );
     final interceptors = <Interceptor>[];

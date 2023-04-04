@@ -2,22 +2,24 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
+const String _authorizationHeader = 'Authorization';
+
 class AppInterceptor extends Interceptor {
-  final bool _requireAuthenticate;
+  final bool _requireAuthentication;
   final Dio _dio;
 
   AppInterceptor(
-    this._requireAuthenticate,
+    this._requireAuthentication,
     this._dio,
   );
 
   @override
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    if (_requireAuthenticate) {
-      // TODO header authorization here
-      // options.headers
-      //     .putIfAbsent(HEADER_AUTHORIZATION, () => "");
+    if (_requireAuthentication) {
+      // TODO: Integrate log-in https://github.com/nimblehq/ic-flutter-taher-toby/issues/10
+      options.headers.putIfAbsent(
+          _authorizationHeader, () => "Bearer add your token here");
     }
     return super.onRequest(options, handler);
   }
@@ -27,7 +29,7 @@ class AppInterceptor extends Interceptor {
     final statusCode = err.response?.statusCode;
     if ((statusCode == HttpStatus.forbidden ||
             statusCode == HttpStatus.unauthorized) &&
-        _requireAuthenticate) {
+        _requireAuthentication) {
       _doRefreshToken(err, handler);
     } else {
       handler.next(err);
