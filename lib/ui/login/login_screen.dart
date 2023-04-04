@@ -1,22 +1,23 @@
+import 'package:flutter_survey/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() {
-    return _SpalshScreenState();
+  State<LoginScreen> createState() {
+    return _LoginScreenState();
   }
 }
 
-class _SpalshScreenState extends State<SplashScreen>
+class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
   late AnimationController _logoOpacityAnimationController;
   late AnimationController _logoPositionAnimationController;
   late Animation<Offset> _positionAnimation;
 
-  final _nimbleLogo = Image.asset("assets/images/splash_logo_white.png");
+  final _nimbleLogo = Assets.images.splashLogoWhite.image();
   final _backgroundImage = Container(
     decoration: const BoxDecoration(
       image: DecorationImage(
@@ -44,7 +45,7 @@ class _SpalshScreenState extends State<SplashScreen>
     );
 
     _positionAnimation = Tween<Offset>(
-      begin: const Offset(0, 0),
+      begin: Offset.zero,
       end: const Offset(0, -0.3),
     ).animate(_logoPositionAnimationController);
 
@@ -57,7 +58,7 @@ class _SpalshScreenState extends State<SplashScreen>
     _logoOpacityAnimationController.forward();
   }
 
-  Stack _uiStack() => Stack(
+  Stack _buildLoginScreen() => Stack(
         children: [
           _backgroundImage,
           Container(
@@ -83,15 +84,14 @@ class _SpalshScreenState extends State<SplashScreen>
       );
 
   @override
+  Widget build(BuildContext context) {
+    return _buildLoginScreen();
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _logoOpacityAnimationController.dispose();
     _logoPositionAnimationController.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-    return _uiStack();
   }
 }

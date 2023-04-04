@@ -28,6 +28,7 @@ class SurveyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return MaterialApp.router(
       theme: AppTheme.light(),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
