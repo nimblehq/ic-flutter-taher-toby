@@ -12,7 +12,8 @@ class Routes {
     routes: <GoRoute>[
       GoRoute(
         path: _routePathRootScreen,
-        builder: (BuildContext context, GoRouterState state) => HomeScreen(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const HomeScreen(),
         routes: [
           GoRoute(
             path: _routePathSecondScreen,

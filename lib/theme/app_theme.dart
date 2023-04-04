@@ -5,7 +5,6 @@ import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class AppTheme {
   static ThemeData light() => ThemeData(
-        scaffoldBackgroundColor: Colors.grey,
         colorScheme: const ColorScheme.light(
           primary: AppColors.blackRussian,
         ),
@@ -51,7 +50,7 @@ class AppTheme {
             /** Display / 2 */
             color: Colors.white,
             fontSize: AppDimensions.textSize28,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w800,
           ),
           titleLarge: TextStyle(
             /** Large Title */
