@@ -18,8 +18,8 @@ void main() {
 
     test('When execution has succeeded, it returns a Success result', () async {
       const surveysModels = [
-        SurveyModel(id: 'id', title: 'title'),
-        SurveyModel(id: 'anotherId', title: 'anotherTitle'),
+        SurveyModel(id: '1', title: '2', description: '3', coverImageUrl: '4'),
+        SurveyModel(id: '5', title: '6', description: '7', coverImageUrl: '8'),
       ];
       when(mockSurveyRepository.getSurveys(pageNumber: 1, pageSize: 2))
           .thenAnswer((_) async => surveysModels);
