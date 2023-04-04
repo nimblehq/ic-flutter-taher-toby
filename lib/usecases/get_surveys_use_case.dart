@@ -28,7 +28,7 @@ class GetSurveysUseCase extends UseCase<List<SurveyModel>, GetSurveysInput> {
           pageSize: input.pageSize,
         )
         // ignore: unnecessary_cast
-        .then((value) => Success(value.surveys) as Result<List<SurveyModel>>)
+        .then((value) => Success(value) as Result<List<SurveyModel>>)
         .onError<NetworkExceptions>((ex, _) => Failed(UseCaseException(ex)));
   }
 }

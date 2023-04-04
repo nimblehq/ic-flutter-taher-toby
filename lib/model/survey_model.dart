@@ -11,6 +11,9 @@ class SurveyModel extends Equatable {
   List<Object?> get props => [id, title];
 
   factory SurveyModel.fromResponse(SurveyResponse response) {
-    return SurveyModel(id: response.id ?? "", title: response.title ?? "");
+    return SurveyModel(
+      id: response.id ?? "",
+      title: response.title ?? "",
+    );
   }
 }

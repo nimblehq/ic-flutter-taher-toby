@@ -1,6 +1,5 @@
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
 import 'package:flutter_survey/model/survey_model.dart';
-import 'package:flutter_survey/model/surveys_model.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_survey/usecases/get_surveys_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,7 +17,10 @@ void main() {
     });
 
     test('When execution has succeeded, it returns a Success result', () async {
-      const surveysModels = SurveysModel(surveys: <SurveyModel>[]);
+      const surveysModels = [
+        SurveyModel(id: 'id', title: 'title'),
+        SurveyModel(id: 'anotherId', title: 'anotherTitle'),
+      ];
       when(mockSurveyRepository.getSurveys(pageNumber: 1, pageSize: 2))
           .thenAnswer((_) async => surveysModels);
 
@@ -26,7 +28,7 @@ void main() {
           .call(GetSurveysInput(pageNumber: 1, pageSize: 2));
 
       expect(result, isA<Success>());
-      expect((result as Success).value, surveysModels.surveys);
+      expect((result as Success).value, surveysModels);
     });
 
     test('When execution has failed, it returns a Failed result', () async {

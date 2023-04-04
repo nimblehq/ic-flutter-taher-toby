@@ -2,7 +2,6 @@ import 'package:flutter_survey/api/exception/network_exceptions.dart';
 import 'package:flutter_survey/api/repository/survey_repository.dart';
 import 'package:flutter_survey/api/response/surveys_response.dart';
 import 'package:flutter_survey/model/survey_model.dart';
-import 'package:flutter_survey/model/surveys_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -36,11 +35,10 @@ void main() {
           final surveysModel =
               await surveyRepository.getSurveys(pageNumber: 1, pageSize: 2);
 
-          expect(surveysModel.surveys.length, 2);
-          expect(surveysModel, SurveysModel.fromResponse(surveysResponse));
-          expect(surveysModel.surveys[0],
+          expect(surveysModel.length, 2);
+          expect(surveysModel[0],
               SurveyModel.fromResponse(surveysResponse.surveys![0]));
-          expect(surveysModel.surveys[1],
+          expect(surveysModel[1],
               SurveyModel.fromResponse(surveysResponse.surveys![1]));
         },
       );
