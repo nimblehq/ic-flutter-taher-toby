@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_survey/di/provider/di.dart';
+import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/model/survey_model.dart';
 import 'package:flutter_survey/ui/home/home_state.dart';
 import 'package:flutter_survey/ui/home/home_view_model.dart';
