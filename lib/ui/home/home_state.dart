@@ -6,6 +6,8 @@ part 'home_state.freezed.dart';
 class HomeState with _$HomeState {
   const factory HomeState.init() = _Init;
 
+  const factory HomeState.loading() = _Loading;
+
   const factory HomeState.loadSurveysSuccess() = _LoadSurveysSuccess;
 
   const factory HomeState.loadSurveysError() = _LoadSurveysError;
