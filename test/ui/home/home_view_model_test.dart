@@ -57,11 +57,12 @@ void main() {
 
       expect(surveysStream, emitsInOrder([surveys]));
       expect(
-          stateStream,
-          emitsInOrder([
-            const HomeState.loading(),
-            const HomeState.loadSurveysSuccess(),
-          ]));
+        stateStream,
+        emitsInOrder([
+          const HomeState.loading(),
+          const HomeState.loadSurveysSuccess(),
+        ]),
+      );
 
       homeViewModel.loadSurveys();
     });
@@ -79,11 +80,12 @@ void main() {
           emitsInOrder(
               [NetworkExceptions.getErrorMessage(exception.actualException)]));
       expect(
-          stateStream,
-          emitsInOrder([
-            const HomeState.loading(),
-            const HomeState.loadSurveysError(),
-          ]));
+        stateStream,
+        emitsInOrder([
+          const HomeState.loading(),
+          const HomeState.loadSurveysError(),
+        ]),
+      );
 
       homeViewModel.loadSurveys();
     });

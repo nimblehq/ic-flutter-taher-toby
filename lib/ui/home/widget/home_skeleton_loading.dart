@@ -11,9 +11,10 @@ class HomeSkeletonLoading extends StatelessWidget {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.only(
-            left: AppDimensions.spacing20,
-            top: AppDimensions.spacing28,
-            right: AppDimensions.spacing20),
+          left: AppDimensions.spacing20,
+          top: AppDimensions.spacing28,
+          right: AppDimensions.spacing20,
+        ),
         child: Shimmer.fromColors(
           baseColor: Colors.white12,
           highlightColor: Colors.white30,
@@ -56,9 +57,10 @@ class HomeSkeletonLoading extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: AppDimensions.spacing18),
           child: _buildSkeleton(
-              width: AppDimensions.homeAvatarSize,
-              height: AppDimensions.homeAvatarSize,
-              borderRadius: AppDimensions.homeAvatarSize),
+            width: AppDimensions.homeAvatarSize,
+            height: AppDimensions.homeAvatarSize,
+            borderRadius: AppDimensions.homeAvatarSize,
+          ),
         ),
       ],
     );
