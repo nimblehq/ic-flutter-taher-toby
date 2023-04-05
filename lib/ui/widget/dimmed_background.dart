@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
-const _startOpacity = 0.0;
-const _endOpacity = 0.6;
-
 class DimmedBackground extends StatelessWidget {
   final String background;
+  final double startOpacity;
+  final double endOpacity;
 
-  const DimmedBackground({
-    Key? key,
-    required this.background,
-  }) : super(key: key);
+  const DimmedBackground(
+      {Key? key,
+      required this.background,
+      this.startOpacity = 0.0,
+      this.endOpacity = 0.6})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +30,8 @@ class DimmedBackground extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.black.withOpacity(_startOpacity),
-                Colors.black.withOpacity(_endOpacity),
+                Colors.black.withOpacity(startOpacity),
+                Colors.black.withOpacity(endOpacity),
               ],
             ),
           ),

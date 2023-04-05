@@ -1,5 +1,6 @@
 import 'package:flutter_survey/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -17,13 +18,6 @@ class _LoginScreenState extends State<LoginScreen>
   late Animation<Offset> _positionAnimation;
 
   final _nimbleLogo = Assets.images.splashLogoWhite.image();
-  final _backgroundImage = Container(
-    decoration: const BoxDecoration(
-      image: DecorationImage(
-          image: AssetImage("assets/images/splash_background.png"),
-          fit: BoxFit.cover),
-    ),
-  );
 
   @override
   void initState() {
@@ -59,18 +53,10 @@ class _LoginScreenState extends State<LoginScreen>
 
   Stack _buildLoginScreen() => Stack(
         children: [
-          _backgroundImage,
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.black.withOpacity(0.01),
-                  Colors.black.withOpacity(1.0)
-                ],
-              ),
-            ),
+          DimmedBackground(
+            background: Assets.images.splashBackground.path,
+            startOpacity: 0.01,
+            endOpacity: 1.0,
           ),
           FadeTransition(
             opacity: _logoOpacityAnimationController,
