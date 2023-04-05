@@ -57,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen>
             background: Assets.images.splashBackground.path,
             startOpacity: 0.01,
             endOpacity: 1.0,
+            isAsset: true,
           ),
           FadeTransition(
             opacity: _logoOpacityAnimationController,
