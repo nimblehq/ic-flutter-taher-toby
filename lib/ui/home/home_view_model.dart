@@ -34,8 +34,8 @@ class HomeViewModel extends StateNotifier<HomeState> {
     }
   }
 
-  void loadSurveys() async {
-    if (!_surveys.hasValue) state = const HomeState.loading();
+  Future<void> loadSurveys({bool isRefreshing = false}) async {
+    if (!_surveys.hasValue || isRefreshing) state = const HomeState.loading();
     final result = await _getSurveysUseCase.call(GetSurveysInput(
       pageNumber: _surveysPageNumber,
       pageSize: _surveysPageSize,
