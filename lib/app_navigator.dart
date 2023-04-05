@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_survey/ui/home/home_screen.dart';
 import 'package:flutter_survey/ui/second/second_screen.dart';
+import 'package:flutter_survey/ui/login/login_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 
@@ -12,7 +12,8 @@ class Routes {
     routes: <GoRoute>[
       GoRoute(
         path: _routePathRootScreen,
-        builder: (BuildContext context, GoRouterState state) => HomeScreen(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const LoginScreen(),
         routes: [
           GoRoute(
             path: _routePathSecondScreen,
