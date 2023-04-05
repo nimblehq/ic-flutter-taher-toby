@@ -16,9 +16,7 @@ import 'package:flutter_survey/ui/widget/snack_bar.dart';
 final homeViewModelProvider =
     StateNotifierProvider.autoDispose<HomeViewModel, HomeState>((ref) {
   return HomeViewModel(
-      getIt.get<GetCachedSurveysUseCase>(),
-      getIt.get<GetSurveysUseCase>()
-  );
+      getIt.get<GetCachedSurveysUseCase>(), getIt.get<GetSurveysUseCase>());
 });
 
 final _surveysStreamProvider = StreamProvider.autoDispose<List<SurveyModel>>(
@@ -52,7 +50,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
           init: () => const HomeSkeletonLoading(),
           loading: () => const HomeSkeletonLoading(),
           loadCachedSurveysSuccess: () =>
-            _buildHomeScreen(surveys: surveys, errorMessage: errorMessage),
+              _buildHomeScreen(surveys: surveys, errorMessage: errorMessage),
           loadSurveysSuccess: () =>
               _buildHomeScreen(surveys: surveys, errorMessage: errorMessage),
           loadSurveysError: () =>
