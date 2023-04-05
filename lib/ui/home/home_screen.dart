@@ -9,12 +9,16 @@ import 'package:flutter_survey/ui/home/widget/home_header.dart';
 import 'package:flutter_survey/ui/home/widget/home_skeleton_loading.dart';
 import 'package:flutter_survey/ui/home/widget/home_survey_page_indicator.dart';
 import 'package:flutter_survey/ui/home/widget/home_survey_page_viewer.dart';
+import 'package:flutter_survey/usecases/get_cached_surveys_use_case.dart';
 import 'package:flutter_survey/usecases/get_surveys_use_case.dart';
 import 'package:flutter_survey/ui/widget/snack_bar.dart';
 
 final homeViewModelProvider =
     StateNotifierProvider.autoDispose<HomeViewModel, HomeState>((ref) {
-  return HomeViewModel(getIt.get<GetSurveysUseCase>());
+  return HomeViewModel(
+      getIt.get<GetCachedSurveysUseCase>(),
+      getIt.get<GetSurveysUseCase>()
+  );
 });
 
 final _surveysStreamProvider = StreamProvider.autoDispose<List<SurveyModel>>(
@@ -36,6 +40,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    ref.read(homeViewModelProvider.notifier).loadCachedSurveys();
     ref.read(homeViewModelProvider.notifier).loadSurveys();
   }
 
@@ -46,6 +51,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     return ref.watch(homeViewModelProvider).when(
           init: () => const HomeSkeletonLoading(),
           loading: () => const HomeSkeletonLoading(),
+          loadCachedSurveysSuccess: () =>
+            _buildHomeScreen(surveys: surveys, errorMessage: errorMessage),
           loadSurveysSuccess: () =>
               _buildHomeScreen(surveys: surveys, errorMessage: errorMessage),
           loadSurveysError: () =>
