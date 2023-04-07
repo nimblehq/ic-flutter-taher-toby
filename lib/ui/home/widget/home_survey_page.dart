@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/constants.dart';
 import 'package:flutter_survey/model/survey_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_survey/ui/widget/next_button.dart';
-
-const _textMaxLines = 2;
-const _descriptionOpacity = 0.7;
 
 class HomeSurveyPage extends StatelessWidget {
   final SurveyModel survey;
@@ -38,15 +36,18 @@ class HomeSurveyPage extends StatelessWidget {
                     Text(
                       survey.title,
                       style: Theme.of(context).textTheme.displayLarge,
-                      maxLines: _textMaxLines,
+                      maxLines: Constants.surveyTitleMaxLines,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: AppDimensions.spacing16),
                     Text(
                       survey.description,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white.withOpacity(_descriptionOpacity)),
-                      maxLines: _textMaxLines,
+                            color: Colors.white.withOpacity(
+                              Constants.surveyDescriptionOpacity,
+                            ),
+                          ),
+                      maxLines: Constants.surveyDescriptionMaxLines,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
