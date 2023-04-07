@@ -2,7 +2,6 @@ import 'package:flutter_survey/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
-import 'package:flutter_survey/theme/app_theme.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_survey/gen/fonts.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -23,15 +22,15 @@ class _LoginScreenState extends State<LoginScreen>
   late AnimationController _overlayOpacityAnimationController;
   late Animation<Offset> _positionAnimation;
 
-  final _textTheme = AppTheme.light().textTheme;
   final _emailTextFieldController = TextEditingController();
   final _passwordTextFieldController = TextEditingController();
   final _nimbleLogo = Assets.images.splashLogoWhite.image();
   final _overlayImage = Container(
-    decoration: const BoxDecoration(
+    decoration: BoxDecoration(
       image: DecorationImage(
-          image: AssetImage("assets/images/login_overlay.png"),
-          fit: BoxFit.cover),
+        image: AssetImage(Assets.images.loginOverlay.path),
+        fit: BoxFit.cover,
+      ),
     ),
   );
 
@@ -87,7 +86,8 @@ class _LoginScreenState extends State<LoginScreen>
         fontWeight: FontWeight.w400,
       );
 
-  TextStyle? _textFieldTextStyle() => _textTheme.bodySmall;
+  TextStyle? _textFieldTextStyle(BuildContext context) =>
+      Theme.of(context).textTheme.bodySmall;
 
   TextStyle _loginButtonTextStyle() => const TextStyle(
         color: AppColors.blackRussian,
@@ -126,32 +126,31 @@ class _LoginScreenState extends State<LoginScreen>
         AppDimensions.spacing0,
       );
 
-  Padding _emailTextField(BuildContext context) => Padding(
+  Padding _configuredTextField(BuildContext context, bool isEmail) => Padding(
         padding: _textFieldEdgeInsets(),
         child: TextField(
-          style: _textFieldTextStyle(),
-          keyboardType: TextInputType.emailAddress,
+          style: _textFieldTextStyle(context),
+          keyboardType:
+              isEmail ? TextInputType.emailAddress : TextInputType.text,
           decoration: _textFieldInputDecoration(
-            AppLocalizations.of(context)?.email ?? 'Email',
+            isEmail
+                ? AppLocalizations.of(context)?.email ?? 'Email'
+                : AppLocalizations.of(context)?.password ?? 'Password',
           ),
-          controller: _emailTextFieldController,
+          obscureText: !isEmail,
+          autocorrect: false,
+          enableSuggestions: false,
+          controller: isEmail
+              ? _emailTextFieldController
+              : _passwordTextFieldController,
         ),
       );
 
-  Padding _passwordTextField(BuildContext context) => Padding(
-        padding: _textFieldEdgeInsets(),
-        child: TextField(
-          style: _textFieldTextStyle(),
-          keyboardType: TextInputType.text,
-          decoration: _textFieldInputDecoration(
-            AppLocalizations.of(context)?.password ?? 'Password',
-          ),
-          obscureText: true,
-          autocorrect: false,
-          enableSuggestions: false,
-          controller: _passwordTextFieldController,
-        ),
-      );
+  Padding _passwordTextField(BuildContext context) =>
+      _configuredTextField(context, false);
+
+  Padding _emailTextField(BuildContext context) =>
+      _configuredTextField(context, true);
 
   Padding _loginButton(BuildContext context) => Padding(
         padding: _buttonEdgeInsets(),
