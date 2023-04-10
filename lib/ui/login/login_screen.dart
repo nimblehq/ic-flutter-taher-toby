@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
-import 'package:flutter_survey/gen/fonts.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -79,51 +78,17 @@ class _LoginScreenState extends State<LoginScreen>
     _logoOpacityAnimationController.forward();
   }
 
-  TextStyle _textFieldHintTextStyle() => TextStyle(
-        color: Colors.white.withOpacity(0.3),
-        fontFamily: FontFamily.neuzeit,
-        fontSize: AppDimensions.textSize17,
-        fontWeight: FontWeight.w400,
-      );
-
   TextStyle? _textFieldTextStyle(BuildContext context) =>
       Theme.of(context).textTheme.bodySmall;
 
-  TextStyle _loginButtonTextStyle() => const TextStyle(
-        color: AppColors.blackRussian,
-        fontFamily: FontFamily.neuzeit,
-        fontSize: AppDimensions.textSize17,
-        fontWeight: FontWeight.w800,
+  EdgeInsets _textFieldEdgeInsets() => const EdgeInsets.only(
+        left: AppDimensions.spacing24,
+        right: AppDimensions.spacing24,
+        bottom: AppDimensions.spacing20,
       );
 
-  InputDecoration _textFieldInputDecoration(String placeholderText) =>
-      InputDecoration(
-        fillColor: Colors.white24,
-        filled: true,
-        hintText: placeholderText,
-        hintStyle: _textFieldHintTextStyle(),
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: AppDimensions.spacing18,
-          horizontal: AppDimensions.spacing12,
-        ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(AppDimensions.radius12),
-        ),
-      );
-
-  EdgeInsets _textFieldEdgeInsets() => const EdgeInsets.fromLTRB(
-        AppDimensions.spacing24,
-        AppDimensions.spacing0,
-        AppDimensions.spacing24,
-        AppDimensions.spacing20,
-      );
-
-  EdgeInsets _buttonEdgeInsets() => const EdgeInsets.fromLTRB(
-        AppDimensions.spacing24,
-        AppDimensions.spacing0,
-        AppDimensions.spacing24,
-        AppDimensions.spacing0,
+  EdgeInsets _buttonEdgeInsets() => const EdgeInsets.symmetric(
+        horizontal: AppDimensions.spacing24,
       );
 
   Padding _configuredTextField(BuildContext context, bool isEmail) => Padding(
@@ -132,11 +97,13 @@ class _LoginScreenState extends State<LoginScreen>
           style: _textFieldTextStyle(context),
           keyboardType:
               isEmail ? TextInputType.emailAddress : TextInputType.text,
-          decoration: _textFieldInputDecoration(
-            isEmail
-                ? AppLocalizations.of(context)?.email ?? 'Email'
-                : AppLocalizations.of(context)?.password ?? 'Password',
-          ),
+          decoration: const InputDecoration()
+              .applyDefaults(Theme.of(context).inputDecorationTheme)
+              .copyWith(
+                hintText: isEmail
+                    ? AppLocalizations.of(context)?.email ?? 'Email'
+                    : AppLocalizations.of(context)?.password ?? 'Password',
+              ),
           obscureText: !isEmail,
           autocorrect: false,
           enableSuggestions: false,
@@ -145,12 +112,6 @@ class _LoginScreenState extends State<LoginScreen>
               : _passwordTextFieldController,
         ),
       );
-
-  Padding _passwordTextField(BuildContext context) =>
-      _configuredTextField(context, false);
-
-  Padding _emailTextField(BuildContext context) =>
-      _configuredTextField(context, true);
 
   Padding _loginButton(BuildContext context) => Padding(
         padding: _buttonEdgeInsets(),
@@ -171,7 +132,9 @@ class _LoginScreenState extends State<LoginScreen>
             ),
             child: Text(
               AppLocalizations.of(context)?.login ?? 'Login',
-              style: _loginButtonTextStyle(),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.blackRussian,
+                  ),
             ),
           ),
         ),
@@ -201,8 +164,8 @@ class _LoginScreenState extends State<LoginScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _emailTextField(context),
-                _passwordTextField(context),
+                _configuredTextField(context, true),
+                _configuredTextField(context, false),
                 _loginButton(context),
               ],
             ),
