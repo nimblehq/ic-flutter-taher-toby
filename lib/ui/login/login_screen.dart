@@ -78,23 +78,14 @@ class _LoginScreenState extends State<LoginScreen>
     _logoOpacityAnimationController.forward();
   }
 
-  TextStyle? _textFieldTextStyle(BuildContext context) =>
-      Theme.of(context).textTheme.bodySmall;
-
-  EdgeInsets _textFieldEdgeInsets() => const EdgeInsets.only(
-        left: AppDimensions.spacing24,
-        right: AppDimensions.spacing24,
-        bottom: AppDimensions.spacing20,
-      );
-
-  EdgeInsets _buttonEdgeInsets() => const EdgeInsets.symmetric(
-        horizontal: AppDimensions.spacing24,
-      );
-
   Padding _configuredTextField(BuildContext context, bool isEmail) => Padding(
-        padding: _textFieldEdgeInsets(),
+        padding: const EdgeInsets.only(
+          left: AppDimensions.spacing24,
+          right: AppDimensions.spacing24,
+          bottom: AppDimensions.spacing20,
+        ),
         child: TextField(
-          style: _textFieldTextStyle(context),
+          style: Theme.of(context).textTheme.bodySmall,
           keyboardType:
               isEmail ? TextInputType.emailAddress : TextInputType.text,
           decoration: const InputDecoration()
@@ -114,7 +105,9 @@ class _LoginScreenState extends State<LoginScreen>
       );
 
   Padding _loginButton(BuildContext context) => Padding(
-        padding: _buttonEdgeInsets(),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimensions.spacing24,
+        ),
         child: SizedBox(
           height: 56.0,
           width: double.infinity,

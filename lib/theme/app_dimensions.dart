@@ -3,7 +3,6 @@ class AppDimensions {
   static const double radius12 = 12;
   static const double radius14 = 14;
 
-  static const double spacing0 = 0;
   static const double spacing4 = 4;
   static const double spacing8 = 8;
   static const double spacing10 = 10;

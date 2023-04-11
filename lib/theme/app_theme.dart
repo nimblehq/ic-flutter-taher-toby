@@ -77,7 +77,7 @@ class AppTheme {
           ),
         ),
         textSelectionTheme: const TextSelectionThemeData(
-          selectionColor: Colors.white,
+          selectionHandleColor: Colors.white,
           cursorColor: Colors.white,
         ),
       );
