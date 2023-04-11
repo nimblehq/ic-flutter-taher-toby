@@ -9,8 +9,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_survey/usecases/login_use_case.dart';
 import 'package:flutter_survey/di/provider/di.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
-import 'package:flutter_survey/env.dart';
-import 'package:flutter_survey/api/request/login_request.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -192,16 +190,14 @@ class _LoginScreenState extends State<LoginScreen>
 
   // TODO: remove this dummy method in [#10]
   void doLogin() async {
-    LoginRequest loginRequest = LoginRequest(
-      grantType: "password",
+    final LoginInput input = LoginInput(
       email: _emailTextFieldController.text,
       password: _passwordTextFieldController.text,
-      clientId: Env.restApiClientId,
-      clientSecret: Env.restApiClientSecret,
     );
-    final result = await _loginUseCase.call(loginRequest);
+    final result = await _loginUseCase.call(input);
     if (result is Success<LoginModel>) {
       // final loginData = result.value;
+      // print("LOGIN DATA\n$loginData");
       // save login data
       // Move to survey page
     } else {
