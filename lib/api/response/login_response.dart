@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:japx/japx.dart';
+import 'package:flutter_survey/api/response/decoder/response_decoder.dart';
 
 part 'login_response.g.dart';
 
@@ -20,5 +20,5 @@ class LoginResponse {
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
-      _$LoginResponseFromJson(Japx.decode(json)['data']);
+      _$LoginResponseFromJson(decodeJsonFromData(json));
 }

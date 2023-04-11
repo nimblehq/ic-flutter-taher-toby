@@ -197,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen>
     final result = await _loginUseCase.call(input);
     if (result is Success<LoginModel>) {
       // final loginData = result.value;
-      // print("LOGIN DATA\n$loginData");
+      // print("LOGIN SUCCESS DATA\n$loginData");
       // save login data
       // Move to survey page
     } else {

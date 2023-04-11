@@ -14,8 +14,6 @@ class LoginInput {
   });
 }
 
-
-
 @Injectable()
 class LoginUseCase extends UseCase<LoginModel, LoginInput> {
   final LoginRepository _loginRepository;
