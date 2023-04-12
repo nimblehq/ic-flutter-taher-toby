@@ -3,8 +3,6 @@ import 'package:flutter_survey/gen/fonts.gen.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
-const _elevatedButtonRadius = 10.0;
-
 class AppTheme {
   static ThemeData light() => ThemeData(
         colorScheme: const ColorScheme.light(
@@ -21,7 +19,7 @@ class AppTheme {
               fontWeight: FontWeight.w800,
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(_elevatedButtonRadius),
+              borderRadius: BorderRadius.circular(AppDimensions.radius10),
             ),
             padding: const EdgeInsets.symmetric(
               vertical: AppDimensions.spacing16,
