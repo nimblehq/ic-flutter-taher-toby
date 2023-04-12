@@ -23,10 +23,14 @@ class HomeSurveyPageViewer extends StatelessWidget {
       itemCount: surveys.length,
       controller: _pageController,
       itemBuilder: (BuildContext context, int index) {
+        final survey = surveys[index];
         return HomeSurveyPage(
-          survey: surveys[index],
+          survey: survey,
           onNextButtonPressed: () {
-            _appNavigator.navigateToFormScreen(context);
+            _appNavigator.navigateToFormScreen(
+              context: context,
+              surveyId: survey.id,
+            );
           },
         );
       },
