@@ -20,7 +20,8 @@ void main() {
     setUp(
       () {
         mockAuthenticationService = MockAuthenticationService();
-        authenticationRepository = AuthenticationRepositoryImpl(mockAuthenticationService);
+        authenticationRepository =
+            AuthenticationRepositoryImpl(mockAuthenticationService);
       },
     );
 

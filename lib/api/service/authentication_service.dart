@@ -11,7 +11,8 @@ abstract class AuthenticationService {
 
 @RestApi()
 abstract class AuthenticationServiceImpl extends AuthenticationService {
-  factory AuthenticationServiceImpl(Dio dio, {String baseUrl}) = _AuthenticationServiceImpl;
+  factory AuthenticationServiceImpl(Dio dio, {String baseUrl}) =
+      _AuthenticationServiceImpl;
 
   @override
   @POST('/oauth/token')

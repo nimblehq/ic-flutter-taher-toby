@@ -15,7 +15,8 @@ abstract class NetworkModule {
   }
 
   @Singleton(as: AuthenticationService)
-  AuthenticationServiceImpl provideAuthenticationService(DioProvider dioProvider) {
+  AuthenticationServiceImpl provideAuthenticationService(
+      DioProvider dioProvider) {
     return AuthenticationServiceImpl(
       dioProvider.getDio(),
       baseUrl: Env.restApiEndpoint,
