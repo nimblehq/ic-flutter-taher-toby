@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_survey/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
@@ -24,14 +26,6 @@ class _LoginScreenState extends State<LoginScreen>
   final _emailTextFieldController = TextEditingController();
   final _passwordTextFieldController = TextEditingController();
   final _nimbleLogo = Assets.images.splashLogoWhite.image();
-  final _overlayImage = Container(
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage(Assets.images.loginOverlay.path),
-        fit: BoxFit.cover,
-      ),
-    ),
-  );
 
   @override
   void initState() {
@@ -126,7 +120,17 @@ class _LoginScreenState extends State<LoginScreen>
           ),
           FadeTransition(
             opacity: _overlayOpacityAnimationController,
-            child: _overlayImage,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 25.0,
+                sigmaY: 25.0,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.0),
+                ),
+              ),
+            ),
           ),
           FadeTransition(
             opacity: _logoOpacityAnimationController,
