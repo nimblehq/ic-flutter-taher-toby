@@ -3,12 +3,32 @@ import 'package:flutter_survey/gen/fonts.gen.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
+const _elevatedButtonRadius = 10.0;
+
 class AppTheme {
   static ThemeData light() => ThemeData(
         colorScheme: const ColorScheme.light(
           primary: AppColors.blackRussian,
         ),
         fontFamily: FontFamily.neuzeit,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: AppColors.blackRussian,
+            textStyle: const TextStyle(
+              /** Regular / Semi Bold */
+              fontSize: AppDimensions.textSize17,
+              fontWeight: FontWeight.w800,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(_elevatedButtonRadius),
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: AppDimensions.spacing16,
+              horizontal: AppDimensions.spacing20,
+            ),
+          ),
+        ),
         textTheme: const TextTheme(
           titleSmall: TextStyle(
             /** xSmall / Tag All Caps */

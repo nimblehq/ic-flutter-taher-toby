@@ -27,4 +27,6 @@ class AppDimensions {
   static const homeSurveyPageIndicatorSize = 8.0;
 
   static const homeSkeletonLoadingDefaultHeight = 20.0;
+
+  static const primaryButtonHeight = 56.0;
 }
