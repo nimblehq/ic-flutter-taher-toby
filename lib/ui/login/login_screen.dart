@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter_survey/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
