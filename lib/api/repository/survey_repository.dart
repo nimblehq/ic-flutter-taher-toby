@@ -16,7 +16,10 @@ class SurveyRepositoryImpl extends SurveyRepository {
   final SurveyService _surveyService;
   final SurveyStorage _surveyStorage;
 
-  SurveyRepositoryImpl(this._surveyService, this._surveyStorage);
+  SurveyRepositoryImpl(
+    this._surveyService,
+    this._surveyStorage,
+  );
 
   @override
   Future<List<SurveyModel>> getSurveys({
