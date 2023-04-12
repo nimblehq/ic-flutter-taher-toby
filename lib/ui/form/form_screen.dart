@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_survey/di/provider/di.dart';
+import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_detail_page.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_question_page.dart';
 import 'package:flutter_survey/usecases/get_survey_details_use_case.dart';

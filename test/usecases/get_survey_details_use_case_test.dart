@@ -1,9 +1,7 @@
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
 import 'package:flutter_survey/model/survey_details_model.dart';
-import 'package:flutter_survey/model/survey_model.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_survey/usecases/get_survey_details_use_case.dart';
-import 'package:flutter_survey/usecases/get_surveys_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import '../mocks/generate_mocks.mocks.dart';
