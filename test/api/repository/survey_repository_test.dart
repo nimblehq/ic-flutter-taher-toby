@@ -13,12 +13,17 @@ void main() {
     'SurveyRepositoryTest',
     () {
       late MockSurveyService mockSurveyService;
+      late MockSurveyStorage mockSurveyStorage;
       late SurveyRepository surveyRepository;
 
       setUp(
         () {
           mockSurveyService = MockSurveyService();
-          surveyRepository = SurveyRepositoryImpl(mockSurveyService);
+          mockSurveyStorage = MockSurveyStorage();
+          surveyRepository = SurveyRepositoryImpl(
+            mockSurveyService,
+            mockSurveyStorage,
+          );
         },
       );
 
@@ -40,6 +45,7 @@ void main() {
               SurveyModel.fromResponse(surveysResponse.surveys![0]));
           expect(surveysModel[1],
               SurveyModel.fromResponse(surveysResponse.surveys![1]));
+          verify(mockSurveyStorage.saveSurveys(surveysModel)).called(1);
         },
       );
 
@@ -52,6 +58,7 @@ void main() {
           result() => surveyRepository.getSurveys(pageNumber: 1, pageSize: 2);
 
           expect(result, throwsA(isA<NetworkExceptions>()));
+          verifyNever(mockSurveyStorage.saveSurveys(any));
         },
       );
     },
