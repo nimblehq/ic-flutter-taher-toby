@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen>
   TextButton _loginButton(BuildContext context) => TextButton(
         onPressed: () {
           // TODO: Integration task #10
-          doLogin();
+          login();
         },
         style: ButtonStyle(
           backgroundColor: const MaterialStatePropertyAll(Colors.white),
@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // TODO: remove this dummy method in [#10]
-  void doLogin() async {
+  void login() async {
     final LoginInput input = LoginInput(
       email: _emailTextFieldController.text,
       password: _passwordTextFieldController.text,

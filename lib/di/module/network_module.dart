@@ -1,4 +1,4 @@
-import 'package:flutter_survey/api/service/login_service.dart';
+import 'package:flutter_survey/api/service/authentication_service.dart';
 import 'package:flutter_survey/api/survey_service.dart';
 import 'package:flutter_survey/di/provider/dio_provider.dart';
 import 'package:flutter_survey/env.dart';
@@ -14,9 +14,9 @@ abstract class NetworkModule {
     );
   }
 
-  @Singleton(as: LoginService)
-  LoginServiceImpl provideLoginService(DioProvider dioProvider) {
-    return LoginServiceImpl(
+  @Singleton(as: AuthenticationService)
+  AuthenticationServiceImpl provideAuthenticationService(DioProvider dioProvider) {
+    return AuthenticationServiceImpl(
       dioProvider.getDio(),
       baseUrl: Env.restApiEndpoint,
     );

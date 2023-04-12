@@ -8,7 +8,7 @@ import '../mocks/generate_mocks.mocks.dart';
 
 void main() {
   group('LoginUseCaseTest', () {
-    late MockLoginRepository mockLoginRepository;
+    late MockAuthenticationRepository mockAuthenticationRepository;
     late LoginUseCase loginUseCase;
     final LoginInput loginInput = LoginInput(
       email: "email",
@@ -16,8 +16,8 @@ void main() {
     );
 
     setUp(() async {
-      mockLoginRepository = MockLoginRepository();
-      loginUseCase = LoginUseCase(mockLoginRepository);
+      mockAuthenticationRepository = MockAuthenticationRepository();
+      loginUseCase = LoginUseCase(mockAuthenticationRepository);
     });
 
     test('When call execution has succeeded, it returns a Success result',
@@ -30,8 +30,12 @@ void main() {
         createdAt: 1,
       );
 
-      when(mockLoginRepository.doLogin(input: loginInput))
-          .thenAnswer((_) async => loginModel);
+      when(
+        mockAuthenticationRepository.login(
+          email: "email",
+          password: "password",
+        ),
+      ).thenAnswer((_) async => loginModel);
 
       final result = await loginUseCase.call(loginInput);
 
@@ -42,8 +46,12 @@ void main() {
     test('When call execution has failed, it returns a Failed result',
         () async {
       const exception = NetworkExceptions.badRequest();
-      when(mockLoginRepository.doLogin(input: loginInput))
-          .thenAnswer((_) => Future.error(exception));
+      when(
+        mockAuthenticationRepository.login(
+          email: "email",
+          password: "password",
+        ),
+      ).thenAnswer((_) => Future.error(exception));
 
       final result = await loginUseCase.call(loginInput);
 

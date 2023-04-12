@@ -1,5 +1,5 @@
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
-import 'package:flutter_survey/api/repository/login_repository.dart';
+import 'package:flutter_survey/api/repository/authentication_repository.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_survey/model/login_model.dart';
@@ -16,14 +16,17 @@ class LoginInput {
 
 @Injectable()
 class LoginUseCase extends UseCase<LoginModel, LoginInput> {
-  final LoginRepository _loginRepository;
+  final AuthenticationRepository _authenticationRepository;
 
-  const LoginUseCase(this._loginRepository);
+  const LoginUseCase(this._authenticationRepository);
 
   @override
   Future<Result<LoginModel>> call(LoginInput input) {
-    return _loginRepository
-        .doLogin(input: input)
+    return _authenticationRepository
+        .login(
+          email: input.email,
+          password: input.password,
+        )
         // ignore: unnecessary_cast
         .then((value) => Success(value) as Result<LoginModel>)
         .onError<NetworkExceptions>((ex, _) => Failed(UseCaseException(ex)));

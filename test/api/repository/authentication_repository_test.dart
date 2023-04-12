@@ -1,7 +1,6 @@
 import 'package:flutter_config/flutter_config.dart';
-import 'package:flutter_survey/api/repository/login_repository.dart';
+import 'package:flutter_survey/api/repository/authentication_repository.dart';
 import 'package:flutter_survey/api/response/login_response.dart';
-import 'package:flutter_survey/usecases/login_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
 import 'package:mockito/mockito.dart';
@@ -14,32 +13,31 @@ void main() {
     'REST_API_CLIENT_ID': 'REST_API_CLIENT_ID',
     'REST_API_CLIENT_SECRET': 'REST_API_CLIENT_SECRET',
   });
-  group('LoginRepositoryTest', () {
-    late MockLoginService mockLoginService;
-    late LoginRepository loginRepository;
-    final LoginInput loginInput = LoginInput(
-      email: "email",
-      password: "password",
-    );
+  group('authenticationRepositoryTest', () {
+    late MockAuthenticationService mockAuthenticationService;
+    late AuthenticationRepository authenticationRepository;
 
     setUp(
       () {
-        mockLoginService = MockLoginService();
-        loginRepository = LoginRepositoryImpl(mockLoginService);
+        mockAuthenticationService = MockAuthenticationService();
+        authenticationRepository = AuthenticationRepositoryImpl(mockAuthenticationService);
       },
     );
 
     test(
-      "When doLogin() success, it returns access token",
+      "When login() success, it returns access token",
       () async {
         final json =
             await FileUtils.loadFile('test/mock_responses/login_data.json');
         final loginResponse = LoginResponse.fromJson(json);
 
-        when(mockLoginService.doLogin(any))
+        when(mockAuthenticationService.login(any))
             .thenAnswer((_) async => loginResponse);
 
-        final loginModel = await loginRepository.doLogin(input: loginInput);
+        final loginModel = await authenticationRepository.login(
+          email: "email",
+          password: "password",
+        );
 
         expect(loginModel.accessToken,
             "lbxD2K2BjbYtNzz8xjvh2FvSKx838KBCf79q773kq2c");
@@ -47,11 +45,14 @@ void main() {
     );
 
     test(
-      'When doLogin() failed, it returns an exception error',
+      'When login() failed, it returns an exception error',
       () async {
-        when(mockLoginService.doLogin(any)).thenThrow(MockDioError());
+        when(mockAuthenticationService.login(any)).thenThrow(MockDioError());
 
-        result() => loginRepository.doLogin(input: loginInput);
+        result() => authenticationRepository.login(
+              email: "email",
+              password: "password",
+            );
 
         expect(result, throwsA(isA<NetworkExceptions>()));
       },
