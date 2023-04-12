@@ -78,58 +78,41 @@ class _LoginScreenState extends State<LoginScreen>
     _logoOpacityAnimationController.forward();
   }
 
-  Padding _configuredTextField(BuildContext context, bool isEmail) => Padding(
-        padding: const EdgeInsets.only(
-          left: AppDimensions.spacing24,
-          right: AppDimensions.spacing24,
-          bottom: AppDimensions.spacing20,
-        ),
-        child: TextField(
-          style: Theme.of(context).textTheme.bodySmall,
-          keyboardType:
-              isEmail ? TextInputType.emailAddress : TextInputType.text,
-          decoration: const InputDecoration()
-              .applyDefaults(Theme.of(context).inputDecorationTheme)
-              .copyWith(
-                hintText: isEmail
-                    ? AppLocalizations.of(context)?.email ?? 'Email'
-                    : AppLocalizations.of(context)?.password ?? 'Password',
-              ),
-          obscureText: !isEmail,
-          autocorrect: false,
-          enableSuggestions: false,
-          controller: isEmail
-              ? _emailTextFieldController
-              : _passwordTextFieldController,
-        ),
+  TextField _configuredTextField(BuildContext context, bool isEmail) =>
+      TextField(
+        style: Theme.of(context).textTheme.bodySmall,
+        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+        decoration: const InputDecoration()
+            .applyDefaults(Theme.of(context).inputDecorationTheme)
+            .copyWith(
+              hintText: isEmail
+                  ? AppLocalizations.of(context)!.email
+                  : AppLocalizations.of(context)!.password,
+            ),
+        obscureText: !isEmail,
+        autocorrect: false,
+        enableSuggestions: false,
+        controller:
+            isEmail ? _emailTextFieldController : _passwordTextFieldController,
       );
 
-  Padding _loginButton(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppDimensions.spacing24,
-        ),
-        child: SizedBox(
-          height: 56.0,
-          width: double.infinity,
-          child: TextButton(
-            onPressed: () {
-              // TODO: Integration task #10
-            },
-            style: ButtonStyle(
-              backgroundColor: const MaterialStatePropertyAll(Colors.white),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppDimensions.radius10),
-                ),
-              ),
-            ),
-            child: Text(
-              AppLocalizations.of(context)?.login ?? 'Login',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.blackRussian,
-                  ),
+  TextButton _loginButton(BuildContext context) => TextButton(
+        onPressed: () {
+          // TODO: Integration task #10
+        },
+        style: ButtonStyle(
+          backgroundColor: const MaterialStatePropertyAll(Colors.white),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppDimensions.radius10),
             ),
           ),
+        ),
+        child: Text(
+          AppLocalizations.of(context)!.login,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: AppColors.blackRussian,
+              ),
         ),
       );
 
@@ -157,9 +140,32 @@ class _LoginScreenState extends State<LoginScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _configuredTextField(context, true),
-                _configuredTextField(context, false),
-                _loginButton(context),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: AppDimensions.spacing24,
+                    right: AppDimensions.spacing24,
+                    bottom: AppDimensions.spacing20,
+                  ),
+                  child: _configuredTextField(context, true),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: AppDimensions.spacing24,
+                    right: AppDimensions.spacing24,
+                    bottom: AppDimensions.spacing20,
+                  ),
+                  child: _configuredTextField(context, false),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppDimensions.spacing24,
+                  ),
+                  child: SizedBox(
+                    height: 56.0,
+                    width: double.infinity,
+                    child: _loginButton(context),
+                  ),
+                ),
               ],
             ),
           ),
