@@ -98,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen>
   TextButton _loginButton(BuildContext context) => TextButton(
         onPressed: () {
           // TODO: Integration task #10
+          doLogin();
         },
         style: ButtonStyle(
           backgroundColor: const MaterialStatePropertyAll(Colors.white),
