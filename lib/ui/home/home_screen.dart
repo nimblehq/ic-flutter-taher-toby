@@ -64,27 +64,41 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   }) {
     if (errorMessage.isNotEmpty) showSnackBar(context, errorMessage);
     return Scaffold(
-      body: Stack(
-        children: [
-          if (surveys.isNotEmpty) ...[
-            HomeSurveyPageViewer(
-              surveys: surveys,
-              currentPage: _currentPage,
+      body: RefreshIndicator(
+        color: Colors.white,
+        backgroundColor: Colors.white30,
+        onRefresh: () => ref
+            .read(homeViewModelProvider.notifier)
+            .loadSurveys(isRefreshing: true),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                if (surveys.isNotEmpty) ...[
+                  HomeSurveyPageViewer(
+                    surveys: surveys,
+                    currentPage: _currentPage,
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: AppDimensions.spacing200,
+                      ),
+                      child: HomeSurveyPageIndicator(
+                        surveysLength: surveys.length,
+                        currentPage: _currentPage,
+                      ),
+                    ),
+                  ),
+                ],
+                const HomeHeader(),
+              ],
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding:
-                    const EdgeInsets.only(bottom: AppDimensions.spacing200),
-                child: HomeSurveyPageIndicator(
-                  surveysLength: surveys.length,
-                  currentPage: _currentPage,
-                ),
-              ),
-            ),
-          ],
-          const HomeHeader(),
-        ],
+          ),
+        ),
       ),
     );
   }

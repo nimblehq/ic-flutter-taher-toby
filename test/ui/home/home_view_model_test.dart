@@ -102,6 +102,27 @@ void main() {
     });
 
     test(
+        'When refreshing surveys successfully, it emits a list of surveys with state LoadSurveysSuccess',
+        () {
+      when(mockGetSurveysUseCase.call(any)).thenAnswer(
+        (_) async => Success(surveys),
+      );
+      final surveysStream = homeViewModel.surveys;
+      final stateStream = homeViewModel.stream;
+
+      expect(surveysStream, emitsInOrder([surveys]));
+      expect(
+        stateStream,
+        emitsInOrder([
+          const HomeState.loading(),
+          const HomeState.loadSurveysSuccess(),
+        ]),
+      );
+
+      homeViewModel.loadSurveys(isRefreshing: true);
+    });
+
+    test(
         'When loading surveys failed, it does not emit a list of surveys with state LoadSurveysError',
         () {
       when(mockGetSurveysUseCase.call(any))
