@@ -12,22 +12,38 @@ import '../../mocks/generate_mocks.mocks.dart';
 
 void main() {
   group('HomeViewModelTest', () {
+    late MockGetCachedSurveysUseCase mockGetCachedSurveysUseCase;
     late MockGetSurveysUseCase mockGetSurveysUseCase;
     late HomeViewModel homeViewModel;
     late ProviderContainer providerContainer;
 
-    final List<SurveyModel> surveys = <SurveyModel>[
+    final List<SurveyModel> cachedSurveys = <SurveyModel>[
       const SurveyModel(
-        id: '1',
+        id: 'id',
         title: 'title',
         description: 'description',
         coverImageUrl: 'coverImageUrl',
       ),
       const SurveyModel(
-        id: '2',
-        title: 'anotherTitle',
-        description: 'anotherDescription',
-        coverImageUrl: 'anotherCoverImageUrl',
+        id: 'id2',
+        title: 'title2',
+        description: 'description2',
+        coverImageUrl: 'coverImageUrl2',
+      ),
+    ];
+
+    final List<SurveyModel> surveys = <SurveyModel>[
+      const SurveyModel(
+        id: 'id3',
+        title: 'title3',
+        description: 'description3',
+        coverImageUrl: 'coverImageUrl3',
+      ),
+      const SurveyModel(
+        id: 'id4',
+        title: 'title4',
+        description: 'description4',
+        coverImageUrl: 'coverImageUrl4',
       ),
     ];
 
@@ -35,15 +51,33 @@ void main() {
         UseCaseException(const NetworkExceptions.unauthorisedRequest());
 
     setUp(() {
+      mockGetCachedSurveysUseCase = MockGetCachedSurveysUseCase();
       mockGetSurveysUseCase = MockGetSurveysUseCase();
       providerContainer = ProviderContainer(
         overrides: [
           homeViewModelProvider.overrideWithValue(
-            HomeViewModel(mockGetSurveysUseCase),
+            HomeViewModel(
+              mockGetCachedSurveysUseCase,
+              mockGetSurveysUseCase,
+            ),
           ),
         ],
       );
       homeViewModel = providerContainer.read(homeViewModelProvider.notifier);
+    });
+
+    test(
+        'When loading cached surveys successfully, it emits a list of surveys with state LoadCachedSurveysSuccess',
+        () {
+      when(mockGetCachedSurveysUseCase.call()).thenAnswer((_) => cachedSurveys);
+      final surveysStream = homeViewModel.surveys;
+      final stateStream = homeViewModel.stream;
+
+      expect(surveysStream, emitsInOrder([cachedSurveys]));
+      expect(stateStream,
+          emitsInOrder([const HomeState.loadCachedSurveysSuccess()]));
+
+      homeViewModel.loadCachedSurveys();
     });
 
     test(
@@ -65,6 +99,27 @@ void main() {
       );
 
       homeViewModel.loadSurveys();
+    });
+
+    test(
+        'When refreshing surveys successfully, it emits a list of surveys with state LoadSurveysSuccess',
+        () {
+      when(mockGetSurveysUseCase.call(any)).thenAnswer(
+        (_) async => Success(surveys),
+      );
+      final surveysStream = homeViewModel.surveys;
+      final stateStream = homeViewModel.stream;
+
+      expect(surveysStream, emitsInOrder([surveys]));
+      expect(
+        stateStream,
+        emitsInOrder([
+          const HomeState.loading(),
+          const HomeState.loadSurveysSuccess(),
+        ]),
+      );
+
+      homeViewModel.loadSurveys(isRefreshing: true);
     });
 
     test(

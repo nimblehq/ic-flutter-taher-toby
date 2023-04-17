@@ -1,24 +1,13 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_survey/api/response/survey_response.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_survey/api/response/survey_details_response.dart';
 
-part 'survey_model.g.dart';
-
-@HiveType(typeId: 0)
-class SurveyModel extends Equatable {
-  @HiveField(0)
+class SurveyDetailsModel extends Equatable {
   final String id;
-
-  @HiveField(1)
   final String title;
-
-  @HiveField(2)
   final String description;
-
-  @HiveField(3)
   final String coverImageUrl;
 
-  const SurveyModel({
+  const SurveyDetailsModel({
     required this.id,
     required this.title,
     required this.description,
@@ -28,8 +17,8 @@ class SurveyModel extends Equatable {
   @override
   List<Object?> get props => [id, title, description, coverImageUrl];
 
-  factory SurveyModel.fromResponse(SurveyResponse response) {
-    return SurveyModel(
+  factory SurveyDetailsModel.fromResponse(SurveyDetailsResponse response) {
+    return SurveyDetailsModel(
       id: response.id ?? "",
       title: response.title ?? "",
       description: response.description ?? "",

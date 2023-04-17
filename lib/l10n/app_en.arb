@@ -1,3 +1,7 @@
 {
+  "email": "Email",
+  "login": "Log in",
+  "password": "Password",
+  "start_survey": "Start Survey",
   "today": "Today"
 }

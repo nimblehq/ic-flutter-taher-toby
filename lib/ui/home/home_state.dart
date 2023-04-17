@@ -8,6 +8,9 @@ class HomeState with _$HomeState {
 
   const factory HomeState.loading() = _Loading;
 
+  const factory HomeState.loadCachedSurveysSuccess() =
+      _LoadCachedSurveysSuccess;
+
   const factory HomeState.loadSurveysSuccess() = _LoadSurveysSuccess;
 
   const factory HomeState.loadSurveysError() = _LoadSurveysError;

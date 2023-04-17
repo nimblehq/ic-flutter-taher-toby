@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/app_navigator.dart';
-import 'package:flutter_survey/di/provider/di.dart';
+import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/model/survey_model.dart';
 import 'package:flutter_survey/ui/home/widget/home_survey_page.dart';
 
@@ -23,10 +23,14 @@ class HomeSurveyPageViewer extends StatelessWidget {
       itemCount: surveys.length,
       controller: _pageController,
       itemBuilder: (BuildContext context, int index) {
+        final survey = surveys[index];
         return HomeSurveyPage(
-          survey: surveys[index],
+          survey: survey,
           onNextButtonPressed: () {
-            _appNavigator.navigateToSecondScreen(context);
+            _appNavigator.navigateToFormScreen(
+              context: context,
+              surveyId: survey.id,
+            );
           },
         );
       },

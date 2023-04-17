@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_survey/ui/second/second_screen.dart';
 import 'package:flutter_survey/ui/login/login_screen.dart';
+import 'package:flutter_survey/ui/form/form_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 
 const _routePathRootScreen = '/';
-const _routePathSecondScreen = 'second';
+const _routePathFormScreen = 'form';
+
+const _paramSurveyId = 'surveyId';
 
 class Routes {
   static final router = GoRouter(
@@ -16,9 +18,11 @@ class Routes {
             const LoginScreen(),
         routes: [
           GoRoute(
-            path: _routePathSecondScreen,
-            builder: (BuildContext context, GoRouterState state) =>
-                const SecondScreen(),
+            path: '$_routePathFormScreen/:$_paramSurveyId',
+            builder: (BuildContext context, GoRouterState state) {
+              final surveyId = state.params[_paramSurveyId] as String;
+              return FormScreen(surveyId: surveyId);
+            },
           ),
         ],
       ),
@@ -27,7 +31,10 @@ class Routes {
 }
 
 abstract class AppNavigator {
-  void navigateToSecondScreen(BuildContext context);
+  void navigateToFormScreen({
+    required BuildContext context,
+    required String surveyId,
+  });
 }
 
 @Injectable(as: AppNavigator)
@@ -35,7 +42,10 @@ class AppNavigatorImpl extends AppNavigator {
   AppNavigatorImpl();
 
   @override
-  void navigateToSecondScreen(BuildContext context) {
-    context.go('/$_routePathSecondScreen');
+  void navigateToFormScreen({
+    required BuildContext context,
+    required String surveyId,
+  }) {
+    context.go('/$_routePathFormScreen/$surveyId');
   }
 }

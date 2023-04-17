@@ -3,14 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_survey/di/provider/di.dart';
+import 'package:flutter_survey/di/di.dart';
+import 'package:flutter_survey/database/hive.dart';
 import 'package:flutter_survey/theme/app_theme.dart';
 import 'package:flutter_survey/app_navigator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
-  configureDependencyInjection();
+  await configureLocalStorage();
+  await configureDependencyInjection();
   _setTransparentStatusBar();
   runApp(const ProviderScope(
     child: SurveyApp(),

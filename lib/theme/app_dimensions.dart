@@ -6,6 +6,7 @@ class AppDimensions {
   static const double spacing4 = 4;
   static const double spacing8 = 8;
   static const double spacing10 = 10;
+  static const double spacing12 = 12;
   static const double spacing16 = 16;
   static const double spacing18 = 18;
   static const double spacing20 = 20;
@@ -26,4 +27,6 @@ class AppDimensions {
   static const homeSurveyPageIndicatorSize = 8.0;
 
   static const homeSkeletonLoadingDefaultHeight = 20.0;
+
+  static const primaryButtonHeight = 56.0;
 }
