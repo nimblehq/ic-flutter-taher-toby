@@ -7,7 +7,7 @@ import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_survey/usecases/login_use_case.dart';
-import 'package:flutter_survey/di/provider/di.dart';
+import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 
 class LoginScreen extends StatefulWidget {
