@@ -1,10 +1,14 @@
 import 'dart:ui';
 import 'package:flutter_survey/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/model/login_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_survey/usecases/log_in_use_case.dart';
+import 'package:flutter_survey/di/di.dart';
+import 'package:flutter_survey/usecases/base/base_use_case.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -22,6 +26,7 @@ class _LoginScreenState extends State<LoginScreen>
   late AnimationController _overlayOpacityAnimationController;
   late Animation<Offset> _positionAnimation;
 
+  late LogInUseCase _loginUseCase;
   final _emailTextFieldController = TextEditingController();
   final _passwordTextFieldController = TextEditingController();
   final _nimbleLogo = Assets.images.splashLogoWhite.image();
@@ -30,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen>
   void initState() {
     super.initState();
 
+    _loginUseCase = getIt.get<LogInUseCase>();
     _logoPositionAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(
@@ -92,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen>
   TextButton _loginButton(BuildContext context) => TextButton(
         onPressed: () {
           // TODO: Integration task #10
+          logIn();
         },
         style: ButtonStyle(
           backgroundColor: const MaterialStatePropertyAll(Colors.white),
@@ -180,6 +187,23 @@ class _LoginScreenState extends State<LoginScreen>
     return Material(
       child: _buildLoginScreen(context),
     );
+  }
+
+  // TODO: remove this dummy method in [#10]
+  void logIn() async {
+    final LoginInput input = LoginInput(
+      email: _emailTextFieldController.text,
+      password: _passwordTextFieldController.text,
+    );
+    final result = await _loginUseCase.call(input);
+    if (result is Success<LoginModel>) {
+      // final loginData = result.value;
+      // print("LOGIN SUCCESS DATA\n$loginData");
+      // save login data
+      // Move to survey page
+    } else {
+      // show login error message
+    }
   }
 
   @override
