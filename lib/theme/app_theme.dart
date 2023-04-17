@@ -59,5 +59,26 @@ class AppTheme {
             fontWeight: FontWeight.w800,
           ),
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          fillColor: Colors.white24,
+          filled: true,
+          hintStyle: TextStyle(
+            color: Colors.white.withOpacity(0.3),
+            fontSize: AppDimensions.textSize17,
+            fontWeight: FontWeight.w400,
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: AppDimensions.spacing18,
+            horizontal: AppDimensions.spacing12,
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(AppDimensions.radius12),
+          ),
+        ),
+        textSelectionTheme: const TextSelectionThemeData(
+          selectionHandleColor: Colors.white,
+          cursorColor: Colors.white,
+        ),
       );
 }
