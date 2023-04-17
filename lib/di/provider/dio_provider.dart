@@ -11,19 +11,16 @@ const String defaultContentType = 'application/json; charset=utf-8';
 class DioProvider {
   Dio? _dio;
 
-  Dio getDio({bool requireAuthentication = true}) {
-    _dio ??= _createDio(requireAuthentication);
+  Dio getDio() {
+    _dio ??= _createDio(requireAuthentication: true);
     return _dio!;
   }
 
-  Dio _createDio(bool requireAuthentication) {
+  Dio _createDio({bool requireAuthentication = false}) {
     final dio = Dio();
     final SecureStorage secureStorage = SecureStorage();
-    final appInterceptor = AppInterceptor(
-      requireAuthentication,
-      dio,
-      secureStorage
-    );
+    final appInterceptor =
+        AppInterceptor(requireAuthentication, dio, secureStorage);
     final interceptors = <Interceptor>[];
     interceptors.add(appInterceptor);
     if (!kReleaseMode) {

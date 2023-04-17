@@ -7,6 +7,7 @@ const String refreshTokenKey = "refreshTokenKey";
 AndroidOptions _getAndroidOptions() => const AndroidOptions(
       encryptedSharedPreferences: true,
     );
+
 @Injectable()
 class SecureStorage {
   final _secureStorage = const FlutterSecureStorage();
