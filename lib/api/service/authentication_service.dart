@@ -6,7 +6,7 @@ import 'package:retrofit/retrofit.dart';
 part 'authentication_service.g.dart';
 
 abstract class AuthenticationService {
-  Future<LoginResponse> login(@Body() LoginRequest request);
+  Future<LoginResponse> logIn(@Body() LoginRequest request);
 }
 
 @RestApi()
@@ -16,5 +16,5 @@ abstract class AuthenticationServiceImpl extends AuthenticationService {
 
   @override
   @POST('/oauth/token')
-  Future<LoginResponse> login(@Body() LoginRequest request);
+  Future<LoginResponse> logIn(@Body() LoginRequest request);
 }

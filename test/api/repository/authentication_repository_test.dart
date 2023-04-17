@@ -32,10 +32,10 @@ void main() {
             await FileUtils.loadFile('test/mock_responses/login_data.json');
         final loginResponse = LoginResponse.fromJson(json);
 
-        when(mockAuthenticationService.login(any))
+        when(mockAuthenticationService.logIn(any))
             .thenAnswer((_) async => loginResponse);
 
-        final loginModel = await authenticationRepository.login(
+        final loginModel = await authenticationRepository.logIn(
           email: "email",
           password: "password",
         );
@@ -48,9 +48,9 @@ void main() {
     test(
       'When login() failed, it returns an exception error',
       () async {
-        when(mockAuthenticationService.login(any)).thenThrow(MockDioError());
+        when(mockAuthenticationService.logIn(any)).thenThrow(MockDioError());
 
-        result() => authenticationRepository.login(
+        result() => authenticationRepository.logIn(
               email: "email",
               password: "password",
             );

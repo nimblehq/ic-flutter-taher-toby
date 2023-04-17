@@ -15,15 +15,15 @@ class LoginInput {
 }
 
 @Injectable()
-class LoginUseCase extends UseCase<LoginModel, LoginInput> {
+class LogInUseCase extends UseCase<LoginModel, LoginInput> {
   final AuthenticationRepository _authenticationRepository;
 
-  const LoginUseCase(this._authenticationRepository);
+  const LogInUseCase(this._authenticationRepository);
 
   @override
   Future<Result<LoginModel>> call(LoginInput input) {
     return _authenticationRepository
-        .login(
+        .logIn(
           email: input.email,
           password: input.password,
         )

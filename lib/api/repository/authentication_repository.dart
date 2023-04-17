@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:flutter_survey/env.dart';
 
 abstract class AuthenticationRepository {
-  Future<LoginModel> login({
+  Future<LoginModel> logIn({
     required String email,
     required String password,
   });
@@ -19,7 +19,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   AuthenticationRepositoryImpl(this._autenticationService);
 
   @override
-  Future<LoginModel> login({
+  Future<LoginModel> logIn({
     required String email,
     required String password,
   }) async {
@@ -31,7 +31,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         clientId: Env.restApiClientId,
         clientSecret: Env.restApiClientSecret,
       );
-      final response = await _autenticationService.login(loginRequest);
+      final response = await _autenticationService.logIn(loginRequest);
       return LoginModel.fromResponse(response);
     } catch (exception) {
       throw NetworkExceptions.fromDioException(exception);
