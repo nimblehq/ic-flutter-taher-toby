@@ -14,7 +14,7 @@ class AppTheme {
             backgroundColor: Colors.white,
             foregroundColor: AppColors.blackRussian,
             textStyle: const TextStyle(
-              /** Regular / Semi Bold */
+              // Regular / Semi Bold
               fontSize: AppDimensions.textSize17,
               fontWeight: FontWeight.w800,
             ),
@@ -29,49 +29,49 @@ class AppTheme {
         ),
         textTheme: const TextTheme(
           titleSmall: TextStyle(
-            /** xSmall / Tag All Caps */
+            // xSmall / Tag All Caps
             color: Colors.white,
             fontSize: AppDimensions.textSize13,
             fontWeight: FontWeight.w800,
           ),
           headlineSmall: TextStyle(
-            /** Small / Tag All Caps */
+            // Small / Tag All Caps
             color: Colors.white,
             fontSize: AppDimensions.textSize15,
             fontWeight: FontWeight.w400,
           ),
           bodySmall: TextStyle(
-            /** Regular / Paragraph */
+            // Regular / Paragraph
             color: Colors.white,
             fontSize: AppDimensions.textSize17,
             fontWeight: FontWeight.w400,
           ),
           labelSmall: TextStyle(
-            /** Regular / Semi Bold */
+            // Regular / Semi Bold
             color: Colors.white,
             fontSize: AppDimensions.textSize17,
             fontWeight: FontWeight.w800,
           ),
           bodyMedium: TextStyle(
-            /** Medium / Link */
+            // Medium / Link
             color: Colors.white,
             fontSize: AppDimensions.textSize17,
             fontWeight: FontWeight.w400,
           ),
           labelMedium: TextStyle(
-            /** Medium / Bold */
+            // Medium / Bold
             color: Colors.white,
             fontSize: AppDimensions.textSize20,
             fontWeight: FontWeight.w800,
           ),
           displayLarge: TextStyle(
-            /** Display / 2 */
+            // Display / 2
             color: Colors.white,
             fontSize: AppDimensions.textSize28,
             fontWeight: FontWeight.w800,
           ),
           titleLarge: TextStyle(
-            /** Large Title */
+            // Large Title
             color: Colors.white,
             fontSize: AppDimensions.textSize34,
             fontWeight: FontWeight.w800,

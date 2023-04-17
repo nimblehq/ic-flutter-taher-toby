@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_survey/constants.dart';
+import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -23,8 +23,6 @@ class FormSurveyDetailPage extends StatelessWidget {
           child: Text(
             "Working from home Check-In",
             style: Theme.of(context).textTheme.titleLarge,
-            maxLines: Constants.surveyTitleMaxLines,
-            overflow: TextOverflow.ellipsis,
           ),
         ),
         const SizedBox(height: AppDimensions.spacing16),
@@ -36,12 +34,8 @@ class FormSurveyDetailPage extends StatelessWidget {
             // TODO: Integrate description from survey details #23
             "We would like to know how you feel about our work from home (WFH) experience.",
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white.withOpacity(
-                    Constants.surveyDescriptionOpacity,
-                  ),
+                  color: AppColors.white70,
                 ),
-            maxLines: Constants.surveyDescriptionMaxLines,
-            overflow: TextOverflow.ellipsis,
           ),
         ),
         const Expanded(child: SizedBox.shrink()),
@@ -52,7 +46,9 @@ class FormSurveyDetailPage extends StatelessWidget {
           child: Align(
             alignment: Alignment.bottomRight,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // TODO: Integrate click-event from survey details #23
+              },
               child: Text(
                 AppLocalizations.of(context)!.start_survey,
               ),
