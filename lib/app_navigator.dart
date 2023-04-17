@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/ui/home/home_screen.dart';
 import 'package:flutter_survey/ui/login/login_screen.dart';
 import 'package:flutter_survey/ui/form/form_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -6,8 +7,8 @@ import 'package:injectable/injectable.dart';
 
 const _routePathRootScreen = '/';
 const _routePathFormScreen = 'form';
-
 const _paramSurveyId = 'surveyId';
+const _routePathHomeScreen = 'home';
 
 class Routes {
   static final router = GoRouter(
@@ -23,6 +24,11 @@ class Routes {
               final surveyId = state.params[_paramSurveyId] as String;
               return FormScreen(surveyId: surveyId);
             },
+          ),
+          GoRoute(
+            path: _routePathHomeScreen,
+            builder: (BuildContext context, GoRouterState state) =>
+                const HomeScreen(),
           ),
         ],
       ),

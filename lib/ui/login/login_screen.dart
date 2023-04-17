@@ -1,32 +1,47 @@
 import 'dart:ui';
 import 'package:flutter_survey/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_survey/model/login_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
+import 'package:flutter_survey/ui/login/login_state.dart';
+import 'package:flutter_survey/ui/login/login_view_model.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_survey/usecases/log_in_use_case.dart';
 import 'package:flutter_survey/di/di.dart';
-import 'package:flutter_survey/usecases/base/base_use_case.dart';
+import 'package:flutter_survey/utils/storage/secure_storage.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_survey/ui/widget/snack_bar.dart';
 
-class LoginScreen extends StatefulWidget {
+final loginViewModelProvider =
+    StateNotifierProvider.autoDispose<LoginViewModel, LoginState>((ref) {
+  return LoginViewModel(getIt.get<LogInUseCase>(), getIt.get<SecureStorage>());
+});
+
+final _loginStatusProvider = StreamProvider.autoDispose<bool?>(
+    (ref) => ref.watch(loginViewModelProvider.notifier).isLoginSucceed);
+
+final _loginErrorStatusProvider = StreamProvider.autoDispose<String?>(
+    (ref) => ref.watch(loginViewModelProvider.notifier).loginError);
+
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() {
-    return _LoginScreenState();
+  LoginScreenState createState() {
+    return LoginScreenState();
   }
 }
 
-class _LoginScreenState extends State<LoginScreen>
+class LoginScreenState extends ConsumerState<LoginScreen>
     with TickerProviderStateMixin {
   late AnimationController _logoOpacityAnimationController;
   late AnimationController _logoPositionAnimationController;
   late AnimationController _overlayOpacityAnimationController;
   late Animation<Offset> _positionAnimation;
 
-  late LogInUseCase _loginUseCase;
+  bool _isLoading = false;
   final _emailTextFieldController = TextEditingController();
   final _passwordTextFieldController = TextEditingController();
   final _nimbleLogo = Assets.images.splashLogoWhite.image();
@@ -35,7 +50,6 @@ class _LoginScreenState extends State<LoginScreen>
   void initState() {
     super.initState();
 
-    _loginUseCase = getIt.get<LogInUseCase>();
     _logoPositionAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(
@@ -108,102 +122,129 @@ class _LoginScreenState extends State<LoginScreen>
             ),
           ),
         ),
-        child: Text(
-          AppLocalizations.of(context)!.login,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+        child: _isLoading
+            ? const CircularProgressIndicator(
                 color: AppColors.blackRussian,
+              )
+            : Text(
+                AppLocalizations.of(context)!.login,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.blackRussian,
+                    ),
               ),
+      );
+
+  Stack _buildLoginScreen(
+      BuildContext context, bool isLoginSucceed, String errorMessage) {
+    if (isLoginSucceed) {
+      Future.delayed(Duration.zero, () async {
+        context.go("/home");
+      });
+    }
+    if (errorMessage.isNotEmpty) {
+      setState(() {
+        _isLoading = false;
+      });
+      showSnackBar(context, errorMessage);
+    }
+    return Stack(
+      children: [
+        DimmedBackground(
+          background: Assets.images.splashBackground.path,
+          startOpacity: 0.01,
+          endOpacity: 1.0,
+          isAsset: true,
         ),
-      );
-
-  Stack _buildLoginScreen(BuildContext context) => Stack(
-        children: [
-          DimmedBackground(
-            background: Assets.images.splashBackground.path,
-            startOpacity: 0.01,
-            endOpacity: 1.0,
-            isAsset: true,
-          ),
-          FadeTransition(
-            opacity: _overlayOpacityAnimationController,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 25.0,
-                sigmaY: 25.0,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.0),
-                ),
+        FadeTransition(
+          opacity: _overlayOpacityAnimationController,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 25.0,
+              sigmaY: 25.0,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.0),
               ),
             ),
           ),
-          FadeTransition(
-            opacity: _logoOpacityAnimationController,
-            child: SlideTransition(
-              position: _positionAnimation,
-              child: Center(child: _nimbleLogo),
-            ),
+        ),
+        FadeTransition(
+          opacity: _logoOpacityAnimationController,
+          child: SlideTransition(
+            position: _positionAnimation,
+            child: Center(child: _nimbleLogo),
           ),
-          FadeTransition(
-            opacity: _overlayOpacityAnimationController,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: AppDimensions.spacing24,
-                    right: AppDimensions.spacing24,
-                    bottom: AppDimensions.spacing20,
-                  ),
-                  child: _configuredTextField(context, true),
+        ),
+        FadeTransition(
+          opacity: _overlayOpacityAnimationController,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: AppDimensions.spacing24,
+                  right: AppDimensions.spacing24,
+                  bottom: AppDimensions.spacing20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: AppDimensions.spacing24,
-                    right: AppDimensions.spacing24,
-                    bottom: AppDimensions.spacing20,
-                  ),
-                  child: _configuredTextField(context, false),
+                child: _configuredTextField(context, true),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: AppDimensions.spacing24,
+                  right: AppDimensions.spacing24,
+                  bottom: AppDimensions.spacing20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppDimensions.spacing24,
-                  ),
-                  child: SizedBox(
-                    height: 56.0,
-                    width: double.infinity,
-                    child: _loginButton(context),
-                  ),
+                child: _configuredTextField(context, false),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppDimensions.spacing24,
                 ),
-              ],
-            ),
+                child: SizedBox(
+                  height: 56.0,
+                  width: double.infinity,
+                  child: _loginButton(context),
+                ),
+              ),
+            ],
           ),
-        ],
-      );
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: _buildLoginScreen(context),
+        ),
+      ],
     );
   }
 
-  // TODO: remove this dummy method in [#10]
-  void logIn() async {
-    final LoginInput input = LoginInput(
-      email: _emailTextFieldController.text,
-      password: _passwordTextFieldController.text,
+  @override
+  Widget build(BuildContext context) {
+    final isLoginSucceed = ref.watch(_loginStatusProvider).value ?? false;
+    final errorMessage = ref.watch(_loginErrorStatusProvider).value ?? "";
+    return Material(
+      child: Scaffold(
+        body: ref.watch(loginViewModelProvider).when(
+              init: () =>
+                  _buildLoginScreen(context, isLoginSucceed, errorMessage),
+              loading: () =>
+                  _buildLoginScreen(context, isLoginSucceed, errorMessage),
+              loginSuccess: () =>
+                  _buildLoginScreen(context, isLoginSucceed, errorMessage),
+              loginError: () =>
+                  _buildLoginScreen(context, isLoginSucceed, errorMessage),
+            ),
+      ),
     );
-    final result = await _loginUseCase.call(input);
-    if (result is Success<LoginModel>) {
-      // final loginData = result.value;
-      // print("LOGIN SUCCESS DATA\n$loginData");
-      // save login data
-      // Move to survey page
-    } else {
-      // show login error message
+  }
+
+  void logIn() async {
+    if (_isLoading) {
+      return;
     }
+    setState(() {
+      _isLoading = true;
+    });
+    ref.read(loginViewModelProvider.notifier).logIn(
+          _emailTextFieldController.text,
+          _passwordTextFieldController.text,
+        );
   }
 
   @override

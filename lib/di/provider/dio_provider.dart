@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_survey/di/interceptor/app_interceptor.dart';
+import 'package:flutter_survey/utils/storage/secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
 const String headerContentType = 'Content-Type';
@@ -10,16 +11,18 @@ const String defaultContentType = 'application/json; charset=utf-8';
 class DioProvider {
   Dio? _dio;
 
-  Dio getDio() {
-    _dio ??= _createDio(requireAuthentication: true);
+  Dio getDio({bool requireAuthentication = true}) {
+    _dio ??= _createDio(requireAuthentication);
     return _dio!;
   }
 
-  Dio _createDio({bool requireAuthentication = false}) {
+  Dio _createDio(bool requireAuthentication) {
     final dio = Dio();
+    final SecureStorage secureStorage = SecureStorage();
     final appInterceptor = AppInterceptor(
       requireAuthentication,
       dio,
+      secureStorage
     );
     final interceptors = <Interceptor>[];
     interceptors.add(appInterceptor);

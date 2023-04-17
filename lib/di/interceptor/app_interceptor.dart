@@ -2,25 +2,26 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_survey/utils/storage/secure_storage.dart';
 
 const String _authorizationHeader = 'Authorization';
 
 class AppInterceptor extends Interceptor {
   final bool _requireAuthentication;
   final Dio _dio;
+  final SecureStorage _secureStorage;
 
-  AppInterceptor(
-    this._requireAuthentication,
-    this._dio,
-  );
+  AppInterceptor(this._requireAuthentication, this._dio, this._secureStorage);
 
   @override
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     if (_requireAuthentication) {
-      // TODO: Integrate log-in https://github.com/nimblehq/ic-flutter-taher-toby/issues/10
-      options.headers.putIfAbsent(
-          _authorizationHeader, () => "Bearer add your token here");
+      final String bearerToken =
+          await _secureStorage.readSecureData(accessTokenKey) ??
+              'Add your token here';
+      options.headers
+          .putIfAbsent(_authorizationHeader, () => 'Bearer $bearerToken');
     }
     return super.onRequest(options, handler);
   }
