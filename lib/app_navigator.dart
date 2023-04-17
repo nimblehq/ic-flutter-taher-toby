@@ -7,6 +7,8 @@ import 'package:injectable/injectable.dart';
 const _routePathRootScreen = '/';
 const _routePathFormScreen = 'form';
 
+const _paramSurveyId = 'surveyId';
+
 class Routes {
   static final router = GoRouter(
     routes: <GoRoute>[
@@ -16,9 +18,11 @@ class Routes {
             const LoginScreen(),
         routes: [
           GoRoute(
-            path: _routePathFormScreen,
-            builder: (BuildContext context, GoRouterState state) =>
-                FormScreen(),
+            path: '$_routePathFormScreen/:$_paramSurveyId',
+            builder: (BuildContext context, GoRouterState state) {
+              final surveyId = state.params[_paramSurveyId] as String;
+              return FormScreen(surveyId: surveyId);
+            },
           ),
         ],
       ),
@@ -27,7 +31,10 @@ class Routes {
 }
 
 abstract class AppNavigator {
-  void navigateToFormScreen(BuildContext context);
+  void navigateToFormScreen({
+    required BuildContext context,
+    required String surveyId,
+  });
 }
 
 @Injectable(as: AppNavigator)
@@ -35,7 +42,10 @@ class AppNavigatorImpl extends AppNavigator {
   AppNavigatorImpl();
 
   @override
-  void navigateToFormScreen(BuildContext context) {
-    context.go('/$_routePathFormScreen');
+  void navigateToFormScreen({
+    required BuildContext context,
+    required String surveyId,
+  }) {
+    context.go('/$_routePathFormScreen/$surveyId');
   }
 }
