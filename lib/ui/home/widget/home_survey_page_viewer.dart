@@ -26,7 +26,7 @@ class HomeSurveyPageViewer extends StatelessWidget {
         return HomeSurveyPage(
           survey: surveys[index],
           onNextButtonPressed: () {
-            _appNavigator.navigateToSecondScreen(context);
+            _appNavigator.navigateToFormScreen(context);
           },
         );
       },
