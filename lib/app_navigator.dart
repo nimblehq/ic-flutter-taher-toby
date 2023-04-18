@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/ui/home/home_screen.dart';
 import 'package:flutter_survey/ui/login/login_screen.dart';
 import 'package:flutter_survey/ui/form/form_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -31,6 +32,8 @@ class Routes {
 }
 
 abstract class AppNavigator {
+  void navigateBack(BuildContext context);
+
   void navigateToFormScreen({
     required BuildContext context,
     required String surveyId,
@@ -40,6 +43,9 @@ abstract class AppNavigator {
 @Injectable(as: AppNavigator)
 class AppNavigatorImpl extends AppNavigator {
   AppNavigatorImpl();
+
+  @override
+  void navigateBack(BuildContext context) => Navigator.of(context).pop();
 
   @override
   void navigateToFormScreen({
