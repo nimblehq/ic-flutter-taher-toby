@@ -1,7 +1,7 @@
 import 'package:flutter_survey/ui/login/login_screen.dart';
 import 'package:flutter_survey/ui/login/login_state.dart';
 import 'package:flutter_survey/ui/login/login_view_model.dart';
-import 'package:flutter_survey/utils/storage/secure_storage.dart';
+import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,8 +19,6 @@ void main() {
       late MockSecureStorage secureStorage;
       late MockLogInUseCase mockLogInUseCase;
       late ProviderContainer providerContainer;
-      final UseCaseException exception =
-          UseCaseException(const NetworkExceptions.unauthorisedRequest());
       const loginModel = LoginModel(
         accessToken: "accessToken",
         tokenType: "tokenType",
@@ -43,72 +41,86 @@ void main() {
         },
       );
       test(
-        'When credential provided in correct format login success occurred and token stored',
+        'When starting the app init state will appear',
+        () {
+          expect(
+            providerContainer.read(loginViewModelProvider),
+            const LoginState.init(),
+          );
+        },
+      );
+      test(
+        'When credential provided in correct format, login success occurred and token stored',
         () {
           when(mockLogInUseCase.call(any)).thenAnswer(
             (_) async => Success(loginModel),
           );
           when(secureStorage.readSecureData(accessTokenKey))
               .thenAnswer((_) async => loginModel.accessToken);
-
-          final loginStream = loginViewModel.isLoginSucceed;
           final stateStream = loginViewModel.stream;
-          expect(loginStream, emitsInOrder([true]));
           expect(
             stateStream,
-            emitsInOrder([
-              const LoginState.loading(),
-              const LoginState.loginSuccess(),
-            ]),
+            emitsInOrder(
+              [
+                const LoginState.loading(),
+                const LoginState.loginSuccess(),
+              ],
+            ),
           );
           loginViewModel.logIn("email@gmail.com", "password1234");
-          expect(secureStorage.readSecureData(accessTokenKey),
-              completion(equals(loginModel.accessToken)));
+          expect(
+            secureStorage.readSecureData(accessTokenKey),
+            completion(
+              equals(loginModel.accessToken),
+            ),
+          );
         },
       );
       test(
         'When credential provided in wrong format, format error occurred',
         () {
+          final UseCaseException exception =
+              UseCaseException(const NetworkExceptions.unauthorisedRequest());
           when(mockLogInUseCase.call(any)).thenAnswer(
             (_) async => Failed(exception),
           );
-          final loginErrorStream = loginViewModel.loginError;
           final stateStream = loginViewModel.stream;
           expect(
-              loginErrorStream,
-              emitsInOrder([
-                '',
-                'Email or password format is not valid. Please try again!'
-              ]));
-          expect(
             stateStream,
-            emitsInOrder([
-              const LoginState.loading(),
-              const LoginState.loginError(),
-            ]),
+            emitsInOrder(
+              [
+                const LoginState.loading(),
+                const LoginState.loginError(formatErrorText),
+              ],
+            ),
           );
-          loginViewModel.logIn("email", "password");
+          loginViewModel.logIn("emailcom", "password1234");
         },
       );
 
       test(
-        'When credential provided in correct format but wrong value login error occurred',
+        'When credential provided in correct format, but wrong value login error occurred',
         () {
+          final mockException = MockUseCaseException();
+          when(mockException.actualException)
+              .thenReturn(const NetworkExceptions.badRequest());
+
           when(mockLogInUseCase.call(any)).thenAnswer(
-            (_) async => Failed(exception),
+            (_) async => Failed(mockException),
           );
-          final loginErrorStream = loginViewModel.loginError;
           final stateStream = loginViewModel.stream;
-          final error =
-              NetworkExceptions.getErrorMessage(exception.actualException);
-          final errorMessage = '$error. Try Again!';
-          expect(loginErrorStream, emitsInOrder(['', errorMessage]));
           expect(
             stateStream,
-            emitsInOrder([
-              const LoginState.loading(),
-              const LoginState.loginError(),
-            ]),
+            emitsInOrder(
+              [
+                const LoginState.loading(),
+                LoginState.loginError(
+                  NetworkExceptions.getErrorMessage(
+                    const NetworkExceptions.badRequest(),
+                  ),
+                ),
+              ],
+            ),
           );
           loginViewModel.logIn("email@gmail.com", "password12345");
         },

@@ -2,7 +2,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_survey/utils/storage/secure_storage.dart';
+import 'package:flutter_survey/database/secure_storage.dart';
 
 const String _authorizationHeader = 'Authorization';
 
@@ -17,11 +17,12 @@ class AppInterceptor extends Interceptor {
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     if (_requireAuthentication) {
-      final String bearerToken =
-          await _secureStorage.readSecureData(accessTokenKey) ??
-              'Add your token here';
+      final String accessToken =
+          await _secureStorage.readSecureData(accessTokenKey) ?? '';
+      final String tokenType =
+          await _secureStorage.readSecureData(tokenTypeKey) ?? '';
       options.headers
-          .putIfAbsent(_authorizationHeader, () => 'Bearer $bearerToken');
+          .putIfAbsent(_authorizationHeader, () => '$tokenType $accessToken');
     }
     return super.onRequest(options, handler);
   }

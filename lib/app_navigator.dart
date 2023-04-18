@@ -6,9 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 
 const _routePathRootScreen = '/';
+const _routePathHomeScreen = 'home';
 const _routePathFormScreen = 'form';
 const _paramSurveyId = 'surveyId';
-const _routePathHomeScreen = 'home';
 
 class Routes {
   static final router = GoRouter(
@@ -19,16 +19,16 @@ class Routes {
             const LoginScreen(),
         routes: [
           GoRoute(
+            path: _routePathHomeScreen,
+            builder: (BuildContext context, GoRouterState state) =>
+                const HomeScreen(),
+          ),
+          GoRoute(
             path: '$_routePathFormScreen/:$_paramSurveyId',
             builder: (BuildContext context, GoRouterState state) {
               final surveyId = state.params[_paramSurveyId] as String;
               return FormScreen(surveyId: surveyId);
             },
-          ),
-          GoRoute(
-            path: _routePathHomeScreen,
-            builder: (BuildContext context, GoRouterState state) =>
-                const HomeScreen(),
           ),
         ],
       ),
@@ -38,7 +38,7 @@ class Routes {
 
 abstract class AppNavigator {
   void navigateBack(BuildContext context);
-
+  void navigateToHomeScreen({required BuildContext context});
   void navigateToFormScreen({
     required BuildContext context,
     required String surveyId,
@@ -51,6 +51,11 @@ class AppNavigatorImpl extends AppNavigator {
 
   @override
   void navigateBack(BuildContext context) => Navigator.of(context).pop();
+
+  @override
+  void navigateToHomeScreen({required BuildContext context}) {
+    context.go('$_routePathRootScreen$_routePathHomeScreen');
+  }
 
   @override
   void navigateToFormScreen({

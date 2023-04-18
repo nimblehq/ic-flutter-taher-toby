@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter_survey/app_navigator.dart';
 import 'package:flutter_survey/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
@@ -9,8 +10,7 @@ import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_survey/usecases/log_in_use_case.dart';
 import 'package:flutter_survey/di/di.dart';
-import 'package:flutter_survey/utils/storage/secure_storage.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/ui/widget/snack_bar.dart';
 
@@ -18,12 +18,6 @@ final loginViewModelProvider =
     StateNotifierProvider.autoDispose<LoginViewModel, LoginState>((ref) {
   return LoginViewModel(getIt.get<LogInUseCase>(), getIt.get<SecureStorage>());
 });
-
-final _loginStatusProvider = StreamProvider.autoDispose<bool?>(
-    (ref) => ref.watch(loginViewModelProvider.notifier).isLoginSucceed);
-
-final _loginErrorStatusProvider = StreamProvider.autoDispose<String?>(
-    (ref) => ref.watch(loginViewModelProvider.notifier).loginError);
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -41,7 +35,7 @@ class LoginScreenState extends ConsumerState<LoginScreen>
   late AnimationController _overlayOpacityAnimationController;
   late Animation<Offset> _positionAnimation;
 
-  bool _isLoading = false;
+  final _appNavigator = getIt.get<AppNavigator>();
   final _emailTextFieldController = TextEditingController();
   final _passwordTextFieldController = TextEditingController();
   final _nimbleLogo = Assets.images.splashLogoWhite.image();
@@ -111,7 +105,6 @@ class LoginScreenState extends ConsumerState<LoginScreen>
 
   TextButton _loginButton(BuildContext context) => TextButton(
         onPressed: () {
-          // TODO: Integration task #10
           logIn();
         },
         style: ButtonStyle(
@@ -122,31 +115,20 @@ class LoginScreenState extends ConsumerState<LoginScreen>
             ),
           ),
         ),
-        child: _isLoading
-            ? const CircularProgressIndicator(
+        child: ref.watch(loginViewModelProvider).maybeWhen(
+              loading: () => const CircularProgressIndicator(
                 color: AppColors.blackRussian,
-              )
-            : Text(
+              ),
+              orElse: () => Text(
                 AppLocalizations.of(context)!.login,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: AppColors.blackRussian,
                     ),
               ),
+            ),
       );
 
-  Stack _buildLoginScreen(
-      BuildContext context, bool isLoginSucceed, String errorMessage) {
-    if (isLoginSucceed) {
-      Future.delayed(Duration.zero, () async {
-        context.go("/home");
-      });
-    }
-    if (errorMessage.isNotEmpty) {
-      setState(() {
-        _isLoading = false;
-      });
-      showSnackBar(context, errorMessage);
-    }
+  Stack _buildLoginScreen(BuildContext context) {
     return Stack(
       children: [
         DimmedBackground(
@@ -216,31 +198,30 @@ class LoginScreenState extends ConsumerState<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-    final isLoginSucceed = ref.watch(_loginStatusProvider).value ?? false;
-    final errorMessage = ref.watch(_loginErrorStatusProvider).value ?? "";
-    return Material(
-      child: Scaffold(
-        body: ref.watch(loginViewModelProvider).when(
-              init: () =>
-                  _buildLoginScreen(context, isLoginSucceed, errorMessage),
-              loading: () =>
-                  _buildLoginScreen(context, isLoginSucceed, errorMessage),
-              loginSuccess: () =>
-                  _buildLoginScreen(context, isLoginSucceed, errorMessage),
-              loginError: () =>
-                  _buildLoginScreen(context, isLoginSucceed, errorMessage),
-            ),
-      ),
+    ref.listen<LoginState>(loginViewModelProvider, (_, loginState) {
+      loginState.maybeWhen(
+        loginSuccess: () => _navigateToHomeScreen(),
+        loginError: (errorMessage) => _showError(errorMessage),
+        orElse: () {},
+      );
+    });
+    return Scaffold(
+      body: _buildLoginScreen(context),
+      resizeToAvoidBottomInset: false,
     );
   }
 
-  void logIn() async {
-    if (_isLoading) {
-      return;
-    }
-    setState(() {
-      _isLoading = true;
+  void _showError(String errorMessage) {
+    showSnackBar(context, errorMessage);
+  }
+
+  void _navigateToHomeScreen() {
+    Future.delayed(Duration.zero, () async {
+      _appNavigator.navigateToHomeScreen(context: context);
     });
+  }
+
+  void logIn() async {
     ref.read(loginViewModelProvider.notifier).logIn(
           _emailTextFieldController.text,
           _passwordTextFieldController.text,
