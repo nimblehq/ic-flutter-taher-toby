@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart' hide FormState;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_survey/app_navigator.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_survey/model/survey_details_model.dart';
+import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/form/form_state.dart';
 import 'package:flutter_survey/ui/form/form_view_model.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_detail_page.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_question_page.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
+import 'package:flutter_survey/ui/widget/next_button.dart';
 import 'package:flutter_survey/ui/widget/snack_bar.dart';
 import 'package:flutter_survey/usecases/get_survey_details_use_case.dart';
+
+const _navigationDuration = 400;
 
 final formViewModelProvider =
     StateNotifierProvider.autoDispose<FormViewModel, FormState>((ref) {
@@ -37,6 +42,12 @@ class FormScreen extends ConsumerStatefulWidget {
 }
 
 class FormScreenState extends ConsumerState<FormScreen> {
+  var _showStartSurveyButton = true;
+  var _showNextSurveyButton = false;
+  var _showSubmitSurveyButton = false;
+  var _showCloseButton = false;
+
+  final _appNavigator = getIt.get<AppNavigator>();
   final _pageController = PageController();
 
   @override
@@ -66,6 +77,8 @@ class FormScreenState extends ConsumerState<FormScreen> {
     SurveyDetailsModel? surveyDetails,
     String errorMessage = "",
   }) {
+    // TODO: Integrate item count from survey details #25
+    const questionTotal = 5;
     if (errorMessage.isNotEmpty) showSnackBar(context, errorMessage);
     return Scaffold(
       backgroundColor: Colors.black,
@@ -73,22 +86,35 @@ class FormScreenState extends ConsumerState<FormScreen> {
         children: [
           if (surveyDetails != null) ...[
             DimmedBackground(background: surveyDetails.coverImageUrl),
+            _buildCloseButton(context),
             PageView.builder(
-              // TODO: Integrate item count from survey details #25
-              itemCount: 3,
-
+              itemCount: 1 + questionTotal,
               controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   return FormSurveyDetailPage(
                     surveyDetails: surveyDetails,
                   );
                 } else {
-                  return const FormSurveyQuestionPage();
+                  return FormSurveyQuestionPage(
+                    questionIndex: index,
+                    questionTotal: questionTotal,
+                  );
                 }
               },
+              onPageChanged: (int index) {
+                setState(() {
+                  _showStartSurveyButton = index == 0;
+                  _showNextSurveyButton = index > 0 && index < questionTotal;
+                  _showSubmitSurveyButton = index == questionTotal;
+                  _showCloseButton = index != 0;
+                });
+              },
             ),
-            _buildStartButton()
+            _buildStartSurveyButton(),
+            _buildNextSurveyButton(),
+            _buildSubmitSurveyButton()
           ] else ...[
             Column(
               children: const [
@@ -109,17 +135,88 @@ class FormScreenState extends ConsumerState<FormScreen> {
     );
   }
 
-  Widget _buildStartButton() {
-    return Padding(
-      padding: const EdgeInsets.all(AppDimensions.spacing20),
+  Widget _buildCloseButton(BuildContext context) {
+    return Visibility(
+      visible: _showCloseButton,
       child: Align(
-        alignment: Alignment.bottomRight,
-        child: ElevatedButton(
+        alignment: Alignment.topRight,
+        child: RawMaterialButton(
+          shape: const CircleBorder(),
+          fillColor: AppColors.white20,
+          constraints: const BoxConstraints.tightFor(
+            width: AppDimensions.closeButtonSize,
+            height: AppDimensions.closeButtonSize,
+          ),
+          child: const Icon(
+            Icons.close,
+            color: Colors.white,
+            size: AppDimensions.closeButtonIconSize,
+          ),
           onPressed: () {
-            // TODO: Integrate click-event from survey details #25
+            _appNavigator.navigateBack(context);
           },
-          child: Text(
-            AppLocalizations.of(context)!.start_survey,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStartSurveyButton() {
+    return Visibility(
+      visible: _showStartSurveyButton,
+      child: Padding(
+        padding: const EdgeInsets.all(AppDimensions.spacing20),
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: ElevatedButton(
+            onPressed: () {
+              _pageController.nextPage(
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeInOut,
+              );
+            },
+            child: Text(
+              AppLocalizations.of(context)!.start_survey,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNextSurveyButton() {
+    return Visibility(
+      visible: _showNextSurveyButton,
+      child: Padding(
+        padding: const EdgeInsets.all(AppDimensions.spacing20),
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: NextButton(
+            onNextButtonPressed: () {
+              _pageController.nextPage(
+                duration: const Duration(milliseconds: _navigationDuration),
+                curve: Curves.easeInOut,
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSubmitSurveyButton() {
+    return Visibility(
+      visible: _showSubmitSurveyButton,
+      child: Padding(
+        padding: const EdgeInsets.all(AppDimensions.spacing20),
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: ElevatedButton(
+            onPressed: () {
+              // TODO: Integrate click-event from survey details #25
+            },
+            child: Text(
+              AppLocalizations.of(context)!.submit_survey,
+            ),
           ),
         ),
       ),
