@@ -30,11 +30,6 @@ class Routes {
               return FormScreen(surveyId: surveyId);
             },
           ),
-          GoRoute(
-            path: _routePathHomeScreen,
-            builder: (BuildContext context, GoRouterState state) =>
-                const HomeScreen(),
-          ),
         ],
       ),
     ],
