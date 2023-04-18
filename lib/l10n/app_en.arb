@@ -2,6 +2,7 @@
   "email": "Email",
   "login": "Log in",
   "password": "Password",
+  "auth_error": "Email or password format is not valid. Please try again!",
   "start_survey": "Start Survey",
   "submit_survey": "Submit Survey",
   "today": "Today"

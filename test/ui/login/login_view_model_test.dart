@@ -18,6 +18,7 @@ void main() {
       late LoginViewModel loginViewModel;
       late MockSecureStorage secureStorage;
       late MockLogInUseCase mockLogInUseCase;
+      late MockBuildContext mockBuildContext;
       late ProviderContainer providerContainer;
       const loginModel = LoginModel(
         accessToken: "accessToken",
@@ -30,7 +31,8 @@ void main() {
         () {
           mockLogInUseCase = MockLogInUseCase();
           secureStorage = MockSecureStorage();
-          loginViewModel = LoginViewModel(mockLogInUseCase, secureStorage);
+          mockBuildContext = MockBuildContext();
+          loginViewModel = LoginViewModel(mockLogInUseCase);
           providerContainer = ProviderContainer(
             overrides: [
               loginViewModelProvider.overrideWithValue(loginViewModel),
@@ -67,7 +69,8 @@ void main() {
               ],
             ),
           );
-          loginViewModel.logIn("email@gmail.com", "password1234");
+          loginViewModel.logIn(
+              "email@gmail.com", "password1234", mockBuildContext);
           expect(
             secureStorage.readSecureData(accessTokenKey),
             completion(
@@ -84,17 +87,20 @@ void main() {
           when(mockLogInUseCase.call(any)).thenAnswer(
             (_) async => Failed(exception),
           );
+          when(
+            mockBuildContext.dependOnInheritedWidgetOfExactType(),
+          ).thenAnswer((realInvocation) => null);
           final stateStream = loginViewModel.stream;
           expect(
             stateStream,
             emitsInOrder(
               [
                 const LoginState.loading(),
-                const LoginState.loginError(formatErrorText),
+                const LoginState.loginError(''),
               ],
             ),
           );
-          loginViewModel.logIn("emailcom", "password1234");
+          loginViewModel.logIn("emailcom", "password1234", mockBuildContext);
         },
       );
 
@@ -122,7 +128,8 @@ void main() {
               ],
             ),
           );
-          loginViewModel.logIn("email@gmail.com", "password12345");
+          loginViewModel.logIn(
+              "email@gmail.com", "password12345", mockBuildContext);
         },
       );
     },

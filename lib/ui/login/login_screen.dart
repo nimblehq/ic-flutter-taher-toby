@@ -10,13 +10,12 @@ import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_survey/usecases/log_in_use_case.dart';
 import 'package:flutter_survey/di/di.dart';
-import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/ui/widget/snack_bar.dart';
 
 final loginViewModelProvider =
     StateNotifierProvider.autoDispose<LoginViewModel, LoginState>((ref) {
-  return LoginViewModel(getIt.get<LogInUseCase>(), getIt.get<SecureStorage>());
+  return LoginViewModel(getIt.get<LogInUseCase>());
 });
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -216,16 +215,14 @@ class LoginScreenState extends ConsumerState<LoginScreen>
   }
 
   void _navigateToHomeScreen() {
-    Future.delayed(Duration.zero, () async {
-      _appNavigator.navigateToHomeScreen(context: context);
-    });
+    _appNavigator.navigateToHomeScreen(context: context);
   }
 
   void logIn() async {
     ref.read(loginViewModelProvider.notifier).logIn(
-          _emailTextFieldController.text,
-          _passwordTextFieldController.text,
-        );
+        _emailTextFieldController.text,
+        _passwordTextFieldController.text,
+        context);
   }
 
   @override
