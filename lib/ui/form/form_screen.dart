@@ -116,12 +116,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
             _buildNextSurveyButton(),
             _buildSubmitSurveyButton()
           ] else ...[
-            Column(
-              children: const [
-                SizedBox(height: AppDimensions.spacing20),
-                BackButton(color: Colors.white)
-              ],
-            )
+            const BackButton(color: Colors.white)
           ],
           if (isLoading) _buildCircularProgressIndicator()
         ],
