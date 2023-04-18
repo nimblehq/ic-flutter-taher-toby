@@ -86,7 +86,6 @@ class FormScreenState extends ConsumerState<FormScreen> {
         children: [
           if (surveyDetails != null) ...[
             DimmedBackground(background: surveyDetails.coverImageUrl),
-            _buildCloseButton(context),
             PageView.builder(
               itemCount: 1 + questionTotal,
               controller: _pageController,
@@ -112,6 +111,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
                 });
               },
             ),
+            _buildCloseButton(context),
             _buildStartSurveyButton(),
             _buildNextSurveyButton(),
             _buildSubmitSurveyButton()
