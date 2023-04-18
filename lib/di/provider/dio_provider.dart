@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/di/interceptor/app_interceptor.dart';
 import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -19,12 +19,10 @@ class DioProvider {
 
   Dio _createDio({bool requireAuthentication = false}) {
     final dio = Dio();
-    final SecureStorage secureStorage =
-        SecureStorageImpl(const FlutterSecureStorage());
     final appInterceptor = AppInterceptor(
       requireAuthentication,
       dio,
-      secureStorage,
+      getIt<SecureStorage>(),
     );
     final interceptors = <Interceptor>[];
     interceptors.add(appInterceptor);
