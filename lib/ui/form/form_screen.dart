@@ -97,7 +97,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
                   );
                 } else {
                   return FormSurveyQuestionPage(
-                    question: questions[index],
+                    question: questions[index - 1],
                     questionIndex: index,
                     questionTotal: questionTotal,
                   );
