@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/ui/app_starter/app_starter.dart';
 import 'package:flutter_survey/ui/home/home_screen.dart';
-import 'package:flutter_survey/ui/login/login_screen.dart';
 import 'package:flutter_survey/ui/form/form_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
