@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_survey/api/repository/authentication_repository.dart';
 import 'package:flutter_survey/api/repository/survey_repository.dart';
 import 'package:flutter_survey/api/survey_service.dart';
@@ -26,7 +25,6 @@ import 'package:mockito/annotations.dart';
   AuthenticationService,
   AuthenticationRepository,
   SecureStorage,
-  BuildContext,
   UseCaseException,
   DioError,
 ])

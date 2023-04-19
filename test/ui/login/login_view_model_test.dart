@@ -19,7 +19,6 @@ void main() {
       late MockSecureStorage secureStorage;
       late MockLogInUseCase mockLogInUseCase;
       late MockLogInStorageUseCase mockLogInStorageUseCase;
-      late MockBuildContext mockBuildContext;
       late ProviderContainer providerContainer;
       const loginModel = LoginModel(
         accessToken: "accessToken",
@@ -33,7 +32,6 @@ void main() {
           mockLogInUseCase = MockLogInUseCase();
           mockLogInStorageUseCase = MockLogInStorageUseCase();
           secureStorage = MockSecureStorage();
-          mockBuildContext = MockBuildContext();
           loginViewModel = LoginViewModel(
             mockLogInUseCase,
             mockLogInStorageUseCase,
@@ -58,7 +56,7 @@ void main() {
       );
       test(
         'When credential provided in correct format, login success occurred and token stored',
-        () {
+        () async {
           when(mockLogInUseCase.call(any)).thenAnswer(
             (_) async => Success(loginModel),
           );
@@ -74,38 +72,15 @@ void main() {
               ],
             ),
           );
-          loginViewModel.logIn(
-              "email@gmail.com", "password1234", mockBuildContext);
+          loginViewModel.logIn("email@gmail.com", "password1234");
           expect(
             secureStorage.readSecureData(accessTokenKey),
             completion(
               equals(loginModel.accessToken),
             ),
           );
-        },
-      );
-      test(
-        'When credential provided in wrong format, format error occurred',
-        () {
-          final UseCaseException exception =
-              UseCaseException(const NetworkExceptions.unauthorisedRequest());
-          when(mockLogInUseCase.call(any)).thenAnswer(
-            (_) async => Failed(exception),
-          );
-          when(
-            mockBuildContext.dependOnInheritedWidgetOfExactType(),
-          ).thenAnswer((realInvocation) => null);
-          final stateStream = loginViewModel.stream;
-          expect(
-            stateStream,
-            emitsInOrder(
-              [
-                const LoginState.loading(),
-                const LoginState.loginError(''),
-              ],
-            ),
-          );
-          loginViewModel.logIn("emailcom", "password1234", mockBuildContext);
+          await untilCalled(mockLogInStorageUseCase.save(any));
+          verify(mockLogInStorageUseCase.save(any)).called(1);
         },
       );
 
@@ -133,8 +108,7 @@ void main() {
               ],
             ),
           );
-          loginViewModel.logIn(
-              "email@gmail.com", "password12345", mockBuildContext);
+          loginViewModel.logIn("email@gmail.com", "password12345");
         },
       );
     },

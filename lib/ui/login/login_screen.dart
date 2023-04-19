@@ -13,6 +13,7 @@ import 'package:flutter_survey/usecases/log_in_use_case.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/ui/widget/snack_bar.dart';
+import 'package:email_validator/email_validator.dart';
 
 final loginViewModelProvider =
     StateNotifierProvider.autoDispose<LoginViewModel, LoginState>((ref) {
@@ -218,15 +219,27 @@ class LoginScreenState extends ConsumerState<LoginScreen>
     showSnackBar(context, errorMessage);
   }
 
+  bool _isCredentialsValid(String email, String password) {
+    return EmailValidator.validate(email) &&
+        password.isNotEmpty &&
+        password.length >= 8;
+  }
+
   void _navigateToHomeScreen() {
     _appNavigator.navigateToHomeScreen(context: context);
   }
 
   void logIn() async {
-    ref.read(loginViewModelProvider.notifier).logIn(
-        _emailTextFieldController.text,
-        _passwordTextFieldController.text,
-        context);
+    final String email = _emailTextFieldController.text;
+    final String password = _passwordTextFieldController.text;
+    if (_isCredentialsValid(email, password)) {
+      ref.read(loginViewModelProvider.notifier).logIn(
+            email,
+            password,
+          );
+    } else {
+      _showError(AppLocalizations.of(context)!.auth_error);
+    }
   }
 
   @override
