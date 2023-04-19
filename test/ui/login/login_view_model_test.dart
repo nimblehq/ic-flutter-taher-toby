@@ -18,7 +18,7 @@ void main() {
       late LoginViewModel loginViewModel;
       late MockSecureStorage secureStorage;
       late MockLogInUseCase mockLogInUseCase;
-      late MockLogInStorageUseCase mockLogInStorageUseCase;
+      late MockAuthTokenStorageUseCase mockAuthTokenStorageUseCase;
       late ProviderContainer providerContainer;
       const loginModel = LoginModel(
         accessToken: "accessToken",
@@ -30,11 +30,11 @@ void main() {
       setUp(
         () {
           mockLogInUseCase = MockLogInUseCase();
-          mockLogInStorageUseCase = MockLogInStorageUseCase();
+          mockAuthTokenStorageUseCase = MockAuthTokenStorageUseCase();
           secureStorage = MockSecureStorage();
           loginViewModel = LoginViewModel(
             mockLogInUseCase,
-            mockLogInStorageUseCase,
+            mockAuthTokenStorageUseCase,
           );
           providerContainer = ProviderContainer(
             overrides: [
@@ -79,8 +79,8 @@ void main() {
               equals(loginModel.accessToken),
             ),
           );
-          await untilCalled(mockLogInStorageUseCase.save(any));
-          verify(mockLogInStorageUseCase.save(any)).called(1);
+          await untilCalled(mockAuthTokenStorageUseCase.save(any));
+          verify(mockAuthTokenStorageUseCase.save(any)).called(1);
         },
       );
 

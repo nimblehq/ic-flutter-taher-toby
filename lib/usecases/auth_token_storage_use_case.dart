@@ -4,10 +4,10 @@ import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable()
-class LogInStorageUseCase extends StorageUseCase<LoginModel> {
+class AuthTokenStorageUseCase extends DataSaverUseCase<LoginModel> {
   final SecureStorage _secureStorage;
 
-  const LogInStorageUseCase(
+  const AuthTokenStorageUseCase(
     this._secureStorage,
   );
 

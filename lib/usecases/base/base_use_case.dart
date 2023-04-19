@@ -24,8 +24,8 @@ abstract class SimpleUseCase<T> {
   T call();
 }
 
-abstract class StorageUseCase<T> {
-  const StorageUseCase();
+abstract class DataSaverUseCase<T> {
+  const DataSaverUseCase();
 
   void save(T data);
 }
