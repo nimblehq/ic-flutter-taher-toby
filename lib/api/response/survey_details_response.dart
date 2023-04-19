@@ -18,7 +18,7 @@ class SurveyDetailsResponse {
     this.title,
     this.description,
     this.coverImageUrl,
-    this.questions
+    this.questions,
   });
 
   factory SurveyDetailsResponse.fromJson(Map<String, dynamic> json) {
