@@ -244,11 +244,11 @@ class LoginScreenState extends ConsumerState<LoginScreen>
 
   @override
   void dispose() {
-    super.dispose();
     _logoOpacityAnimationController.dispose();
     _logoPositionAnimationController.dispose();
     _overlayOpacityAnimationController.dispose();
     _emailTextFieldController.dispose();
     _passwordTextFieldController.dispose();
+    super.dispose();
   }
 }

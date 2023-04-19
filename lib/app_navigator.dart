@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/ui/app_starter/app_starter.dart';
 import 'package:flutter_survey/ui/home/home_screen.dart';
 import 'package:flutter_survey/ui/login/login_screen.dart';
 import 'package:flutter_survey/ui/form/form_screen.dart';
@@ -15,8 +16,9 @@ class Routes {
     routes: <GoRoute>[
       GoRoute(
         path: _routePathRootScreen,
-        builder: (BuildContext context, GoRouterState state) =>
-            const LoginScreen(),
+        builder: (BuildContext context, GoRouterState state) {
+          return AppStarter();
+        },
         routes: [
           GoRoute(
             path: _routePathHomeScreen,
