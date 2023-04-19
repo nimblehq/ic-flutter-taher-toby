@@ -77,8 +77,8 @@ class FormScreenState extends ConsumerState<FormScreen> {
     SurveyDetailsModel? surveyDetails,
     String errorMessage = "",
   }) {
-    // TODO: Integrate item count from survey details #25
-    const questionTotal = 5;
+    final questions = surveyDetails?.questions ?? [];
+    final questionTotal = questions.length;
     if (errorMessage.isNotEmpty) showSnackBar(context, errorMessage);
     return Scaffold(
       backgroundColor: Colors.black,
@@ -97,6 +97,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
                   );
                 } else {
                   return FormSurveyQuestionPage(
+                    question: questions[index],
                     questionIndex: index,
                     questionTotal: questionTotal,
                   );
