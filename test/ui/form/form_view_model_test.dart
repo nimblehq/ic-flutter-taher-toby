@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
+import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/model/survey_details_model.dart';
 import 'package:flutter_survey/ui/form/form_screen.dart';
 import 'package:flutter_survey/ui/form/form_state.dart';
@@ -21,6 +22,9 @@ void main() {
       title: 'title',
       description: 'description',
       coverImageUrl: 'coverImageUrl',
+      questions: [
+        QuestionModel(id: 'id2', text: 'text2'),
+      ],
     );
 
     final UseCaseException exception =
