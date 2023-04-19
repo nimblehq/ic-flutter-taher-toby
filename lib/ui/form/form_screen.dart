@@ -155,66 +155,60 @@ class FormScreenState extends ConsumerState<FormScreen> {
     );
   }
 
-  Widget _buildStartSurveyButton() {
-    return Visibility(
-      visible: _showStartSurveyButton,
-      child: Padding(
-        padding: const EdgeInsets.all(AppDimensions.spacing20),
-        child: Align(
-          alignment: Alignment.bottomRight,
-          child: ElevatedButton(
-            onPressed: () {
-              _pageController.nextPage(
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeInOut,
-              );
-            },
-            child: Text(
-              AppLocalizations.of(context)!.start_survey,
+  Widget _buildStartSurveyButton() => Visibility(
+        visible: _showStartSurveyButton,
+        child: Padding(
+          padding: const EdgeInsets.all(AppDimensions.spacing20),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: ElevatedButton(
+              onPressed: () {
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut,
+                );
+              },
+              child: Text(
+                AppLocalizations.of(context)!.start_survey,
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
-  Widget _buildNextSurveyButton() {
-    return Visibility(
-      visible: _showNextSurveyButton,
-      child: Padding(
-        padding: const EdgeInsets.all(AppDimensions.spacing20),
-        child: Align(
-          alignment: Alignment.bottomRight,
-          child: NextButton(
-            onNextButtonPressed: () {
-              _pageController.nextPage(
-                duration: const Duration(milliseconds: _navigationDuration),
-                curve: Curves.easeInOut,
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSubmitSurveyButton() {
-    return Visibility(
-      visible: _showSubmitSurveyButton,
-      child: Padding(
-        padding: const EdgeInsets.all(AppDimensions.spacing20),
-        child: Align(
-          alignment: Alignment.bottomRight,
-          child: ElevatedButton(
-            onPressed: () {
-              // TODO: Integrate click-event from survey details #25
-            },
-            child: Text(
-              AppLocalizations.of(context)!.submit_survey,
+  Widget _buildNextSurveyButton() => Visibility(
+        visible: _showNextSurveyButton,
+        child: Padding(
+          padding: const EdgeInsets.all(AppDimensions.spacing20),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: NextButton(
+              onNextButtonPressed: () {
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: _navigationDuration),
+                  curve: Curves.easeInOut,
+                );
+              },
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
+
+  Widget _buildSubmitSurveyButton() => Visibility(
+        visible: _showSubmitSurveyButton,
+        child: Padding(
+          padding: const EdgeInsets.all(AppDimensions.spacing20),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: ElevatedButton(
+              onPressed: () {
+                // TODO: Integrate click-event from survey details #25
+              },
+              child: Text(
+                AppLocalizations.of(context)!.submit_survey,
+              ),
+            ),
+          ),
+        ),
+      );
 }
