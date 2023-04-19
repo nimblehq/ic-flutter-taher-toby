@@ -11,7 +11,11 @@ class AppInterceptor extends Interceptor {
   final Dio _dio;
   final SecureStorage _secureStorage;
 
-  AppInterceptor(this._requireAuthentication, this._dio, this._secureStorage);
+  AppInterceptor(
+    this._requireAuthentication,
+    this._dio,
+    this._secureStorage,
+  );
 
   @override
   Future onRequest(
