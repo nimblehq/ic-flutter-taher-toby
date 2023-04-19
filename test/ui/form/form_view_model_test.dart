@@ -40,6 +40,13 @@ void main() {
       formViewModel = providerContainer.read(formViewModelProvider.notifier);
     });
 
+    test('When initializing, it initializes with state Init', () {
+      expect(
+        providerContainer.read(formViewModelProvider),
+        const FormState.init(),
+      );
+    });
+
     test(
         'When loading survey details successfully, it emits an object with state LoadSurveyDetailsSuccess',
         () {
