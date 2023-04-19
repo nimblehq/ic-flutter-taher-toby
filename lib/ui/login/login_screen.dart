@@ -8,6 +8,7 @@ import 'package:flutter_survey/ui/login/login_state.dart';
 import 'package:flutter_survey/ui/login/login_view_model.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_survey/usecases/log_in_storage_use_case.dart';
 import 'package:flutter_survey/usecases/log_in_use_case.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +16,10 @@ import 'package:flutter_survey/ui/widget/snack_bar.dart';
 
 final loginViewModelProvider =
     StateNotifierProvider.autoDispose<LoginViewModel, LoginState>((ref) {
-  return LoginViewModel(getIt.get<LogInUseCase>());
+  return LoginViewModel(
+    getIt.get<LogInUseCase>(),
+    getIt.get<LogInStorageUseCase>(),
+  );
 });
 
 class LoginScreen extends ConsumerStatefulWidget {

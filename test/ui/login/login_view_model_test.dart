@@ -18,6 +18,7 @@ void main() {
       late LoginViewModel loginViewModel;
       late MockSecureStorage secureStorage;
       late MockLogInUseCase mockLogInUseCase;
+      late MockLogInStorageUseCase mockLogInStorageUseCase;
       late MockBuildContext mockBuildContext;
       late ProviderContainer providerContainer;
       const loginModel = LoginModel(
@@ -30,9 +31,13 @@ void main() {
       setUp(
         () {
           mockLogInUseCase = MockLogInUseCase();
+          mockLogInStorageUseCase = MockLogInStorageUseCase();
           secureStorage = MockSecureStorage();
           mockBuildContext = MockBuildContext();
-          loginViewModel = LoginViewModel(mockLogInUseCase);
+          loginViewModel = LoginViewModel(
+            mockLogInUseCase,
+            mockLogInStorageUseCase,
+          );
           providerContainer = ProviderContainer(
             overrides: [
               loginViewModelProvider.overrideWithValue(loginViewModel),

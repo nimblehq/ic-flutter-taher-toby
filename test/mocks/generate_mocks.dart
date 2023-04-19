@@ -10,6 +10,7 @@ import 'package:flutter_survey/api/service/authentication_service.dart';
 import 'package:flutter_survey/usecases/get_survey_details_use_case.dart';
 import 'package:flutter_survey/usecases/get_surveys_use_case.dart';
 import 'package:flutter_survey/usecases/log_in_use_case.dart';
+import 'package:flutter_survey/usecases/log_in_storage_use_case.dart';
 import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:mockito/annotations.dart';
 
@@ -21,6 +22,7 @@ import 'package:mockito/annotations.dart';
   SurveyStorage,
   SurveyRepository,
   LogInUseCase,
+  LogInStorageUseCase,
   AuthenticationService,
   AuthenticationRepository,
   SecureStorage,
