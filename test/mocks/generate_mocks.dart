@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_survey/api/repository/authentication_repository.dart';
 import 'package:flutter_survey/api/repository/survey_repository.dart';
 import 'package:flutter_survey/api/survey_service.dart';
-import 'package:flutter_survey/database/shared_preferences.dart';
 import 'package:flutter_survey/database/survey_storage.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_survey/usecases/get_cached_surveys_use_case.dart';
@@ -27,7 +26,6 @@ import 'package:mockito/annotations.dart';
   AuthenticationService,
   AuthenticationRepository,
   SecureStorage,
-  SharedPreferencesStorage,
   UseCaseException,
   DioError,
 ])
