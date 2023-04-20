@@ -1,3 +1,4 @@
+import 'package:flutter_survey/api/response/decoder/response_decoder.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -18,7 +19,8 @@ class SurveyDetailsResponse {
   });
 
   factory SurveyDetailsResponse.fromJson(Map<String, dynamic> json) {
-    return _$SurveyDetailsResponseFromJson(json);
+    final decodedJson = decodeJsonFromData(json);
+    return _$SurveyDetailsResponseFromJson(decodedJson);
   }
 
   String getHdCoverImageUrl() {

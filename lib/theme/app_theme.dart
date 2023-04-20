@@ -6,7 +6,7 @@ import 'package:flutter_survey/theme/app_dimensions.dart';
 class AppTheme {
   static ThemeData light() => ThemeData(
         colorScheme: const ColorScheme.light(
-          primary: AppColors.blackRussian,
+          primary: Colors.white,
         ),
         fontFamily: FontFamily.neuzeit,
         elevatedButtonTheme: ElevatedButtonThemeData(
