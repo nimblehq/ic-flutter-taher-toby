@@ -23,6 +23,8 @@ class AppDimensions {
   static const double textSize28 = 28;
   static const double textSize34 = 34;
 
+  static const answerSmileyTextSize = 25.0;
+
   static const homeAvatarSize = 36.0;
   static const homeSurveyPageIndicatorSize = 8.0;
   static const homeSkeletonLoadingDefaultHeight = 20.0;
