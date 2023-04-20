@@ -29,7 +29,7 @@ class FormViewModel extends StateNotifier<FormState> {
       _surveyDetails.add(result.value);
       state = const FormState.loadSurveyDetailsSuccess();
     } else {
-      _error.add((result as Failed).getErrorMessage());
+      _error.add((result as Failed).getNetworkErrorMessage());
       state = const FormState.loadSurveyDetailsError();
     }
   }
