@@ -23,11 +23,12 @@ class LoginViewModel extends StateNotifier<LoginState> {
     final result = await _logInUseCase.call(input);
     if (result is Success<LoginModel>) {
       final LoginModel loginData = result.value;
-      try {
-        _storeAuthTokenUseCase.save(loginData);
+      final dataSaverResult = await _storeAuthTokenUseCase.call(loginData);
+      if (dataSaverResult is Success) {
         state = const LoginState.loginSuccess();
-      } catch (exception) {
-        state = LoginState.loginError((exception as Failed).getErrorMessage());
+      } else {
+        state = LoginState.loginError(
+            (dataSaverResult as Failed).getErrorMessage());
       }
     } else {
       final String apiError = (result as Failed).getErrorMessage();

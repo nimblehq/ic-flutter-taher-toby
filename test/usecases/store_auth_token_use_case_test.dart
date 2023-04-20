@@ -25,9 +25,18 @@ void main() {
         refreshToken: "refreshToken",
         createdAt: 1,
       );
-      storeAuthTokenUseCase.save(loginModel);
-      await untilCalled(mockSecureStorage.writeSecureData(any, any));
+      storeAuthTokenUseCase.call(loginModel);
+      await untilCalled(
+          mockSecureStorage.writeSecureData(accessTokenKey, "accessToken"));
+      await untilCalled(
+          mockSecureStorage.writeSecureData(refreshTokenKey, "refreshToken"));
+      await untilCalled(
+          mockSecureStorage.writeSecureData(tokenTypeKey, "tokenType"));
       verify(mockSecureStorage.writeSecureData(accessTokenKey, "accessToken"))
+          .called(1);
+      verify(mockSecureStorage.writeSecureData(refreshTokenKey, "refreshToken"))
+          .called(1);
+      verify(mockSecureStorage.writeSecureData(tokenTypeKey, "tokenType"))
           .called(1);
     });
   });

@@ -1,7 +1,6 @@
 import 'package:flutter_survey/ui/login/login_screen.dart';
 import 'package:flutter_survey/ui/login/login_state.dart';
 import 'package:flutter_survey/ui/login/login_view_model.dart';
-import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +15,6 @@ void main() {
     'LoginViewModelTest',
     () {
       late LoginViewModel loginViewModel;
-      late MockSecureStorage secureStorage;
       late MockLogInUseCase mockLogInUseCase;
       late MockStoreAuthTokenUseCase mockStoreAuthTokenUseCase;
       late ProviderContainer providerContainer;
@@ -31,7 +29,6 @@ void main() {
         () {
           mockLogInUseCase = MockLogInUseCase();
           mockStoreAuthTokenUseCase = MockStoreAuthTokenUseCase();
-          secureStorage = MockSecureStorage();
           loginViewModel = LoginViewModel(
             mockLogInUseCase,
             mockStoreAuthTokenUseCase,
@@ -60,8 +57,9 @@ void main() {
           when(mockLogInUseCase.call(any)).thenAnswer(
             (_) async => Success(loginModel),
           );
-          when(secureStorage.readSecureData(accessTokenKey))
-              .thenAnswer((_) async => loginModel.accessToken);
+          when(mockStoreAuthTokenUseCase.call(any)).thenAnswer(
+            (_) async => Success(null),
+          );
           final stateStream = loginViewModel.stream;
           expect(
             stateStream,
@@ -73,17 +71,39 @@ void main() {
             ),
           );
           loginViewModel.logIn("email@gmail.com", "password1234");
-          expect(
-            secureStorage.readSecureData(accessTokenKey),
-            completion(
-              equals(loginModel.accessToken),
-            ),
-          );
-          await untilCalled(mockStoreAuthTokenUseCase.save(any));
-          verify(mockStoreAuthTokenUseCase.save(any)).called(1);
         },
       );
 
+      test(
+        'When logging in successfull but storing data is failed it emits loginError state',
+        () async {
+          final mockException = MockUseCaseException();
+          when(mockException.actualException)
+              .thenReturn(const NetworkExceptions.unableToProcess());
+          when(mockLogInUseCase.call(any)).thenAnswer(
+            (_) async => Success(loginModel),
+          );
+          when(mockStoreAuthTokenUseCase.call(any)).thenAnswer(
+            (_) async => Failed(mockException),
+          );
+
+          final stateStream = loginViewModel.stream;
+          expect(
+            stateStream,
+            emitsInOrder(
+              [
+                const LoginState.loading(),
+                LoginState.loginError(
+                  NetworkExceptions.getErrorMessage(
+                    const NetworkExceptions.unableToProcess(),
+                  ),
+                ),
+              ],
+            ),
+          );
+          loginViewModel.logIn("email@gmail.com", "password1234");
+        },
+      );
       test(
         'When logging in failed it emits liginError state',
         () {
