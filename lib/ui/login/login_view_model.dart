@@ -2,16 +2,16 @@ import 'package:flutter_survey/model/login_model.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/ui/login/login_state.dart';
-import 'package:flutter_survey/usecases/auth_token_storage_use_case.dart';
+import 'package:flutter_survey/usecases/store_auth_token_use_case.dart';
 import 'package:flutter_survey/usecases/log_in_use_case.dart';
 
 class LoginViewModel extends StateNotifier<LoginState> {
-  final LogInUseCase _loginUseCase;
-  final AuthTokenStorageUseCase _authTokenStorageUseCase;
+  final LogInUseCase _logInUseCase;
+  final StoreAuthTokenUseCase _storeAuthTokenUseCase;
 
   LoginViewModel(
-    this._loginUseCase,
-    this._authTokenStorageUseCase,
+    this._logInUseCase,
+    this._storeAuthTokenUseCase,
   ) : super(const LoginState.init());
 
   void logIn(String email, String password) async {
@@ -20,11 +20,15 @@ class LoginViewModel extends StateNotifier<LoginState> {
       email: email,
       password: password,
     );
-    final result = await _loginUseCase.call(input);
+    final result = await _logInUseCase.call(input);
     if (result is Success<LoginModel>) {
       final LoginModel loginData = result.value;
-      _authTokenStorageUseCase.save(loginData);
-      state = const LoginState.loginSuccess();
+      try {
+        _storeAuthTokenUseCase.save(loginData);
+        state = const LoginState.loginSuccess();
+      } catch (exception) {
+        state = LoginState.loginError((exception as Failed).getErrorMessage());
+      }
     } else {
       final String apiError = (result as Failed).getErrorMessage();
       state = LoginState.loginError(apiError);

@@ -18,7 +18,7 @@ void main() {
       late LoginViewModel loginViewModel;
       late MockSecureStorage secureStorage;
       late MockLogInUseCase mockLogInUseCase;
-      late MockAuthTokenStorageUseCase mockAuthTokenStorageUseCase;
+      late MockStoreAuthTokenUseCase mockStoreAuthTokenUseCase;
       late ProviderContainer providerContainer;
       const loginModel = LoginModel(
         accessToken: "accessToken",
@@ -30,11 +30,11 @@ void main() {
       setUp(
         () {
           mockLogInUseCase = MockLogInUseCase();
-          mockAuthTokenStorageUseCase = MockAuthTokenStorageUseCase();
+          mockStoreAuthTokenUseCase = MockStoreAuthTokenUseCase();
           secureStorage = MockSecureStorage();
           loginViewModel = LoginViewModel(
             mockLogInUseCase,
-            mockAuthTokenStorageUseCase,
+            mockStoreAuthTokenUseCase,
           );
           providerContainer = ProviderContainer(
             overrides: [
@@ -55,7 +55,7 @@ void main() {
         },
       );
       test(
-        'When credential provided in correct format, login success occurred and token stored',
+        'When logging in & storing the token successfully, it emits loginSuccess state to navigate to the Home screen',
         () async {
           when(mockLogInUseCase.call(any)).thenAnswer(
             (_) async => Success(loginModel),
@@ -79,13 +79,13 @@ void main() {
               equals(loginModel.accessToken),
             ),
           );
-          await untilCalled(mockAuthTokenStorageUseCase.save(any));
-          verify(mockAuthTokenStorageUseCase.save(any)).called(1);
+          await untilCalled(mockStoreAuthTokenUseCase.save(any));
+          verify(mockStoreAuthTokenUseCase.save(any)).called(1);
         },
       );
 
       test(
-        'When credential provided in correct format, but wrong value login error occurred',
+        'When logging in failed it emits liginError state',
         () {
           final mockException = MockUseCaseException();
           when(mockException.actualException)

@@ -8,7 +8,7 @@ import 'package:flutter_survey/ui/login/login_state.dart';
 import 'package:flutter_survey/ui/login/login_view_model.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_survey/usecases/auth_token_storage_use_case.dart';
+import 'package:flutter_survey/usecases/store_auth_token_use_case.dart';
 import 'package:flutter_survey/usecases/log_in_use_case.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +19,7 @@ final loginViewModelProvider =
     StateNotifierProvider.autoDispose<LoginViewModel, LoginState>((ref) {
   return LoginViewModel(
     getIt.get<LogInUseCase>(),
-    getIt.get<AuthTokenStorageUseCase>(),
+    getIt.get<StoreAuthTokenUseCase>(),
   );
 });
 
@@ -238,7 +238,7 @@ class LoginScreenState extends ConsumerState<LoginScreen>
             password,
           );
     } else {
-      _showError(AppLocalizations.of(context)!.auth_error);
+      _showError(AppLocalizations.of(context)!.login_validation_error);
     }
   }
 
