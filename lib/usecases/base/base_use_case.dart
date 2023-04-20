@@ -23,9 +23,3 @@ abstract class SimpleUseCase<T> {
 
   T call();
 }
-
-abstract class DataSaverUseCase<T> {
-  const DataSaverUseCase();
-
-  void save(T data);
-}
