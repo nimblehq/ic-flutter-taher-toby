@@ -37,7 +37,6 @@ class SurveyApp extends StatelessWidget {
       routeInformationProvider: Routes.router.routeInformationProvider,
       routeInformationParser: Routes.router.routeInformationParser,
       routerDelegate: Routes.router.routerDelegate,
-      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -21,6 +21,7 @@ class FormSurveyQuestionPage extends StatelessWidget {
           horizontal: AppDimensions.spacing16,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildQuestionCounter(context),
             const SizedBox(height: AppDimensions.spacing8),
@@ -31,27 +32,17 @@ class FormSurveyQuestionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildQuestionCounter(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Text(
+  Widget _buildQuestionCounter(BuildContext context) => Text(
         "$questionIndex/$questionTotal",
         style: Theme.of(context)
             .textTheme
             .headlineSmall
             ?.copyWith(color: AppColors.white50),
-      ),
-    );
-  }
+      );
 
-  Widget _buildQuestion(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Text(
+  Widget _buildQuestion(BuildContext context) => Text(
         // TODO: Add integration question page #25
         "How fulfilled did you feel during this WFH period?",
         style: Theme.of(context).textTheme.titleLarge,
-      ),
-    );
-  }
+      );
 }

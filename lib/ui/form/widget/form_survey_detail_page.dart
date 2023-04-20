@@ -16,7 +16,7 @@ class FormSurveyDetailPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const BackButton(color: Colors.white),
+        const SafeArea(child: BackButton(color: Colors.white)),
         const SizedBox(height: AppDimensions.spacing10),
         Padding(
           padding: const EdgeInsets.symmetric(

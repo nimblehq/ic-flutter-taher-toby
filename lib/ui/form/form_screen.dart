@@ -112,11 +112,20 @@ class FormScreenState extends ConsumerState<FormScreen> {
               },
             ),
             _buildCloseButton(context),
-            _buildStartSurveyButton(),
-            _buildNextSurveyButton(),
-            _buildSubmitSurveyButton()
+            Align(
+              alignment: Alignment.bottomRight,
+              child: _buildStartSurveyButton(),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: _buildNextSurveyButton(),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: _buildSubmitSurveyButton(),
+            ),
           ] else ...[
-            const BackButton(color: Colors.white)
+            const SafeArea(child: BackButton(color: Colors.white))
           ],
           if (isLoading) _buildCircularProgressIndicator()
         ],
@@ -133,23 +142,23 @@ class FormScreenState extends ConsumerState<FormScreen> {
   Widget _buildCloseButton(BuildContext context) {
     return Visibility(
       visible: _showCloseButton,
-      child: Align(
-        alignment: Alignment.topRight,
-        child: RawMaterialButton(
-          shape: const CircleBorder(),
-          fillColor: AppColors.white20,
-          constraints: const BoxConstraints.tightFor(
-            width: AppDimensions.closeButtonSize,
-            height: AppDimensions.closeButtonSize,
+      child: SafeArea(
+        child: Align(
+          alignment: Alignment.topRight,
+          child: RawMaterialButton(
+            shape: const CircleBorder(),
+            fillColor: AppColors.white20,
+            constraints: const BoxConstraints.tightFor(
+              width: AppDimensions.closeButtonSize,
+              height: AppDimensions.closeButtonSize,
+            ),
+            child: const Icon(
+              Icons.close,
+              color: Colors.white,
+              size: AppDimensions.closeButtonIconSize,
+            ),
+            onPressed: () => _appNavigator.navigateBack(context),
           ),
-          child: const Icon(
-            Icons.close,
-            color: Colors.white,
-            size: AppDimensions.closeButtonIconSize,
-          ),
-          onPressed: () {
-            _appNavigator.navigateBack(context);
-          },
         ),
       ),
     );
@@ -159,18 +168,10 @@ class FormScreenState extends ConsumerState<FormScreen> {
         visible: _showStartSurveyButton,
         child: Padding(
           padding: const EdgeInsets.all(AppDimensions.spacing20),
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: ElevatedButton(
-              onPressed: () {
-                _pageController.nextPage(
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeInOut,
-                );
-              },
-              child: Text(
-                AppLocalizations.of(context)!.start_survey,
-              ),
+          child: ElevatedButton(
+            onPressed: () => _navigateNextPage(),
+            child: Text(
+              AppLocalizations.of(context)!.start_survey,
             ),
           ),
         ),
@@ -180,33 +181,29 @@ class FormScreenState extends ConsumerState<FormScreen> {
         visible: _showNextSurveyButton,
         child: Padding(
           padding: const EdgeInsets.all(AppDimensions.spacing20),
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: NextButton(
-              onNextButtonPressed: () {
-                _pageController.nextPage(
-                  duration: const Duration(milliseconds: _navigationDuration),
-                  curve: Curves.easeInOut,
-                );
-              },
-            ),
+          child: NextButton(
+            onNextButtonPressed: () => _navigateNextPage(),
           ),
         ),
       );
+
+  void _navigateNextPage() {
+    _pageController.nextPage(
+      duration: const Duration(milliseconds: _navigationDuration),
+      curve: Curves.easeInOut,
+    );
+  }
 
   Widget _buildSubmitSurveyButton() => Visibility(
         visible: _showSubmitSurveyButton,
         child: Padding(
           padding: const EdgeInsets.all(AppDimensions.spacing20),
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: ElevatedButton(
-              onPressed: () {
-                // TODO: Integrate click-event from survey details #25
-              },
-              child: Text(
-                AppLocalizations.of(context)!.submit_survey,
-              ),
+          child: ElevatedButton(
+            onPressed: () {
+              // TODO: Integrate click-event from survey details #25
+            },
+            child: Text(
+              AppLocalizations.of(context)!.submit_survey,
             ),
           ),
         ),
