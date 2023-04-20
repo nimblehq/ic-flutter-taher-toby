@@ -9,10 +9,15 @@ void main() {
   group('StoreAuthTokenUseCaseTest', () {
     late StoreAuthTokenUseCase storeAuthTokenUseCase;
     late MockSecureStorage mockSecureStorage;
+    late MockSharedPreferencesStorage mockSharedPreferencesStorage;
 
     setUp(() async {
       mockSecureStorage = MockSecureStorage();
-      storeAuthTokenUseCase = StoreAuthTokenUseCase(mockSecureStorage);
+      mockSharedPreferencesStorage = MockSharedPreferencesStorage();
+      storeAuthTokenUseCase = StoreAuthTokenUseCase(
+        mockSecureStorage,
+        mockSharedPreferencesStorage,
+      );
     });
 
     test(
