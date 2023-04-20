@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/api/response/question_response.dart';
 import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
+import 'package:flutter_survey/ui/form/widget/form_survey_answer_smiley.dart';
 
 class FormSurveyQuestionPage extends StatelessWidget {
   final QuestionModel question;
@@ -29,6 +31,8 @@ class FormSurveyQuestionPage extends StatelessWidget {
             _buildQuestionCounter(context),
             const SizedBox(height: AppDimensions.spacing8),
             _buildQuestion(context),
+            const SizedBox(height: AppDimensions.spacing200),
+            _buildAnswer(context)
           ],
         ),
       ),
@@ -47,4 +51,17 @@ class FormSurveyQuestionPage extends StatelessWidget {
         question.text,
         style: Theme.of(context).textTheme.titleLarge,
       );
+
+  Widget _buildAnswer(BuildContext context) {
+    final displayType = question.displayType;
+    switch (displayType) {
+      case DisplayType.intro:
+      case DisplayType.outro:
+        return Container();
+      case DisplayType.smiley:
+        return const FormSurveyAnswerSmiley();
+      default:
+        return Text(displayType.name);
+    }
+  }
 }
