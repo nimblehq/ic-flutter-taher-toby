@@ -78,8 +78,7 @@ void main() {
         'When logging in successfull but storing data is failed it emits loginError state',
         () async {
           final mockException = MockUseCaseException();
-          when(mockException.actualException)
-              .thenReturn(const NetworkExceptions.unableToProcess());
+          when(mockException.actualException).thenReturn(Exception());
           when(mockLogInUseCase.call(any)).thenAnswer(
             (_) async => Success(loginModel),
           );
@@ -93,11 +92,7 @@ void main() {
             emitsInOrder(
               [
                 const LoginState.loading(),
-                LoginState.loginError(
-                  NetworkExceptions.getErrorMessage(
-                    const NetworkExceptions.unableToProcess(),
-                  ),
-                ),
+                LoginState.loginError(mockException.toString()),
               ],
             ),
           );

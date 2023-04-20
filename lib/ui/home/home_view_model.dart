@@ -45,7 +45,7 @@ class HomeViewModel extends StateNotifier<HomeState> {
       _surveys.add(newSurveys);
       state = const HomeState.loadSurveysSuccess();
     } else {
-      _error.add((result as Failed).getErrorMessage());
+      _error.add((result as Failed).getNetworkErrorMessage());
       state = const HomeState.loadSurveysError();
     }
   }

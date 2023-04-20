@@ -31,7 +31,7 @@ class LoginViewModel extends StateNotifier<LoginState> {
             (dataSaverResult as Failed).getErrorMessage());
       }
     } else {
-      final String apiError = (result as Failed).getErrorMessage();
+      final String apiError = (result as Failed).getNetworkErrorMessage();
       state = LoginState.loginError(apiError);
     }
   }
