@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'login_request.g.dart';
 
-const String grantType = "password";
+const String grantTypePassword = "password";
 
 @JsonSerializable()
 class LoginRequest {

@@ -58,5 +58,40 @@ void main() {
         expect(result, throwsA(isA<NetworkExceptions>()));
       },
     );
+
+    test(
+      "When refresh token success, it returns new token data",
+      () async {
+        final json =
+            await FileUtils.loadFile('test/mock_responses/login_data.json');
+        final loginResponse = LoginResponse.fromJson(json);
+
+        when(mockAuthenticationService.getAuthToken(any))
+            .thenAnswer((_) async => loginResponse);
+
+        final loginModel = await authenticationRepository.getAuthToken(
+            refreshToken: 'refreshToken');
+
+        expect(loginModel.accessToken,
+            "lbxD2K2BjbYtNzz8xjvh2FvSKx838KBCf79q773kq2c");
+        expect(loginModel.tokenType, 'Bearer');
+        expect(loginModel.refreshToken,
+            '3zJz2oW0njxlj_I3ghyUBF7ZfdQKYXd2n0ODlMkAjHc');
+      },
+    );
+
+    test(
+      "When refresh token failed, it emits network exception",
+      () async {
+        final json =
+            await FileUtils.loadFile('test/mock_responses/login_data.json');
+
+        when(mockAuthenticationService.getAuthToken(any))
+            .thenThrow(MockDioError());
+        result() =>
+            authenticationRepository.getAuthToken(refreshToken: 'refreshToken');
+        expect(result, throwsA(isA<NetworkExceptions>()));
+      },
+    );
   });
 }
