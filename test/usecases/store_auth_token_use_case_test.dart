@@ -1,4 +1,4 @@
-import 'package:flutter_survey/model/login_model.dart';
+import 'package:flutter_survey/model/auth_token_model.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_survey/usecases/store_auth_token_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,14 +18,14 @@ void main() {
     test(
         'When save execution has succeeded, data saved in secure storage successfully',
         () async {
-      const loginModel = LoginModel(
+      const authTokenModel = AuthTokenModel(
         accessToken: "accessToken",
         tokenType: "tokenType",
         expiresIn: 10,
         refreshToken: "refreshToken",
         createdAt: 1,
       );
-      final result = await storeAuthTokenUseCase.call(loginModel);
+      final result = await storeAuthTokenUseCase.call(authTokenModel);
       expect(result, isA<Success>());
       expect((result as Success).value, null);
     });
@@ -35,14 +35,14 @@ void main() {
       final exception = Exception("storage exception");
       when(mockSecureStorage.writeSecureData(any, any))
           .thenAnswer((_) => Future.error(exception));
-      const loginModel = LoginModel(
+      const authTokenModel = AuthTokenModel(
         accessToken: "accessToken",
         tokenType: "tokenType",
         expiresIn: 10,
         refreshToken: "refreshToken",
         createdAt: 1,
       );
-      final result = await storeAuthTokenUseCase.call(loginModel);
+      final result = await storeAuthTokenUseCase.call(authTokenModel);
       expect(result, isA<Failed>());
       expect((result as Failed).exception.actualException, exception);
     });

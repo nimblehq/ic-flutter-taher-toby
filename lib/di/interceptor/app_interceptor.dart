@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:flutter_survey/di/di.dart';
-import 'package:flutter_survey/model/login_model.dart';
+import 'package:flutter_survey/model/auth_token_model.dart';
 import 'package:flutter_survey/usecases/refresh_token_use_case.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_survey/usecases/store_auth_token_use_case.dart';
@@ -59,12 +59,12 @@ class AppInterceptor extends Interceptor {
           getIt.get<StoreAuthTokenUseCase>();
       final String refreshToken =
           await _secureStorage.readSecureData(refreshTokenKey) ?? '';
-      final result = await refreshTokenUseCase.call(refreshToken);
-      if (result is Success<LoginModel>) {
-        LoginModel tokenData = result.value;
-        final String accessToken = tokenData.accessToken;
-        final String tokenType = tokenData.tokenType;
-        storeAuthTokenUseCase.call(tokenData);
+      final refreshTokenResult = await refreshTokenUseCase.call(refreshToken);
+      if (refreshTokenResult is Success<AuthTokenModel>) {
+        AuthTokenModel authTokenModel = refreshTokenResult.value;
+        final String accessToken = authTokenModel.accessToken;
+        final String tokenType = authTokenModel.tokenType;
+        storeAuthTokenUseCase.call(authTokenModel);
         error.requestOptions.headers[_authorizationHeader] =
             '$tokenType $accessToken';
         final options = Options(
@@ -83,7 +83,7 @@ class AppInterceptor extends Interceptor {
       }
     } catch (exception) {
       final errorString = exception.toString();
-      log('Exception occured $errorString');
+      log('Exception occured when tyr to rfresh token: $errorString');
       // To fix silent error `Error: Bad state: Future already completed` commented the call to handler
       // error details: https://stackoverflow.com/questions/73106834/
       // if (exception is DioError) {

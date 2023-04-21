@@ -1,5 +1,5 @@
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
-import 'package:flutter_survey/model/login_model.dart';
+import 'package:flutter_survey/model/auth_token_model.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_survey/usecases/refresh_token_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,7 +18,7 @@ void main() {
 
     test('When call execution has succeeded, it returns a Success result',
         () async {
-      const loginModel = LoginModel(
+      const authTokenModel = AuthTokenModel(
         accessToken: "accessToken",
         tokenType: "tokenType",
         expiresIn: 10,
@@ -27,20 +27,20 @@ void main() {
       );
       when(
         mockAuthenticationRepository.getAuthToken(refreshToken: 'refreshToken'),
-      ).thenAnswer((_) async => loginModel);
+      ).thenAnswer((_) async => authTokenModel);
 
       final result = await refreshTokenUseCase.call('refreshToken');
 
       expect(result, isA<Success>());
-      expect((result as Success).value, loginModel);
+      expect((result as Success).value, authTokenModel);
     });
 
     test('When call execution has failed, it returns a Failed result',
         () async {
       const exception = NetworkExceptions.badRequest();
-      when(
-        mockAuthenticationRepository.getAuthToken(refreshToken: 'refreshToken')
-      ).thenAnswer((_) => Future.error(exception));
+      when(mockAuthenticationRepository.getAuthToken(
+              refreshToken: 'refreshToken'))
+          .thenAnswer((_) => Future.error(exception));
 
       final result = await refreshTokenUseCase.call('refreshToken');
 

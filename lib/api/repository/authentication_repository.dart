@@ -1,18 +1,18 @@
 import 'package:flutter_survey/api/request/login_request.dart';
 import 'package:flutter_survey/api/request/refresh_token_request.dart';
 import 'package:flutter_survey/api/service/authentication_service.dart';
-import 'package:flutter_survey/model/login_model.dart';
+import 'package:flutter_survey/model/auth_token_model.dart';
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_survey/env.dart';
 
 abstract class AuthenticationRepository {
-  Future<LoginModel> logIn({
+  Future<AuthTokenModel> logIn({
     required String email,
     required String password,
   });
 
-  Future<LoginModel> getAuthToken({
+  Future<AuthTokenModel> getAuthToken({
     required String refreshToken,
   });
 }
@@ -24,7 +24,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   AuthenticationRepositoryImpl(this._autenticationService);
 
   @override
-  Future<LoginModel> logIn({
+  Future<AuthTokenModel> logIn({
     required String email,
     required String password,
   }) async {
@@ -37,14 +37,14 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         clientSecret: Env.restApiClientSecret,
       );
       final response = await _autenticationService.logIn(loginRequest);
-      return LoginModel.fromResponse(response);
+      return AuthTokenModel.fromResponse(response);
     } catch (exception) {
       throw NetworkExceptions.fromDioException(exception);
     }
   }
 
   @override
-  Future<LoginModel> getAuthToken({
+  Future<AuthTokenModel> getAuthToken({
     required String refreshToken,
   }) async {
     try {
@@ -54,8 +54,9 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         clientSecret: Env.restApiClientSecret,
         refreshToken: refreshToken,
       );
-      final response = await _autenticationService.getAuthToken(refreshTokenRequest);
-      return LoginModel.fromResponse(response);
+      final response =
+          await _autenticationService.getAuthToken(refreshTokenRequest);
+      return AuthTokenModel.fromResponse(response);
     } catch (exception) {
       throw NetworkExceptions.fromDioException(exception);
     }

@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_survey/api/response/login_response.dart';
 
-class LoginModel extends Equatable {
+class AuthTokenModel extends Equatable {
   final String accessToken;
   final String tokenType;
   final int expiresIn;
   final String refreshToken;
   final int createdAt;
 
-  const LoginModel({
+  const AuthTokenModel({
     required this.accessToken,
     required this.tokenType,
     required this.expiresIn,
@@ -20,8 +20,8 @@ class LoginModel extends Equatable {
   List<Object?> get props =>
       [accessToken, tokenType, expiresIn, refreshToken, createdAt];
 
-  factory LoginModel.fromResponse(LoginResponse response) {
-    return LoginModel(
+  factory AuthTokenModel.fromResponse(LoginResponse response) {
+    return AuthTokenModel(
       accessToken: response.accessToken ?? "",
       tokenType: response.tokenType ?? "",
       expiresIn: response.expiresIn ?? 0,

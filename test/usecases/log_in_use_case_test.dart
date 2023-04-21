@@ -1,5 +1,5 @@
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
-import 'package:flutter_survey/model/login_model.dart';
+import 'package:flutter_survey/model/auth_token_model.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_survey/usecases/log_in_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,7 +22,7 @@ void main() {
 
     test('When call execution has succeeded, it returns a Success result',
         () async {
-      const loginModel = LoginModel(
+      const authTokenModel = AuthTokenModel(
         accessToken: "accessToken",
         tokenType: "tokenType",
         expiresIn: 10,
@@ -35,12 +35,12 @@ void main() {
           email: "email",
           password: "password",
         ),
-      ).thenAnswer((_) async => loginModel);
+      ).thenAnswer((_) async => authTokenModel);
 
       final result = await loginUseCase.call(loginInput);
 
       expect(result, isA<Success>());
-      expect((result as Success).value, loginModel);
+      expect((result as Success).value, authTokenModel);
     });
 
     test('When call execution has failed, it returns a Failed result',
