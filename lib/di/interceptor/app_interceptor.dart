@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'dart:io';
-import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:flutter_survey/di/di.dart';
@@ -37,7 +36,6 @@ class AppInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    handler.next(err);
     final statusCode = err.response?.statusCode;
     if ((statusCode == HttpStatus.forbidden ||
             statusCode == HttpStatus.unauthorized) &&
@@ -82,15 +80,11 @@ class AppInterceptor extends Interceptor {
         handler.next(error);
       }
     } catch (exception) {
-      final errorString = exception.toString();
-      log('Exception occured when tyr to rfresh token: $errorString');
-      // To fix silent error `Error: Bad state: Future already completed` commented the call to handler
-      // error details: https://stackoverflow.com/questions/73106834/
-      // if (exception is DioError) {
-      //   handler.next(exception);
-      // } else {
-      //   handler.next(error);
-      // }
+      if (exception is DioError) {
+        handler.next(exception);
+      } else {
+        handler.next(error);
+      }
     }
   }
 }
