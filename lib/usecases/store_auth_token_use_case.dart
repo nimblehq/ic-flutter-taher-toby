@@ -19,7 +19,7 @@ class StoreAuthTokenUseCase extends UseCase<void, LoginModel> {
       await _secureStorage.writeSecureData(tokenTypeKey, input.tokenType);
       return Success(null);
     } catch (exception) {
-      throw Failed(UseCaseException(exception));
+      return Failed(UseCaseException(exception));
     }
   }
 }

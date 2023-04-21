@@ -75,7 +75,7 @@ void main() {
       );
 
       test(
-        'When logging in successfull but storing data is failed it emits loginError state',
+        'When logging in successfully but storing data is failed, it emits loginError state',
         () async {
           final mockException = MockUseCaseException();
           when(mockException.actualException).thenReturn(Exception());
@@ -92,7 +92,7 @@ void main() {
             emitsInOrder(
               [
                 const LoginState.loading(),
-                LoginState.loginError(mockException.toString()),
+                LoginState.loginError(mockException.actualException.toString()),
               ],
             ),
           );
@@ -100,7 +100,7 @@ void main() {
         },
       );
       test(
-        'When logging in failed it emits liginError state',
+        'When logging in failed, it emits liginError state',
         () {
           final mockException = MockUseCaseException();
           when(mockException.actualException)
