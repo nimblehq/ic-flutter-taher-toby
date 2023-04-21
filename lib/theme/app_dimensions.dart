@@ -25,8 +25,10 @@ class AppDimensions {
 
   static const homeAvatarSize = 36.0;
   static const homeSurveyPageIndicatorSize = 8.0;
-
   static const homeSkeletonLoadingDefaultHeight = 20.0;
+
+  static const closeButtonSize = 28.0;
+  static const closeButtonIconSize = 20.0;
 
   static const primaryButtonHeight = 56.0;
 }

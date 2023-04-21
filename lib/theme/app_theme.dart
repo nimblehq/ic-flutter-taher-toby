@@ -38,7 +38,7 @@ class AppTheme {
             // Small / Tag All Caps
             color: Colors.white,
             fontSize: AppDimensions.textSize15,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w800,
           ),
           bodySmall: TextStyle(
             // Regular / Paragraph

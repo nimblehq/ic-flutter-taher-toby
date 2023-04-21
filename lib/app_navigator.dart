@@ -31,6 +31,8 @@ class Routes {
 }
 
 abstract class AppNavigator {
+  void navigateBack(BuildContext context);
+
   void navigateToFormScreen({
     required BuildContext context,
     required String surveyId,
@@ -40,6 +42,9 @@ abstract class AppNavigator {
 @Injectable(as: AppNavigator)
 class AppNavigatorImpl extends AppNavigator {
   AppNavigatorImpl();
+
+  @override
+  void navigateBack(BuildContext context) => Navigator.of(context).pop();
 
   @override
   void navigateToFormScreen({
