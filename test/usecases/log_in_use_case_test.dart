@@ -17,9 +17,7 @@ void main() {
 
     setUp(() async {
       mockAuthenticationRepository = MockAuthenticationRepository();
-      loginUseCase = LogInUseCase(
-        mockAuthenticationRepository,
-      );
+      loginUseCase = LogInUseCase(mockAuthenticationRepository);
     });
 
     test('When call execution has succeeded, it returns a Success result',
