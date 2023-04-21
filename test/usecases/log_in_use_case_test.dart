@@ -9,7 +9,6 @@ import '../mocks/generate_mocks.mocks.dart';
 void main() {
   group('LoginUseCaseTest', () {
     late MockAuthenticationRepository mockAuthenticationRepository;
-    late MockSecureStorage mockSecureStorage;
     late LogInUseCase loginUseCase;
     final LoginInput loginInput = LoginInput(
       email: "email",
@@ -18,10 +17,8 @@ void main() {
 
     setUp(() async {
       mockAuthenticationRepository = MockAuthenticationRepository();
-      mockSecureStorage = MockSecureStorage();
       loginUseCase = LogInUseCase(
         mockAuthenticationRepository,
-        mockSecureStorage,
       );
     });
 
