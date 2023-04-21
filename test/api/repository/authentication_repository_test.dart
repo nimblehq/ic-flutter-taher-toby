@@ -1,6 +1,6 @@
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_survey/api/repository/authentication_repository.dart';
-import 'package:flutter_survey/api/response/login_response.dart';
+import 'package:flutter_survey/api/response/auth_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
 import 'package:mockito/mockito.dart';
@@ -30,10 +30,10 @@ void main() {
       () async {
         final json =
             await FileUtils.loadFile('test/mock_responses/login_data.json');
-        final loginResponse = LoginResponse.fromJson(json);
+        final authResponse = AuthResponse.fromJson(json);
 
         when(mockAuthenticationService.logIn(any))
-            .thenAnswer((_) async => loginResponse);
+            .thenAnswer((_) async => authResponse);
 
         final loginModel = await authenticationRepository.logIn(
           email: "email",
@@ -64,10 +64,10 @@ void main() {
       () async {
         final json =
             await FileUtils.loadFile('test/mock_responses/login_data.json');
-        final loginResponse = LoginResponse.fromJson(json);
+        final authResponse = AuthResponse.fromJson(json);
 
         when(mockAuthenticationService.getAuthToken(any))
-            .thenAnswer((_) async => loginResponse);
+            .thenAnswer((_) async => authResponse);
 
         final loginModel = await authenticationRepository.getAuthToken(
             refreshToken: 'refreshToken');
@@ -83,9 +83,6 @@ void main() {
     test(
       "When refresh token failed, it emits network exception",
       () async {
-        final json =
-            await FileUtils.loadFile('test/mock_responses/login_data.json');
-
         when(mockAuthenticationService.getAuthToken(any))
             .thenThrow(MockDioError());
         result() =>
