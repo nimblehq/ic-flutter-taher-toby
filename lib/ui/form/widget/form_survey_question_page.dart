@@ -31,8 +31,12 @@ class FormSurveyQuestionPage extends StatelessWidget {
             _buildQuestionCounter(context),
             const SizedBox(height: AppDimensions.spacing8),
             _buildQuestion(context),
-            const SizedBox(height: AppDimensions.spacing200),
-            _buildAnswer(context)
+            Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: _buildAnswer(context),
+              ),
+            )
           ],
         ),
       ),
