@@ -66,10 +66,10 @@ void main() {
             await FileUtils.loadFile('test/mock_responses/login_data.json');
         final authResponse = AuthResponse.fromJson(json);
 
-        when(mockAuthenticationService.getAuthToken(any))
+        when(mockAuthenticationService.refreshToken(any))
             .thenAnswer((_) async => authResponse);
 
-        final loginModel = await authenticationRepository.getAuthToken(
+        final loginModel = await authenticationRepository.refreshToken(
             refreshToken: 'refreshToken');
 
         expect(loginModel.accessToken,
@@ -83,10 +83,10 @@ void main() {
     test(
       "When refresh token failed, it emits network exception",
       () async {
-        when(mockAuthenticationService.getAuthToken(any))
+        when(mockAuthenticationService.refreshToken(any))
             .thenThrow(MockDioError());
         result() =>
-            authenticationRepository.getAuthToken(refreshToken: 'refreshToken');
+            authenticationRepository.refreshToken(refreshToken: 'refreshToken');
         expect(result, throwsA(isA<NetworkExceptions>()));
       },
     );

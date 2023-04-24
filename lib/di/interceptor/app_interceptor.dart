@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/model/auth_token_model.dart';
+import 'package:flutter_survey/usecases/get_auth_token_use_case.dart';
 import 'package:flutter_survey/usecases/refresh_token_use_case.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_survey/usecases/store_auth_token_use_case.dart';
@@ -14,6 +15,7 @@ class AppInterceptor extends Interceptor {
   final bool _requireAuthentication;
   final Dio _dio;
   final SecureStorage _secureStorage;
+
   AppInterceptor(
     this._requireAuthentication,
     this._dio,
@@ -55,9 +57,11 @@ class AppInterceptor extends Interceptor {
           getIt.get<RefreshTokenUseCase>();
       final StoreAuthTokenUseCase storeAuthTokenUseCase =
           getIt.get<StoreAuthTokenUseCase>();
-      final String refreshToken =
-          await _secureStorage.readSecureData(refreshTokenKey) ?? '';
-      final refreshTokenResult = await refreshTokenUseCase.call(refreshToken);
+      final GetAuthTokenUseCase getAuthTokenUseCase =
+          getIt.get<GetAuthTokenUseCase>();
+      final AuthTokenModel authTokenModel = await getAuthTokenUseCase.call();
+      final refreshTokenResult =
+          await refreshTokenUseCase.call(authTokenModel.refreshToken);
       if (refreshTokenResult is Success<AuthTokenModel>) {
         AuthTokenModel authTokenModel = refreshTokenResult.value;
         final String accessToken = authTokenModel.accessToken;

@@ -15,7 +15,7 @@ class RefreshTokenUseCase extends UseCase<AuthTokenModel, String> {
   @override
   Future<Result<AuthTokenModel>> call(String input) {
     return _authenticationRepository
-        .getAuthToken(refreshToken: input)
+        .refreshToken(refreshToken: input)
         // ignore: unnecessary_cast
         .then((value) => Success(value) as Result<AuthTokenModel>)
         .onError<NetworkExceptions>((ex, _) => Failed(UseCaseException(ex)));

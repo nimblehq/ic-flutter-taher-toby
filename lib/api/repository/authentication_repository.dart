@@ -12,7 +12,7 @@ abstract class AuthenticationRepository {
     required String password,
   });
 
-  Future<AuthTokenModel> getAuthToken({
+  Future<AuthTokenModel> refreshToken({
     required String refreshToken,
   });
 }
@@ -44,7 +44,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<AuthTokenModel> getAuthToken({
+  Future<AuthTokenModel> refreshToken({
     required String refreshToken,
   }) async {
     try {
@@ -55,7 +55,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         refreshToken: refreshToken,
       );
       final response =
-          await _autenticationService.getAuthToken(refreshTokenRequest);
+          await _autenticationService.refreshToken(refreshTokenRequest);
       return AuthTokenModel.fromResponse(response);
     } catch (exception) {
       throw NetworkExceptions.fromDioException(exception);

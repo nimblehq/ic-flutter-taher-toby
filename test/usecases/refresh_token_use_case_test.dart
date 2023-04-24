@@ -26,7 +26,7 @@ void main() {
         createdAt: 1,
       );
       when(
-        mockAuthenticationRepository.getAuthToken(refreshToken: 'refreshToken'),
+        mockAuthenticationRepository.refreshToken(refreshToken: 'refreshToken'),
       ).thenAnswer((_) async => authTokenModel);
 
       final result = await refreshTokenUseCase.call('refreshToken');
@@ -38,7 +38,7 @@ void main() {
     test('When call execution has failed, it returns a Failed result',
         () async {
       const exception = NetworkExceptions.badRequest();
-      when(mockAuthenticationRepository.getAuthToken(
+      when(mockAuthenticationRepository.refreshToken(
               refreshToken: 'refreshToken'))
           .thenAnswer((_) => Future.error(exception));
 

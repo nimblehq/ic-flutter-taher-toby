@@ -8,7 +8,7 @@ part 'authentication_service.g.dart';
 
 abstract class AuthenticationService {
   Future<AuthResponse> logIn(@Body() LoginRequest request);
-  Future<AuthResponse> getAuthToken(@Body() RefreshTokenRequest request);
+  Future<AuthResponse> refreshToken(@Body() RefreshTokenRequest request);
 }
 
 @RestApi()
@@ -22,5 +22,5 @@ abstract class AuthenticationServiceImpl extends AuthenticationService {
 
   @override
   @POST('/oauth/token')
-  Future<AuthResponse> getAuthToken(@Body() RefreshTokenRequest request);
+  Future<AuthResponse> refreshToken(@Body() RefreshTokenRequest request);
 }
