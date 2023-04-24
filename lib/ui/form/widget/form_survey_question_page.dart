@@ -59,9 +59,6 @@ class FormSurveyQuestionPage extends StatelessWidget {
   Widget _buildAnswer(BuildContext context) {
     final displayType = question.displayType;
     switch (displayType) {
-      case DisplayType.intro:
-      case DisplayType.outro:
-        return Container();
       case DisplayType.smiley:
         return const FormSurveyAnswerSmiley();
       default:

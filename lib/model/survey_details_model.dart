@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_survey/api/response/question_response.dart';
 import 'package:flutter_survey/api/response/survey_details_response.dart';
 import 'package:flutter_survey/model/question_model.dart';
 
@@ -28,6 +29,11 @@ class SurveyDetailsModel extends Equatable {
       coverImageUrl: response.getHdCoverImageUrl(),
       questions: (response.questions ?? [])
           .map((question) => QuestionModel.fromResponse(question))
+          .where(
+            (element) =>
+                element.displayType != DisplayType.intro &&
+                element.displayType != DisplayType.outro,
+          )
           .toList(),
     );
   }
