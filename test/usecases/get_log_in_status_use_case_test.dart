@@ -25,10 +25,10 @@ void main() {
       expect(result, true);
     });
 
-    test('When access token and token type not stored, it returns a true status',
+    test(
+        'When access token and token type not stored, it returns a false status',
         () async {
-      when(mockSecureStorage.readSecureData(any))
-          .thenAnswer((_) async => null);
+      when(mockSecureStorage.readSecureData(any)).thenAnswer((_) async => null);
       final result = await getLogInStatusUseCase.call();
 
       expect(result, false);

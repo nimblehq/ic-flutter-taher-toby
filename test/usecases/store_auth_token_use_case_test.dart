@@ -12,9 +12,7 @@ void main() {
 
     setUp(() async {
       mockSecureStorage = MockSecureStorage();
-      storeAuthTokenUseCase = StoreAuthTokenUseCase(
-        mockSecureStorage,
-      );
+      storeAuthTokenUseCase = StoreAuthTokenUseCase(mockSecureStorage);
     });
 
     test(
