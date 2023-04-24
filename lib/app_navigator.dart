@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_survey/ui/app_starter/app_starter.dart';
+import 'package:flutter_survey/ui/app_starter/app_starter_screen.dart';
 import 'package:flutter_survey/ui/home/home_screen.dart';
 import 'package:flutter_survey/ui/form/form_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +16,7 @@ class Routes {
       GoRoute(
         path: _routePathRootScreen,
         builder: (BuildContext context, GoRouterState state) {
-          return AppStarter();
+          return const AppStarterScreen();
         },
         routes: [
           GoRoute(
