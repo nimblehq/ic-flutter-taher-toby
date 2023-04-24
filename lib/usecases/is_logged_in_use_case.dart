@@ -3,10 +3,10 @@ import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable()
-class GetLogInStatusUseCase extends SimpleUseCase<Future<bool>> {
+class IsLoggedInUseCase extends SimpleUseCase<Future<bool>> {
   final SecureStorage _secureStorage;
 
-  GetLogInStatusUseCase(this._secureStorage);
+  IsLoggedInUseCase(this._secureStorage);
 
   @override
   Future<bool> call() async {

@@ -63,12 +63,12 @@ class AppNavigatorImpl extends AppNavigator {
 
   @override
   void navigateToHomeScreen({required BuildContext context}) {
-    context.go('$_routePathRootScreen$_routePathHomeScreen');
+    context.replace('$_routePathRootScreen$_routePathHomeScreen');
   }
 
   @override
   void navigateToLoginScreen({required BuildContext context}) {
-    context.go('$_routePathRootScreen$_routePathLoginScreen');
+    context.replace('$_routePathRootScreen$_routePathLoginScreen');
   }
 
   @override

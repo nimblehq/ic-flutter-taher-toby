@@ -1,17 +1,17 @@
 import 'package:flutter_survey/database/secure_storage.dart';
-import 'package:flutter_survey/usecases/get_log_in_status_use_case.dart';
+import 'package:flutter_survey/usecases/is_logged_in_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import '../mocks/generate_mocks.mocks.dart';
 
 void main() {
-  group('GetLogInStatusUseCaseTest', () {
+  group('IsLoggedInnUseCaseTest', () {
     late MockSecureStorage mockSecureStorage;
-    late GetLogInStatusUseCase getLogInStatusUseCase;
+    late IsLoggedInUseCase isLoggedInUseCase;
 
     setUp(() async {
       mockSecureStorage = MockSecureStorage();
-      getLogInStatusUseCase = GetLogInStatusUseCase(mockSecureStorage);
+      isLoggedInUseCase = IsLoggedInUseCase(mockSecureStorage);
     });
 
     test('When access token and token type stored, it returns a true status',
@@ -20,7 +20,7 @@ void main() {
           .thenAnswer((_) async => 'accessToken');
       when(mockSecureStorage.readSecureData(tokenTypeKey))
           .thenAnswer((_) async => 'tokenType');
-      final result = await getLogInStatusUseCase.call();
+      final result = await isLoggedInUseCase.call();
 
       expect(result, true);
     });
@@ -29,7 +29,7 @@ void main() {
         'When access token and token type not stored, it returns a false status',
         () async {
       when(mockSecureStorage.readSecureData(any)).thenAnswer((_) async => null);
-      final result = await getLogInStatusUseCase.call();
+      final result = await isLoggedInUseCase.call();
 
       expect(result, false);
     });

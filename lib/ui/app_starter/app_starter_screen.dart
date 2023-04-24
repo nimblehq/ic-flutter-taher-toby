@@ -4,12 +4,12 @@ import 'package:flutter_survey/app_navigator.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/ui/app_starter/app_starter_state.dart';
 import 'package:flutter_survey/ui/app_starter/app_starter_view_model.dart';
-import 'package:flutter_survey/usecases/get_log_in_status_use_case.dart';
+import 'package:flutter_survey/usecases/is_logged_in_use_case.dart';
 
-final appStatretViewModelProvider =
+final appStarterViewModelProvider =
     StateNotifierProvider.autoDispose<AppStarterViewModel, AppStarterState>(
         (ref) {
-  return AppStarterViewModel(getIt.get<GetLogInStatusUseCase>());
+  return AppStarterViewModel(getIt.get<IsLoggedInUseCase>());
 });
 
 class AppStarterScreen extends ConsumerStatefulWidget {
@@ -26,13 +26,13 @@ class AppStarterScreenState extends ConsumerState<AppStarterScreen> {
 
   @override
   void initState() {
-    ref.read(appStatretViewModelProvider.notifier).checkLoginStatus();
+    ref.read(appStarterViewModelProvider.notifier).checkLoginStatus();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AppStarterState>(appStatretViewModelProvider, (_, appState) {
+    ref.listen<AppStarterState>(appStarterViewModelProvider, (_, appState) {
       appState.maybeWhen(
         showHomeScreen: () => _navigateToHomeScreen(),
         showLoginScreen: () => _navigateToLoginScreen(),

@@ -12,28 +12,28 @@ void main() {
     'AppStarterViewModelTest',
     () {
       late AppStarterViewModel appStarterViewModel;
-      late MockGetLogInStatusUseCase mockGetLogInStatusUseCase;
+      late MockIsLoggedInUseCase mockIsLoggedInUseCase;
       late ProviderContainer providerContainer;
 
       setUp(
         () {
-          mockGetLogInStatusUseCase = MockGetLogInStatusUseCase();
-          appStarterViewModel = AppStarterViewModel(mockGetLogInStatusUseCase);
+          mockIsLoggedInUseCase = MockIsLoggedInUseCase();
+          appStarterViewModel = AppStarterViewModel(mockIsLoggedInUseCase);
           providerContainer = ProviderContainer(
             overrides: [
-              appStatretViewModelProvider
+              appStarterViewModelProvider
                   .overrideWithValue(appStarterViewModel),
             ],
           );
           appStarterViewModel =
-              providerContainer.read(appStatretViewModelProvider.notifier);
+              providerContainer.read(appStarterViewModelProvider.notifier);
         },
       );
       test(
         'When starting the app init state will appear',
         () {
           expect(
-            providerContainer.read(appStatretViewModelProvider),
+            providerContainer.read(appStarterViewModelProvider),
             const AppStarterState.init(),
           );
         },
@@ -41,7 +41,7 @@ void main() {
       test(
         'When user previously logged in, it emits home screen state to navigate to the Home screen',
         () async {
-          when(mockGetLogInStatusUseCase.call()).thenAnswer((_) async => true);
+          when(mockIsLoggedInUseCase.call()).thenAnswer((_) async => true);
           final stateStream = appStarterViewModel.stream;
           expect(
             stateStream,
@@ -59,7 +59,7 @@ void main() {
       test(
         'When user previously not logged in, it emits login screen state to navigate to the login screen',
         () async {
-          when(mockGetLogInStatusUseCase.call()).thenAnswer((_) async => false);
+          when(mockIsLoggedInUseCase.call()).thenAnswer((_) async => false);
           final stateStream = appStarterViewModel.stream;
           expect(
             stateStream,
