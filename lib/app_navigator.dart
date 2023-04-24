@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/ui/app_starter/app_starter_screen.dart';
 import 'package:flutter_survey/ui/home/home_screen.dart';
-import 'package:flutter_survey/ui/login/login_screen.dart';
 import 'package:flutter_survey/ui/form/form_screen.dart';
+import 'package:flutter_survey/ui/login/login_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 
 const _routePathRootScreen = '/';
+const _routePathLoginScreen = 'login';
 const _routePathHomeScreen = 'home';
 const _routePathFormScreen = 'form';
 const _paramSurveyId = 'surveyId';
@@ -15,9 +17,15 @@ class Routes {
     routes: <GoRoute>[
       GoRoute(
         path: _routePathRootScreen,
-        builder: (BuildContext context, GoRouterState state) =>
-            const LoginScreen(),
+        builder: (BuildContext context, GoRouterState state) {
+          return const AppStarterScreen();
+        },
         routes: [
+          GoRoute(
+            path: _routePathLoginScreen,
+            builder: (BuildContext context, GoRouterState state) =>
+                const LoginScreen(),
+          ),
           GoRoute(
             path: _routePathHomeScreen,
             builder: (BuildContext context, GoRouterState state) =>
@@ -39,6 +47,7 @@ class Routes {
 abstract class AppNavigator {
   void navigateBack(BuildContext context);
   void navigateToHomeScreen({required BuildContext context});
+  void navigateToLoginScreen({required BuildContext context});
   void navigateToFormScreen({
     required BuildContext context,
     required String surveyId,
@@ -54,7 +63,12 @@ class AppNavigatorImpl extends AppNavigator {
 
   @override
   void navigateToHomeScreen({required BuildContext context}) {
-    context.go('$_routePathRootScreen$_routePathHomeScreen');
+    context.replace('$_routePathRootScreen$_routePathHomeScreen');
+  }
+
+  @override
+  void navigateToLoginScreen({required BuildContext context}) {
+    context.replace('$_routePathRootScreen$_routePathLoginScreen');
   }
 
   @override

@@ -7,9 +7,7 @@ import 'package:injectable/injectable.dart';
 class StoreAuthTokenUseCase extends UseCase<void, LoginModel> {
   final SecureStorage _secureStorage;
 
-  const StoreAuthTokenUseCase(
-    this._secureStorage,
-  );
+  const StoreAuthTokenUseCase(this._secureStorage);
 
   @override
   Future<Result<void>> call(LoginModel input) async {
