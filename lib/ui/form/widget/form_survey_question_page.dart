@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class FormSurveyQuestionPage extends StatelessWidget {
+  final QuestionModel question;
   final int questionIndex;
   final int questionTotal;
 
   const FormSurveyQuestionPage({
     Key? key,
+    required this.question,
     required this.questionIndex,
     required this.questionTotal,
   }) : super(key: key);
@@ -41,8 +44,7 @@ class FormSurveyQuestionPage extends StatelessWidget {
       );
 
   Widget _buildQuestion(BuildContext context) => Text(
-        // TODO: Add integration question page #25
-        "How fulfilled did you feel during this WFH period?",
+        question.text,
         style: Theme.of(context).textTheme.titleLarge,
       );
 }
