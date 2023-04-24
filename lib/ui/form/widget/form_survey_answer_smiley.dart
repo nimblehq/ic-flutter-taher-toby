@@ -20,20 +20,20 @@ class FormSurveyAnswerSmiley extends ConsumerWidget {
       width: double.infinity,
       height: AppDimensions.answerSmileyHeight,
       alignment: Alignment.center,
-      child: ListView(
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
-        children: [
-          for (final emoji in _emojis) ...[
-            GestureDetector(
-              onTap: () => emojiState.state = emoji,
-              child: Padding(
-                padding: const EdgeInsets.all(AppDimensions.spacing8),
-                child: _buildEmoji(emoji, ref),
-              ),
+        itemCount: _emojis.length,
+        itemBuilder: (context, index) {
+          final emoji = _emojis[index];
+          return GestureDetector(
+            onTap: () => emojiState.state = emoji,
+            child: Padding(
+              padding: const EdgeInsets.all(AppDimensions.spacing8),
+              child: _buildEmoji(emoji, ref),
             ),
-          ]
-        ],
+          );
+        },
       ),
     );
   }
