@@ -1,4 +1,3 @@
-import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:flutter_survey/ui/app_starter/app_starter_screen.dart';
 import 'package:flutter_survey/ui/app_starter/app_starter_state.dart';
 import 'package:flutter_survey/ui/app_starter/app_starter_view_model.dart';
@@ -13,13 +12,13 @@ void main() {
     'AppStarterViewModelTest',
     () {
       late AppStarterViewModel appStarterViewModel;
-      late MockSecureStorage mockSecureStorage;
+      late MockGetLogInStatusUseCase mockGetLogInStatusUseCase;
       late ProviderContainer providerContainer;
 
       setUp(
         () {
-          mockSecureStorage = MockSecureStorage();
-          appStarterViewModel = AppStarterViewModel(mockSecureStorage);
+          mockGetLogInStatusUseCase = MockGetLogInStatusUseCase();
+          appStarterViewModel = AppStarterViewModel(mockGetLogInStatusUseCase);
           providerContainer = ProviderContainer(
             overrides: [
               appStatretViewModelProvider
@@ -42,10 +41,7 @@ void main() {
       test(
         'When user previously logged in, it emits home screen state to navigate to the Home screen',
         () async {
-          when(mockSecureStorage.readSecureData(accessTokenKey))
-              .thenAnswer((_) async => 'accessToken');
-          when(mockSecureStorage.readSecureData(tokenTypeKey))
-              .thenAnswer((_) async => 'tokenType');
+          when(mockGetLogInStatusUseCase.call()).thenAnswer((_) async => true);
           final stateStream = appStarterViewModel.stream;
           expect(
             stateStream,
@@ -63,8 +59,7 @@ void main() {
       test(
         'When user previously not logged in, it emits login screen state to navigate to the login screen',
         () async {
-          when(mockSecureStorage.readSecureData(any))
-              .thenAnswer((_) async => null);
+          when(mockGetLogInStatusUseCase.call()).thenAnswer((_) async => false);
           final stateStream = appStarterViewModel.stream;
           expect(
             stateStream,

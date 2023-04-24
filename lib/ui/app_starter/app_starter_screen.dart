@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/ui/app_starter/app_starter_state.dart';
 import 'package:flutter_survey/ui/app_starter/app_starter_view_model.dart';
 import 'package:flutter_survey/ui/home/home_screen.dart';
 import 'package:flutter_survey/ui/login/login_screen.dart';
+import 'package:flutter_survey/usecases/get_log_in_status_use_case.dart';
 
 final appStatretViewModelProvider =
     StateNotifierProvider.autoDispose<AppStarterViewModel, AppStarterState>(
         (ref) {
-  return AppStarterViewModel(getIt.get<SecureStorage>());
+  return AppStarterViewModel(getIt.get<GetLogInStatusUseCase>());
 });
 
 class AppStarterScreen extends ConsumerStatefulWidget {
