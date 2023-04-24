@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_survey/app_navigator.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/ui/app_starter/app_starter_state.dart';
 import 'package:flutter_survey/ui/app_starter/app_starter_view_model.dart';
@@ -23,6 +24,8 @@ class AppStarterScreen extends ConsumerStatefulWidget {
 }
 
 class AppStarterScreenState extends ConsumerState<AppStarterScreen> {
+  final _appNavigator = getIt.get<AppNavigator>();
+
   @override
   void initState() {
     ref.read(appStatretViewModelProvider.notifier).checkLoginStatus();
@@ -31,12 +34,22 @@ class AppStarterScreenState extends ConsumerState<AppStarterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ref.watch(appStatretViewModelProvider).when(
-          init: () => Container(),
-          loading: () => Container(),
-          showHomeScreen: () => const HomeScreen(),
-          showLoginScreen: () => const LoginScreen(),
-        );
+    ref.listen<AppStarterState>(appStatretViewModelProvider, (_, appState) {
+      appState.maybeWhen(
+        showHomeScreen: () => _navigateToHomeScreen(),
+        showLoginScreen: () => _navigateToLoginScreen(),
+        orElse: () {},
+      );
+    });
+    return Scaffold(body: Container());
+  }
+
+  void _navigateToHomeScreen() {
+    _appNavigator.navigateToHomeScreen(context: context);
+  }
+
+  void _navigateToLoginScreen() {
+    _appNavigator.navigateToLoginScreen(context: context);
   }
 
   @override
