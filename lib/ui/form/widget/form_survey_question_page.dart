@@ -5,6 +5,7 @@ import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_nps.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_emoji.dart';
+import 'package:flutter_survey/ui/form/widget/form_survey_answer_rating_emoji.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_smiley.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_textarea.dart';
 
