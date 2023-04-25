@@ -3,14 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
-final _selectedEmojiRatingIndexProvider = StateProvider.autoDispose<int>(
-  (_) => -1,
-);
-
-class FormSurveyAnswerRatingEmoji extends ConsumerWidget {
+class FormSurveyAnswerEmoji extends ConsumerWidget {
   final String emoji;
   final int totalEmojiCount;
-  const FormSurveyAnswerRatingEmoji({
+  final _selectedEmojiRatingIndexProvider = StateProvider.autoDispose<int>(
+    (_) => 2,
+  );
+  FormSurveyAnswerEmoji({
     Key? key,
     required this.emoji,
     required this.totalEmojiCount,
@@ -21,7 +20,7 @@ class FormSurveyAnswerRatingEmoji extends ConsumerWidget {
     final emojiState = ref.read(_selectedEmojiRatingIndexProvider.notifier);
     return Container(
       width: double.infinity,
-      height: AppDimensions.answerSmileyHeight,
+      height: AppDimensions.answerEmojiHeight,
       alignment: Alignment.center,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -45,7 +44,7 @@ class FormSurveyAnswerRatingEmoji extends ConsumerWidget {
   Widget _buildEmoji(int index, WidgetRef ref) {
     final selectedEmoji = ref.watch(_selectedEmojiRatingIndexProvider);
     const selectedStyle = TextStyle(
-      fontSize: AppDimensions.answerSmileyTextSize,
+      fontSize: AppDimensions.answerEmojiTextSize,
     );
     final unselectedStyle = selectedStyle.copyWith(
       color: AppColors.black50,
