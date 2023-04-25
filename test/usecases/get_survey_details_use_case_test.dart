@@ -1,4 +1,6 @@
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
+import 'package:flutter_survey/api/response/question_response.dart';
+import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/model/survey_details_model.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_survey/usecases/get_survey_details_use_case.dart';
@@ -22,6 +24,9 @@ void main() {
         title: '2',
         description: '3',
         coverImageUrl: '4',
+        questions: [
+          QuestionModel(id: '5', text: '6', displayType: DisplayType.smiley),
+        ],
       );
       when(mockSurveyRepository.getSurveyDetails(surveyId: "surveyId"))
           .thenAnswer((_) async => surveyDetailsModel);

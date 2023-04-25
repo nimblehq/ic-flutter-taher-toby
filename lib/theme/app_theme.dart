@@ -6,7 +6,7 @@ import 'package:flutter_survey/theme/app_dimensions.dart';
 class AppTheme {
   static ThemeData light() => ThemeData(
         colorScheme: const ColorScheme.light(
-          primary: AppColors.blackRussian,
+          primary: Colors.white,
         ),
         fontFamily: FontFamily.neuzeit,
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -38,7 +38,7 @@ class AppTheme {
             // Small / Tag All Caps
             color: Colors.white,
             fontSize: AppDimensions.textSize15,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w800,
           ),
           bodySmall: TextStyle(
             // Regular / Paragraph

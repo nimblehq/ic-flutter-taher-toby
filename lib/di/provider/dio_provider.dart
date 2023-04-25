@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/di/interceptor/app_interceptor.dart';
+import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
 const String headerContentType = 'Content-Type';
@@ -20,6 +22,7 @@ class DioProvider {
     final appInterceptor = AppInterceptor(
       requireAuthentication,
       dio,
+      getIt<SecureStorage>(),
     );
     final interceptors = <Interceptor>[];
     interceptors.add(appInterceptor);
