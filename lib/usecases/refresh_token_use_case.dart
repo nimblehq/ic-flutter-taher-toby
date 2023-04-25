@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
 
-@Injectable()
+@Singleton()
 class RefreshTokenUseCase extends UseCase<AuthTokenModel, String> {
   final AuthenticationRepository _authenticationRepository;
 

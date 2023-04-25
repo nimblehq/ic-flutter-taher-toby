@@ -3,7 +3,7 @@ import 'package:flutter_survey/model/auth_token_model.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable()
+@Singleton()
 class GetAuthTokenUseCase extends SimpleUseCase<Future<AuthTokenModel>> {
   final SecureStorage _secureStorage;
 

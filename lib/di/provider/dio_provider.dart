@@ -3,6 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/di/interceptor/app_interceptor.dart';
 import 'package:flutter_survey/database/secure_storage.dart';
+import 'package:flutter_survey/usecases/get_auth_token_use_case.dart';
+import 'package:flutter_survey/usecases/refresh_token_use_case.dart';
+import 'package:flutter_survey/usecases/store_auth_token_use_case.dart';
 import 'package:injectable/injectable.dart';
 
 const String headerContentType = 'Content-Type';
@@ -23,6 +26,9 @@ class DioProvider {
       requireAuthentication,
       dio,
       getIt<SecureStorage>(),
+      getIt<RefreshTokenUseCase>(),
+      getIt<StoreAuthTokenUseCase>(),
+      getIt<GetAuthTokenUseCase>(),
     );
     final interceptors = <Interceptor>[];
     interceptors.add(appInterceptor);

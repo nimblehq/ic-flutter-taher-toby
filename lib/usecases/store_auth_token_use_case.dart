@@ -3,7 +3,7 @@ import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_survey/database/secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable()
+@Singleton()
 class StoreAuthTokenUseCase extends UseCase<void, AuthTokenModel> {
   final SecureStorage _secureStorage;
 
