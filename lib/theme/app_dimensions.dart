@@ -26,6 +26,10 @@ class AppDimensions {
   static const answerSmileyHeight = 70.0;
   static const answerSmileyTextSize = 25.0;
 
+  static const answerNpsHeight = 60.0;
+  static const answerNpsWidth = 40.0;
+  static const answerNpsBorderWidth = 1.0;
+
   static const homeAvatarSize = 36.0;
   static const homeSurveyPageIndicatorSize = 8.0;
   static const homeSkeletonLoadingDefaultHeight = 20.0;

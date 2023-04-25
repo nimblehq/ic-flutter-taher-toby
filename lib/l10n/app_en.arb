@@ -3,6 +3,8 @@
   "login": "Log in",
   "password": "Password",
   "login_validation_error": "Email or password format is not valid. Please try again!",
+  "not_at_all_likely": "Not at all Likely",
+  "extremely_likely": "Extremely Likely",
   "start_survey": "Start Survey",
   "submit_survey": "Submit Survey",
   "today": "Today"
