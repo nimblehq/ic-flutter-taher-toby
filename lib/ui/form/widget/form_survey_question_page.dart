@@ -63,7 +63,7 @@ class FormSurveyQuestionPage extends StatelessWidget {
       case DisplayType.smiley:
         return const FormSurveyAnswerSmiley();
       case DisplayType.nps:
-        return const FormSurveyAnswerNps();
+        return FormSurveyAnswerNps();
       default:
         return Text(displayType.name);
     }

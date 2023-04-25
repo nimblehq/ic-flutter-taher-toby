@@ -5,12 +5,13 @@ import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const _scores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-final selectedScoreProvider = StateProvider.autoDispose<int>(
-  (_) => 5,
-);
 
 class FormSurveyAnswerNps extends ConsumerWidget {
-  const FormSurveyAnswerNps({
+  final selectedScoreProvider = StateProvider.autoDispose<int>(
+    (_) => 5,
+  );
+
+  FormSurveyAnswerNps({
     Key? key,
   }) : super(key: key);
 
