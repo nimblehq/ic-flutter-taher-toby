@@ -12,7 +12,7 @@ class FormSurveyAnswerEmoji extends ConsumerWidget {
   FormSurveyAnswerEmoji({
     Key? key,
     required this.emoji,
-    required this.totalEmojiCount,
+    this.totalEmojiCount = 5,
   }) : super(key: key);
 
   @override

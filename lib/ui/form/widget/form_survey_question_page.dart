@@ -7,8 +7,6 @@ import 'package:flutter_survey/ui/form/widget/form_survey_answer_nps.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_emoji.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_smiley.dart';
 
-const _totalEmogiCount = 5;
-
 class FormSurveyQuestionPage extends StatelessWidget {
   final QuestionModel question;
   final int questionIndex;
@@ -70,20 +68,11 @@ class FormSurveyQuestionPage extends StatelessWidget {
           question: question,
         );
       case DisplayType.heart:
-        return FormSurveyAnswerEmoji(
-          emoji: '❤',
-          totalEmojiCount: _totalEmogiCount,
-        );
+        return FormSurveyAnswerEmoji(emoji: '❤');
       case DisplayType.star:
-        return FormSurveyAnswerEmoji(
-          emoji: '⭐',
-          totalEmojiCount: _totalEmogiCount,
-        );
+        return FormSurveyAnswerEmoji(emoji: '⭐');
       case DisplayType.thumbs:
-        return FormSurveyAnswerEmoji(
-          emoji: '👍🏻',
-          totalEmojiCount: _totalEmogiCount,
-        );
+        return FormSurveyAnswerEmoji(emoji: '👍🏻');
       default:
         return Text(displayType.name);
     }
