@@ -1,22 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-const _scores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+class FormSurveyAnswerNps extends ConsumerStatefulWidget {
+  final QuestionModel question;
 
-class FormSurveyAnswerNps extends ConsumerWidget {
-  final selectedScoreProvider = StateProvider.autoDispose<int>(
-    (_) => 5,
-  );
-
-  FormSurveyAnswerNps({
+  const FormSurveyAnswerNps({
     Key? key,
+    required this.question,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  FormSurveyAnswerNpsState createState() {
+    return FormSurveyAnswerNpsState();
+  }
+}
+
+class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
+  final selectedScoreProvider = StateProvider.autoDispose<int>((_) => 0);
+  late int scoresLength;
+
+  @override
+  void initState() {
+    super.initState();
+    scoresLength = widget.question.answers.length;
+    ref.read(selectedScoreProvider.notifier).state = (scoresLength / 2).floor();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final scores = List.generate(scoresLength, (index) => index);
     final scoreState = ref.read(selectedScoreProvider.notifier);
     final selectedScore = ref.watch(selectedScoreProvider);
     final selectedStyle = Theme.of(context).textTheme.labelSmall;
@@ -39,11 +55,11 @@ class FormSurveyAnswerNps extends ConsumerWidget {
                 ),
               ),
               child: Row(
-                children: List.generate(_scores.length, (index) {
-                  final score = _scores[index];
+                children: List.generate(scoresLength, (index) {
+                  final score = scores[index];
                   return GestureDetector(
                     onTap: () => scoreState.state = score,
-                    child: _buildScore(context, ref, score),
+                    child: _buildScore(context, ref, score, scoresLength),
                   );
                 }),
               ),
@@ -57,11 +73,15 @@ class FormSurveyAnswerNps extends ConsumerWidget {
             children: [
               Text(
                 AppLocalizations.of(context)!.not_at_all_likely,
-                style: selectedScore <= 5 ? selectedStyle : unselectedStyle,
+                style: selectedScore <= scoresLength / 2
+                    ? selectedStyle
+                    : unselectedStyle,
               ),
               Text(
                 AppLocalizations.of(context)!.extremely_likely,
-                style: selectedScore > 5 ? selectedStyle : unselectedStyle,
+                style: selectedScore > scoresLength / 2
+                    ? selectedStyle
+                    : unselectedStyle,
               )
             ],
           ),
@@ -74,13 +94,14 @@ class FormSurveyAnswerNps extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     int score,
+    int scoresLength,
   ) {
     final selectedScore = ref.watch(selectedScoreProvider);
     final selectedStyle = Theme.of(context).textTheme.labelMedium;
     final unselectedStyle = selectedStyle?.copyWith(color: AppColors.white50);
 
     dynamic border;
-    if (score < 10) {
+    if (score < scoresLength) {
       border = const Border(
         right: BorderSide(
           color: Colors.white,

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
 import 'package:flutter_survey/api/response/question_response.dart';
+import 'package:flutter_survey/model/answer_model.dart';
 import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/model/survey_details_model.dart';
 import 'package:flutter_survey/ui/form/form_screen.dart';
@@ -28,6 +29,12 @@ void main() {
           id: 'id2',
           text: 'text2',
           displayType: DisplayType.smiley,
+          answers: [
+            AnswerModel(
+              id: 'id3',
+              text: 'id4',
+            )
+          ],
         ),
       ],
     );
