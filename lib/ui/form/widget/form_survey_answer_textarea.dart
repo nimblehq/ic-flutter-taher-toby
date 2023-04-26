@@ -12,6 +12,12 @@ class FormSurveyAnswerTextarea extends StatefulWidget {
 
 class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
   final _answerTextFieldController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -29,5 +35,11 @@ class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
             ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _answerTextFieldController.dispose();
+    super.dispose();
   }
 }
