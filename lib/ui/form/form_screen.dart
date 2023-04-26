@@ -80,56 +80,62 @@ class FormScreenState extends ConsumerState<FormScreen> {
     final questions = surveyDetails?.questions ?? [];
     final questionTotal = questions.length;
     if (errorMessage.isNotEmpty) showSnackBar(context, errorMessage);
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          if (surveyDetails != null) ...[
-            DimmedBackground(background: surveyDetails.coverImageUrl),
-            PageView.builder(
-              itemCount: 1 + questionTotal,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
-                if (index == 0) {
-                  return FormSurveyDetailPage(
-                    surveyDetails: surveyDetails,
-                  );
-                } else {
-                  return FormSurveyQuestionPage(
-                    question: questions[index - 1],
-                    questionIndex: index,
-                    questionTotal: questionTotal,
-                  );
-                }
-              },
-              onPageChanged: (int index) {
-                setState(() {
-                  _showStartSurveyButton = index == 0;
-                  _showNextSurveyButton = index > 0 && index < questionTotal;
-                  _showSubmitSurveyButton = index == questionTotal;
-                  _showCloseButton = index != 0;
-                });
-              },
-            ),
-            _buildCloseButton(context),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: _buildStartSurveyButton(),
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: _buildNextSurveyButton(),
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: _buildSubmitSurveyButton(),
-            ),
-          ] else ...[
-            const SafeArea(child: BackButton(color: Colors.white))
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.black,
+        body: Stack(
+          children: [
+            if (surveyDetails != null) ...[
+              DimmedBackground(background: surveyDetails.coverImageUrl),
+              PageView.builder(
+                itemCount: 1 + questionTotal,
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == 0) {
+                    return FormSurveyDetailPage(
+                      surveyDetails: surveyDetails,
+                    );
+                  } else {
+                    return FormSurveyQuestionPage(
+                      question: questions[index - 1],
+                      questionIndex: index,
+                      questionTotal: questionTotal,
+                    );
+                  }
+                },
+                onPageChanged: (int index) {
+                  setState(() {
+                    _showStartSurveyButton = index == 0;
+                    _showNextSurveyButton = index > 0 && index < questionTotal;
+                    _showSubmitSurveyButton = index == questionTotal;
+                    _showCloseButton = index != 0;
+                  });
+                },
+              ),
+              _buildCloseButton(context),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: _buildStartSurveyButton(),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: _buildNextSurveyButton(),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: _buildSubmitSurveyButton(),
+              ),
+            ] else ...[
+              const SafeArea(child: BackButton(color: Colors.white))
+            ],
+            if (isLoading) _buildCircularProgressIndicator(),
           ],
-          if (isLoading) _buildCircularProgressIndicator()
-        ],
+        ),
       ),
     );
   }
