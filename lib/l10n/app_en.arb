@@ -7,5 +7,6 @@
   "extremely_likely": "Extremely Likely",
   "start_survey": "Start Survey",
   "submit_survey": "Submit Survey",
-  "today": "Today"
+  "today": "Today",
+  "answer_text_area_hint": "Your thoughts"
 }
