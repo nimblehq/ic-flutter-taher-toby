@@ -32,6 +32,7 @@ class AppDimensions {
 
   static const answerDropdownWidth = 215.0;
   static const answerDropdownItemHeight = 56.0;
+
   static const answerDropdownSeparatorThickness = 1.0;
 
   static const answerNpsHeight = 60.0;
