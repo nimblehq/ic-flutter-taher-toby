@@ -11,7 +11,7 @@ on:
 jobs:
   lint_and_test:
     name: Static code analyze & Unit test
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     environment: staging
     steps:
       - uses: actions/checkout@v2.3.2
@@ -45,3 +45,11 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           fail_ci_if_error: false
           verbose: true
+      
+      - name: Open Simulator for UI tests
+        uses: futureware-tech/simulator-action@v2
+        with:
+          model: 'iPhone 14'
+      
+      - name: Run UI tests
+        run: flutter drive --target=test_driver/app.dart --flavor staging
