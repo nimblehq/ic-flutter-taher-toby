@@ -20,15 +20,16 @@ class _FormSurveyAnswerMultiChoiceState
   @override
   void initState() {
     super.initState();
+    _options = widget.question.answers.map((element) => element.text).toList();
   }
 
   Widget _buildListItem(String title, bool isSelected) {
     final selectedTextStyle = Theme.of(context).textTheme.labelMedium;
-    final notSelectedTextStyle = Theme.of(context)
+    final unSelectedTextStyle = Theme.of(context)
         .textTheme
         .labelMedium!
         .copyWith(fontWeight: FontWeight.w400);
-    final textStyle = isSelected ? selectedTextStyle : notSelectedTextStyle;
+    final textStyle = isSelected ? selectedTextStyle : unSelectedTextStyle;
     return SizedBox(
       width: MediaQuery.of(context).size.width -
           AppDimensions.answerMultiChoiceMarginLength,
@@ -40,6 +41,7 @@ class _FormSurveyAnswerMultiChoiceState
               title,
               style: textStyle,
               maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           Container(
@@ -75,7 +77,7 @@ class _FormSurveyAnswerMultiChoiceState
     );
   }
 
-  Widget _itemBuilder(String title, bool isSelected, int index) {
+  Widget _buildItems(String title, bool isSelected, int index) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -93,20 +95,18 @@ class _FormSurveyAnswerMultiChoiceState
 
   @override
   Widget build(BuildContext context) {
-    _options = widget.question.answers.map((element) => element.text).toList();
-
     return Center(
       child: ListView.separated(
-        itemBuilder: (context, index) {
+        itemBuilder: (_, index) {
           return Center(
-            child: _itemBuilder(
+            child: _buildItems(
               _options[index],
               _selectedIndexes.contains(index),
               index,
             ),
           );
         },
-        separatorBuilder: (context, index) {
+        separatorBuilder: (_, __) {
           return const Divider(
             indent: AppDimensions.answerMultiChoiceDividerIntent,
             endIndent: AppDimensions.answerMultiChoiceDividerIntent,
@@ -117,10 +117,5 @@ class _FormSurveyAnswerMultiChoiceState
         itemCount: _options.length,
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }
