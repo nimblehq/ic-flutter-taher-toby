@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class FormSurveyAnswerDropdown extends StatefulWidget {
-  const FormSurveyAnswerDropdown({super.key});
+  final QuestionModel question;
+
+  const FormSurveyAnswerDropdown({super.key, required this.question});
 
   @override
   State<FormSurveyAnswerDropdown> createState() =>
@@ -12,25 +14,24 @@ class FormSurveyAnswerDropdown extends StatefulWidget {
 }
 
 class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
-  late List<String> pickerOptions = [];
+  late List<String> _pickerOptions = [];
 
-  int selectedIndex = 1;
+  int _selectedIndex = 1;
   late FixedExtentScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = FixedExtentScrollController(initialItem: selectedIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    pickerOptions = [
-      AppLocalizations.of(context)!.answer_dropdown_option_very_fullfilled,
-      AppLocalizations.of(context)!.answer_dropdown_option_somewhat_fullfilled,
-      AppLocalizations.of(context)!
-          .answer_dropdown_option_somewhat_unfullfilled,
-    ];
+    _pickerOptions =
+        widget.question.answers.map((element) => element.text).toList();
+    _selectedIndex = (_pickerOptions.length / 2).round();
+    _scrollController =
+        FixedExtentScrollController(initialItem: _selectedIndex);
+
     return SizedBox(
       width: AppDimensions.answerDropdownWidth,
       child: Center(
@@ -39,44 +40,45 @@ class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
           itemExtent: AppDimensions.answerDropdownItemHeight,
           onSelectedItemChanged: (index) {
             setState(() {
-              selectedIndex = index;
+              _selectedIndex = index;
             });
           },
           children: List.generate(
-            pickerOptions.length,
+            _pickerOptions.length,
             (index) {
-              final String item = pickerOptions[index];
-              final bool isSelected = selectedIndex == index;
+              final String item = _pickerOptions[index];
+              final bool isSelected = _selectedIndex == index;
               final selectedTextStyle = Theme.of(context).textTheme.labelMedium;
               final notSelectedTextStyle = Theme.of(context)
                   .textTheme
-                  .labelMedium!
-                  .copyWith(fontWeight: FontWeight.w400);
+                  .labelMedium
+                  ?.copyWith(fontWeight: FontWeight.w400);
               final textStyle =
                   isSelected ? selectedTextStyle : notSelectedTextStyle;
 
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Text(
-                        item,
-                        style: textStyle,
-                      ),
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppDimensions.spacing10,
                     ),
-                    if (index + 1 != pickerOptions.length) ...[
-                      const Center(
-                        child: Divider(
-                          color: Colors.white,
-                          thickness:
-                              AppDimensions.answerDropdownSeparatorThickness,
-                        ),
-                      )
-                    ],
+                    child: Text(
+                      item,
+                      style: textStyle,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (index + 1 != _pickerOptions.length) ...[
+                    const Divider(
+                      color: Colors.white,
+                      thickness: AppDimensions.answerDropdownSeparatorThickness,
+                    ),
                   ],
-                ),
+                ],
               );
             },
           ),

@@ -78,7 +78,7 @@ class FormSurveyQuestionPage extends StatelessWidget {
       case DisplayType.textarea:
         return const FormSurveyAnswerTextarea();
       case DisplayType.dropdown:
-        return const FormSurveyAnswerDropdown();
+        return FormSurveyAnswerDropdown(question: question);
       default:
         return Text(displayType.name);
     }
