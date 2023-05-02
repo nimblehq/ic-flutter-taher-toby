@@ -18,11 +18,6 @@ class _FormSurveyAnswerTextFieldState extends State<FormSurveyAnswerTextField> {
   late List<String> _textFieldHints = [];
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     _textFieldHints =
         widget.question.answers.map((element) => element.text).toList();
