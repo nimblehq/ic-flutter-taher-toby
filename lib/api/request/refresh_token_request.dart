@@ -2,8 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'refresh_token_request.g.dart';
 
-const String grantTypeRefreshToken = 'refresh_token';
-
 @JsonSerializable()
 class RefreshTokenRequest {
   final String grantType;

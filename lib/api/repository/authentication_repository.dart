@@ -6,6 +6,9 @@ import 'package:flutter_survey/api/exception/network_exceptions.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_survey/env.dart';
 
+const String _grantTypePassword = "password";
+const String _grantTypeRefreshToken = 'refresh_token';
+
 abstract class AuthenticationRepository {
   Future<AuthTokenModel> logIn({
     required String email,
@@ -30,7 +33,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }) async {
     try {
       final LoginRequest loginRequest = LoginRequest(
-        grantType: grantTypePassword,
+        grantType: _grantTypePassword,
         email: email,
         password: password,
         clientId: Env.restApiClientId,
@@ -49,7 +52,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }) async {
     try {
       final RefreshTokenRequest refreshTokenRequest = RefreshTokenRequest(
-        grantType: grantTypeRefreshToken,
+        grantType: _grantTypeRefreshToken,
         clientId: Env.restApiClientId,
         clientSecret: Env.restApiClientSecret,
         refreshToken: refreshToken,

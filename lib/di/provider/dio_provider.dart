@@ -3,13 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_survey/di/interceptor/app_interceptor.dart';
 import 'package:flutter_survey/database/secure_storage.dart';
-import 'package:flutter_survey/usecases/get_auth_token_use_case.dart';
-import 'package:flutter_survey/usecases/refresh_token_use_case.dart';
-import 'package:flutter_survey/usecases/store_auth_token_use_case.dart';
 import 'package:injectable/injectable.dart';
 
 const String headerContentType = 'Content-Type';
 const String defaultContentType = 'application/json; charset=utf-8';
+const Duration _connectTimeoutDuration = Duration(seconds: 3000);
+const Duration _receiveTimeoutDuration = Duration(seconds: 5000);
 
 @Singleton()
 class DioProvider {
@@ -26,9 +25,6 @@ class DioProvider {
       requireAuthentication,
       dio,
       getIt<SecureStorage>(),
-      getIt<RefreshTokenUseCase>(),
-      getIt<StoreAuthTokenUseCase>(),
-      getIt<GetAuthTokenUseCase>(),
     );
     final interceptors = <Interceptor>[];
     interceptors.add(appInterceptor);
@@ -42,8 +38,8 @@ class DioProvider {
     }
 
     return dio
-      ..options.connectTimeout = const Duration(seconds: 3000)
-      ..options.receiveTimeout = const Duration(seconds: 5000)
+      ..options.connectTimeout = _connectTimeoutDuration
+      ..options.receiveTimeout = _receiveTimeoutDuration
       ..options.headers = {headerContentType: defaultContentType}
       ..interceptors.addAll(interceptors);
   }

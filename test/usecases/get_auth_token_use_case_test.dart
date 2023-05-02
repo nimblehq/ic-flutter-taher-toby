@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 import '../mocks/generate_mocks.mocks.dart';
 
 void main() {
-  group('GetLogInStatusUseCaseTest', () {
+  group('GetAuthTokenUseCaseTest', () {
     late MockSecureStorage mockSecureStorage;
     late GetAuthTokenUseCase getAuthTokenUseCase;
 
@@ -14,7 +14,7 @@ void main() {
       getAuthTokenUseCase = GetAuthTokenUseCase(mockSecureStorage);
     });
 
-    test('When fetching auth token data it returns accordingly', () async {
+    test('When fetch auth token data it returns accordingly', () async {
       when(mockSecureStorage.readSecureData(accessTokenKey))
           .thenAnswer((_) async => 'accessToken');
       when(mockSecureStorage.readSecureData(tokenTypeKey))
