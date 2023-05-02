@@ -14,7 +14,7 @@ void main() {
       getAuthTokenUseCase = GetAuthTokenUseCase(mockSecureStorage);
     });
 
-    test('When fetch auth token data it returns accordingly', () async {
+    test('When fetch auth token data it, returns accordingly', () async {
       when(mockSecureStorage.readSecureData(accessTokenKey))
           .thenAnswer((_) async => 'accessToken');
       when(mockSecureStorage.readSecureData(tokenTypeKey))
