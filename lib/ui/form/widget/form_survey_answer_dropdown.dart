@@ -22,16 +22,15 @@ class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     _pickerOptions =
         widget.question.answers.map((element) => element.text).toList();
     _selectedIndex = (_pickerOptions.length / 2).round();
     _scrollController =
         FixedExtentScrollController(initialItem: _selectedIndex);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       width: AppDimensions.answerDropdownWidth,
       child: Center(
@@ -49,12 +48,12 @@ class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
               final String item = _pickerOptions[index];
               final bool isSelected = _selectedIndex == index;
               final selectedTextStyle = Theme.of(context).textTheme.labelMedium;
-              final notSelectedTextStyle = Theme.of(context)
+              final unSelectedTextStyle = Theme.of(context)
                   .textTheme
                   .labelMedium
                   ?.copyWith(fontWeight: FontWeight.w400);
               final textStyle =
-                  isSelected ? selectedTextStyle : notSelectedTextStyle;
+                  isSelected ? selectedTextStyle : unSelectedTextStyle;
 
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
