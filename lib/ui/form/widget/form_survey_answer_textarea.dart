@@ -14,14 +14,9 @@ class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
   final _answerTextFieldController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: AppDimensions.answerTextAreaHeight,
+      height: AppDimensions.answerTextareaHeight,
       child: TextField(
         expands: true,
         maxLines: null,
