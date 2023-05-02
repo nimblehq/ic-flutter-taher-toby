@@ -157,11 +157,11 @@ class LoginScreenState extends ConsumerState<LoginScreen>
                   bottom: AppDimensions.spacing20,
                 ),
                 child: customTextField(
-                  context,
-                  _emailTextFieldController,
-                  TextInputType.emailAddress,
-                  false,
-                  AppLocalizations.of(context)!.email,
+                  context: context,
+                  controller: _emailTextFieldController,
+                  textInputType: TextInputType.emailAddress,
+                  isObscuredText: false,
+                  hintText: AppLocalizations.of(context)!.email,
                 ),
               ),
               Padding(
@@ -171,11 +171,11 @@ class LoginScreenState extends ConsumerState<LoginScreen>
                   bottom: AppDimensions.spacing20,
                 ),
                 child: customTextField(
-                  context,
-                  _passwordTextFieldController,
-                  TextInputType.text,
-                  true,
-                  AppLocalizations.of(context)!.password,
+                  context: context,
+                  controller: _passwordTextFieldController,
+                  textInputType: TextInputType.text,
+                  isObscuredText: true,
+                  hintText: AppLocalizations.of(context)!.password,
                 ),
               ),
               Padding(

@@ -35,13 +35,13 @@ class _FormSurveyAnswerTextFieldState extends State<FormSurveyAnswerTextField> {
             Padding(
               padding: const EdgeInsets.only(bottom: AppDimensions.spacing20),
               child: customTextField(
-                context,
-                textAndControllerPair[1] as TextEditingController,
-                textAndControllerPair[0] as String == 'Email'
+                context: context,
+                controller: textAndControllerPair[1] as TextEditingController,
+                textInputType: textAndControllerPair[0] as String == 'Email'
                     ? TextInputType.emailAddress
                     : TextInputType.text,
-                false,
-                textAndControllerPair[0] as String,
+                isObscuredText: false,
+                hintText: textAndControllerPair[0] as String,
               ),
             ),
         ],

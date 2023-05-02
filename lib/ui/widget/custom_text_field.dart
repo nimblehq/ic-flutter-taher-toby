@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-TextField customTextField(
-  BuildContext context,
-  TextEditingController controller,
-  TextInputType textInputType,
-  bool isObscuredText,
-  String hintText,
-) =>
+TextField customTextField({
+  required BuildContext context,
+  required TextEditingController controller,
+  required TextInputType textInputType,
+  required bool isObscuredText,
+  required String hintText,
+}) =>
     TextField(
       style: Theme.of(context).textTheme.bodySmall,
       keyboardType: textInputType,
