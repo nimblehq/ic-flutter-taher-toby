@@ -6,6 +6,7 @@ import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/login/login_state.dart';
 import 'package:flutter_survey/ui/login/login_view_model.dart';
+import 'package:flutter_survey/ui/widget/custom_text_field.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_survey/usecases/store_auth_token_use_case.dart';
@@ -89,24 +90,6 @@ class LoginScreenState extends ConsumerState<LoginScreen>
     _logoOpacityAnimationController.forward();
   }
 
-  TextField _configuredTextField(BuildContext context, bool isEmail) =>
-      TextField(
-        style: Theme.of(context).textTheme.bodySmall,
-        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
-        decoration: const InputDecoration()
-            .applyDefaults(Theme.of(context).inputDecorationTheme)
-            .copyWith(
-              hintText: isEmail
-                  ? AppLocalizations.of(context)!.email
-                  : AppLocalizations.of(context)!.password,
-            ),
-        obscureText: !isEmail,
-        autocorrect: false,
-        enableSuggestions: false,
-        controller:
-            isEmail ? _emailTextFieldController : _passwordTextFieldController,
-      );
-
   TextButton _loginButton(BuildContext context) => TextButton(
         onPressed: () {
           logIn();
@@ -173,7 +156,13 @@ class LoginScreenState extends ConsumerState<LoginScreen>
                   right: AppDimensions.spacing24,
                   bottom: AppDimensions.spacing20,
                 ),
-                child: _configuredTextField(context, true),
+                child: customTextField(
+                  context,
+                  _emailTextFieldController,
+                  TextInputType.emailAddress,
+                  false,
+                  AppLocalizations.of(context)!.email,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -181,7 +170,13 @@ class LoginScreenState extends ConsumerState<LoginScreen>
                   right: AppDimensions.spacing24,
                   bottom: AppDimensions.spacing20,
                 ),
-                child: _configuredTextField(context, false),
+                child: customTextField(
+                  context,
+                  _passwordTextFieldController,
+                  TextInputType.text,
+                  true,
+                  AppLocalizations.of(context)!.password,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
