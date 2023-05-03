@@ -3,6 +3,7 @@ import 'package:flutter_survey/api/response/question_response.dart';
 import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
+import 'package:flutter_survey/ui/form/widget/form_survey_answer_nps.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_smiley.dart';
 
 class FormSurveyQuestionPage extends StatelessWidget {
@@ -61,6 +62,10 @@ class FormSurveyQuestionPage extends StatelessWidget {
     switch (displayType) {
       case DisplayType.smiley:
         return const FormSurveyAnswerSmiley();
+      case DisplayType.nps:
+        return FormSurveyAnswerNps(
+          question: question,
+        );
       default:
         return Text(displayType.name);
     }
