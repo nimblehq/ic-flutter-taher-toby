@@ -27,7 +27,7 @@ class AppDimensions {
   static const answerSmileyTextSize = 25.0;
   static const answerEmojiHeight = 70.0;
   static const answerEmojiTextSize = 25.0;
-  
+
   static const answerTextareaHeight = 168.0;
 
   static const answerDropdownWidth = 215.0;
