@@ -1,23 +1,19 @@
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
 import 'package:flutter_survey/model/auth_token_model.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
-import 'package:flutter_survey/usecases/log_in_use_case.dart';
+import 'package:flutter_survey/usecases/refresh_token_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import '../mocks/generate_mocks.mocks.dart';
 
 void main() {
-  group('LoginUseCaseTest', () {
+  group('RefreshTokenUseCaseTest', () {
     late MockAuthenticationRepository mockAuthenticationRepository;
-    late LogInUseCase loginUseCase;
-    final LoginInput loginInput = LoginInput(
-      email: "email",
-      password: "password",
-    );
+    late RefreshTokenUseCase refreshTokenUseCase;
 
     setUp(() async {
       mockAuthenticationRepository = MockAuthenticationRepository();
-      loginUseCase = LogInUseCase(mockAuthenticationRepository);
+      refreshTokenUseCase = RefreshTokenUseCase(mockAuthenticationRepository);
     });
 
     test('When call execution has succeeded, it returns a Success result',
@@ -29,15 +25,11 @@ void main() {
         refreshToken: "refreshToken",
         createdAt: 1,
       );
-
       when(
-        mockAuthenticationRepository.logIn(
-          email: "email",
-          password: "password",
-        ),
+        mockAuthenticationRepository.refreshToken(refreshToken: 'refreshToken'),
       ).thenAnswer((_) async => authTokenModel);
 
-      final result = await loginUseCase.call(loginInput);
+      final result = await refreshTokenUseCase.call('refreshToken');
 
       expect(result, isA<Success>());
       expect((result as Success).value, authTokenModel);
@@ -46,14 +38,11 @@ void main() {
     test('When call execution has failed, it returns a Failed result',
         () async {
       const exception = NetworkExceptions.badRequest();
-      when(
-        mockAuthenticationRepository.logIn(
-          email: "email",
-          password: "password",
-        ),
-      ).thenAnswer((_) => Future.error(exception));
+      when(mockAuthenticationRepository.refreshToken(
+              refreshToken: 'refreshToken'))
+          .thenAnswer((_) => Future.error(exception));
 
-      final result = await loginUseCase.call(loginInput);
+      final result = await refreshTokenUseCase.call('refreshToken');
 
       expect(result, isA<Failed>());
       expect((result as Failed).exception.actualException, exception);

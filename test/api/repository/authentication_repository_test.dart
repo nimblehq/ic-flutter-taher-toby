@@ -1,6 +1,6 @@
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_survey/api/repository/authentication_repository.dart';
-import 'package:flutter_survey/api/response/login_response.dart';
+import 'package:flutter_survey/api/response/auth_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
 import 'package:mockito/mockito.dart';
@@ -30,10 +30,10 @@ void main() {
       () async {
         final json =
             await FileUtils.loadFile('test/mock_responses/login_data.json');
-        final loginResponse = LoginResponse.fromJson(json);
+        final authResponse = AuthResponse.fromJson(json);
 
         when(mockAuthenticationService.logIn(any))
-            .thenAnswer((_) async => loginResponse);
+            .thenAnswer((_) async => authResponse);
 
         final loginModel = await authenticationRepository.logIn(
           email: "email",
@@ -55,6 +55,38 @@ void main() {
               password: "password",
             );
 
+        expect(result, throwsA(isA<NetworkExceptions>()));
+      },
+    );
+
+    test(
+      "When refresh token success, it returns new token data",
+      () async {
+        final json =
+            await FileUtils.loadFile('test/mock_responses/login_data.json');
+        final authResponse = AuthResponse.fromJson(json);
+
+        when(mockAuthenticationService.refreshToken(any))
+            .thenAnswer((_) async => authResponse);
+
+        final loginModel = await authenticationRepository.refreshToken(
+            refreshToken: 'refreshToken');
+
+        expect(loginModel.accessToken,
+            "lbxD2K2BjbYtNzz8xjvh2FvSKx838KBCf79q773kq2c");
+        expect(loginModel.tokenType, 'Bearer');
+        expect(loginModel.refreshToken,
+            '3zJz2oW0njxlj_I3ghyUBF7ZfdQKYXd2n0ODlMkAjHc');
+      },
+    );
+
+    test(
+      "When refresh token failed, it emits network exception",
+      () async {
+        when(mockAuthenticationService.refreshToken(any))
+            .thenThrow(MockDioError());
+        result() =>
+            authenticationRepository.refreshToken(refreshToken: 'refreshToken');
         expect(result, throwsA(isA<NetworkExceptions>()));
       },
     );

@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
-import 'package:flutter_survey/model/login_model.dart';
+import 'package:flutter_survey/model/auth_token_model.dart';
 
 import '../../mocks/generate_mocks.mocks.dart';
 
@@ -18,7 +18,7 @@ void main() {
       late MockLogInUseCase mockLogInUseCase;
       late MockStoreAuthTokenUseCase mockStoreAuthTokenUseCase;
       late ProviderContainer providerContainer;
-      const loginModel = LoginModel(
+      const authTokenModel = AuthTokenModel(
         accessToken: "accessToken",
         tokenType: "tokenType",
         expiresIn: 10,
@@ -55,7 +55,7 @@ void main() {
         'When logging in & storing the token successfully, it emits loginSuccess state to navigate to the Home screen',
         () async {
           when(mockLogInUseCase.call(any)).thenAnswer(
-            (_) async => Success(loginModel),
+            (_) async => Success(authTokenModel),
           );
           when(mockStoreAuthTokenUseCase.call(any)).thenAnswer(
             (_) async => Success(null),
@@ -80,7 +80,7 @@ void main() {
           final mockException = MockUseCaseException();
           when(mockException.actualException).thenReturn(Exception());
           when(mockLogInUseCase.call(any)).thenAnswer(
-            (_) async => Success(loginModel),
+            (_) async => Success(authTokenModel),
           );
           when(mockStoreAuthTokenUseCase.call(any)).thenAnswer(
             (_) async => Failed(mockException),

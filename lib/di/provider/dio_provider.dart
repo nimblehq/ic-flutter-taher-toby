@@ -7,6 +7,8 @@ import 'package:injectable/injectable.dart';
 
 const String headerContentType = 'Content-Type';
 const String defaultContentType = 'application/json; charset=utf-8';
+const Duration _connectTimeoutDuration = Duration(seconds: 3000);
+const Duration _receiveTimeoutDuration = Duration(seconds: 5000);
 
 @Singleton()
 class DioProvider {
@@ -36,8 +38,8 @@ class DioProvider {
     }
 
     return dio
-      ..options.connectTimeout = 3000
-      ..options.receiveTimeout = 5000
+      ..options.connectTimeout = _connectTimeoutDuration
+      ..options.receiveTimeout = _receiveTimeoutDuration
       ..options.headers = {headerContentType: defaultContentType}
       ..interceptors.addAll(interceptors);
   }

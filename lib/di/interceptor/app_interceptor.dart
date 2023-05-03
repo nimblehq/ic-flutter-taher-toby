@@ -1,8 +1,13 @@
 // ignore: unused_import
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_survey/database/secure_storage.dart';
+import 'package:flutter_survey/model/auth_token_model.dart';
+import 'package:flutter_survey/usecases/get_auth_token_use_case.dart';
+import 'package:flutter_survey/usecases/refresh_token_use_case.dart';
+import 'package:flutter_survey/usecases/base/base_use_case.dart';
+import 'package:flutter_survey/usecases/store_auth_token_use_case.dart';
+import 'package:flutter_survey/di/di.dart';
 
 const String _authorizationHeader = 'Authorization';
 
@@ -28,48 +33,61 @@ class AppInterceptor extends Interceptor {
       options.headers
           .putIfAbsent(_authorizationHeader, () => '$tokenType $accessToken');
     }
-    return super.onRequest(options, handler);
+    super.onRequest(options, handler);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    handler.next(err);
-    // TODO: Integrate refresh-token https://github.com/nimblehq/ic-flutter-taher-toby/issues/20
-    // final statusCode = err.response?.statusCode;
-    // if ((statusCode == HttpStatus.forbidden ||
-    //         statusCode == HttpStatus.unauthorized) &&
-    //     _requireAuthentication) {
-    //   _doRefreshToken(err, handler);
-    // } else {
-    // }
+    final statusCode = err.response?.statusCode;
+    if ((statusCode == HttpStatus.forbidden ||
+            statusCode == HttpStatus.unauthorized) &&
+        _requireAuthentication) {
+      _doRefreshToken(err, handler);
+    } else {
+      handler.next(err);
+    }
   }
 
-  // ignore: unused_element
   Future<void> _doRefreshToken(
-    DioError err,
+    DioError error,
     ErrorInterceptorHandler handler,
   ) async {
     try {
-      // if (result is Success) {
-      // err.requestOptions.headers[_headerAuthorization] = newToken;
-      // Create request with new access token
-      final options = Options(
-          method: err.requestOptions.method,
-          headers: err.requestOptions.headers);
-      final newRequest = await _dio.request(
-          "${err.requestOptions.baseUrl}${err.requestOptions.path}",
+      final RefreshTokenUseCase refreshTokenUseCase =
+          getIt.get<RefreshTokenUseCase>();
+      final StoreAuthTokenUseCase storeAuthTokenUseCase =
+          getIt.get<StoreAuthTokenUseCase>();
+      final GetAuthTokenUseCase getAuthTokenUseCase =
+          getIt.get<GetAuthTokenUseCase>();
+      final AuthTokenModel authTokenModel = await getAuthTokenUseCase.call();
+      final refreshTokenResult =
+          await refreshTokenUseCase.call(authTokenModel.refreshToken);
+      if (refreshTokenResult is Success<AuthTokenModel>) {
+        AuthTokenModel authTokenModel = refreshTokenResult.value;
+        final String accessToken = authTokenModel.accessToken;
+        final String tokenType = authTokenModel.tokenType;
+        storeAuthTokenUseCase.call(authTokenModel);
+        error.requestOptions.headers[_authorizationHeader] =
+            '$tokenType $accessToken';
+        final options = Options(
+          method: error.requestOptions.method,
+          headers: error.requestOptions.headers,
+        );
+        final newRequest = await _dio.request(
+          "${error.requestOptions.baseUrl}${error.requestOptions.path}",
           options: options,
-          data: err.requestOptions.data,
-          queryParameters: err.requestOptions.queryParameters);
-      handler.resolve(newRequest);
-      //  } else {
-      //    handler.next(err);
-      //  }
+          data: error.requestOptions.data,
+          queryParameters: error.requestOptions.queryParameters,
+        );
+        handler.resolve(newRequest);
+      } else {
+        handler.next(error);
+      }
     } catch (exception) {
       if (exception is DioError) {
         handler.next(exception);
       } else {
-        handler.next(err);
+        handler.next(error);
       }
     }
   }
