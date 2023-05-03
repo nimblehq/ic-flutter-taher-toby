@@ -25,6 +25,8 @@ class AppDimensions {
 
   static const answerSmileyHeight = 70.0;
   static const answerSmileyTextSize = 25.0;
+  static const answerEmojiHeight = 70.0;
+  static const answerEmojiTextSize = 25.0;
 
   static const answerNpsHeight = 60.0;
   static const answerNpsWidth = 40.0;

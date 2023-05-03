@@ -4,6 +4,7 @@ import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_nps.dart';
+import 'package:flutter_survey/ui/form/widget/form_survey_answer_emoji.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_smiley.dart';
 
 class FormSurveyQuestionPage extends StatelessWidget {
@@ -66,6 +67,12 @@ class FormSurveyQuestionPage extends StatelessWidget {
         return FormSurveyAnswerNps(
           question: question,
         );
+      case DisplayType.heart:
+        return FormSurveyAnswerEmoji(emoji: '❤');
+      case DisplayType.star:
+        return FormSurveyAnswerEmoji(emoji: '⭐');
+      case DisplayType.thumbs:
+        return FormSurveyAnswerEmoji(emoji: '👍🏻');
       default:
         return Text(displayType.name);
     }
