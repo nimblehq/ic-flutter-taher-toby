@@ -100,7 +100,7 @@ class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
     final selectedStyle = Theme.of(context).textTheme.labelMedium;
     final unselectedStyle = selectedStyle?.copyWith(color: AppColors.white50);
 
-    dynamic border;
+    Border? border;
     if (score < scoresLength) {
       border = const Border(
         right: BorderSide(
