@@ -6,6 +6,7 @@ import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_nps.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_emoji.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_smiley.dart';
+import 'package:flutter_survey/ui/form/widget/form_survey_answer_textarea.dart';
 
 class FormSurveyQuestionPage extends StatelessWidget {
   final QuestionModel question;
@@ -73,6 +74,8 @@ class FormSurveyQuestionPage extends StatelessWidget {
         return FormSurveyAnswerEmoji(emoji: '⭐');
       case DisplayType.thumbs:
         return FormSurveyAnswerEmoji(emoji: '👍🏻');
+      case DisplayType.textarea:
+        return const FormSurveyAnswerTextarea();
       default:
         return Text(displayType.name);
     }
