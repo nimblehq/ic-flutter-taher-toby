@@ -100,6 +100,27 @@ void main() {
           verifyNever(mockSurveyStorage.saveSurveys(any));
         },
       );
+
+      test(
+        'When calling submitSurvey() is failed, it returns a network error',
+        () async {
+          when(mockSurveyService.submitSurvey(any)).thenThrow(MockDioError());
+          final result = surveyRepository
+              .submitSurvey(surveyId: 'surveyId', questions: []);
+          expect(result, throwsA(isA<NetworkExceptions>()));
+        },
+      );
+
+      test(
+        'When calling submitSurvey() is successfull, it returns an empty result',
+        () async {
+          when(mockSurveyService.submitSurvey(any))
+              .thenAnswer((_) => Future(() => null));
+          final result = surveyRepository
+              .submitSurvey(surveyId: 'surveyId', questions: []);
+          expect(result, isA<void>());
+        },
+      );
     },
   );
 }
