@@ -38,7 +38,7 @@ class AppDimensions {
   static const answerNpsWidth = 40.0;
   static const answerNpsBorderWidth = 1.0;
 
-  static const answerMultiChoiceDividerIntent = 60.0;
+  static const answerMultiChoiceDividerIndent = 60.0;
   static const answerMultiChoiceCircleSize = 24.0;
   static const answerMultiChoiceCircleBorderWidth = 1.0;
   static const answerMultiChoiceItemHeight = 56.0;

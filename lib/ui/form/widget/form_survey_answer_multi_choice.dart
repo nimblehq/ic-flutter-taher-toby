@@ -82,7 +82,7 @@ class _FormSurveyAnswerMultiChoiceState
       onTap: () {
         setState(() {
           if (_selectedIndexes.contains(index)) {
-            _selectedIndexes.removeWhere((element) => element == index);
+            _selectedIndexes.remove(index);
           } else {
             _selectedIndexes.add(index);
             _selectedIndexes.sort();
@@ -108,8 +108,8 @@ class _FormSurveyAnswerMultiChoiceState
         },
         separatorBuilder: (_, __) {
           return const Divider(
-            indent: AppDimensions.answerMultiChoiceDividerIntent,
-            endIndent: AppDimensions.answerMultiChoiceDividerIntent,
+            indent: AppDimensions.answerMultiChoiceDividerIndent,
+            endIndent: AppDimensions.answerMultiChoiceDividerIndent,
             color: Colors.white,
             thickness: AppDimensions.answerDropdownSeparatorThickness,
           );
