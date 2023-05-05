@@ -1,4 +1,4 @@
-import 'package:flutter_survey/model/login_model.dart';
+import 'package:flutter_survey/model/auth_token_model.dart';
 import 'package:flutter_survey/usecases/base/base_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/ui/login/login_state.dart';
@@ -21,9 +21,10 @@ class LoginViewModel extends StateNotifier<LoginState> {
       password: password,
     );
     final loginResult = await _logInUseCase.call(input);
-    if (loginResult is Success<LoginModel>) {
-      final LoginModel loginModel = loginResult.value;
-      final storeTokenResult = await _storeAuthTokenUseCase.call(loginModel);
+    if (loginResult is Success<AuthTokenModel>) {
+      final AuthTokenModel authTokenModel = loginResult.value;
+      final storeTokenResult =
+          await _storeAuthTokenUseCase.call(authTokenModel);
       if (storeTokenResult is Success) {
         state = const LoginState.loginSuccess();
       } else {

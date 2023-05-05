@@ -1,3 +1,4 @@
+import 'package:flutter_survey/api/response/answer_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'question_response.g.dart';
@@ -22,11 +23,13 @@ class QuestionResponse {
   final String? id;
   final String? text;
   final DisplayType? displayType;
+  final List<AnswerResponse>? answers;
 
   QuestionResponse({
     required this.id,
     required this.text,
     required this.displayType,
+    required this.answers,
   });
 
   factory QuestionResponse.fromJson(Map<String, dynamic> json) {
