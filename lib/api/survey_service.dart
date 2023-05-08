@@ -37,6 +37,6 @@ abstract class SurveyServiceImpl extends SurveyService {
   );
 
   @override
-  @POST('/api/v1/responses')
+  @POST('/responses')
   Future<void> submitSurvey(@Body() SubmitSurveyRequest body);
 }
