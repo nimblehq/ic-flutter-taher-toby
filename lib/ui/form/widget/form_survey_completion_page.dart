@@ -9,7 +9,8 @@ class FormSurveyCompletionPage extends StatefulWidget {
   const FormSurveyCompletionPage({super.key});
 
   @override
-  State<FormSurveyCompletionPage> createState() => _FormSurveyCompletionPageState();
+  State<FormSurveyCompletionPage> createState() =>
+      _FormSurveyCompletionPageState();
 }
 
 class _FormSurveyCompletionPageState extends State<FormSurveyCompletionPage>
