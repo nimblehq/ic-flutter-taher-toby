@@ -18,17 +18,22 @@ class _FormSurveyAnswerTextFieldState extends State<FormSurveyAnswerTextField> {
   late List<String> _textFieldHints = [];
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     _textFieldHints =
-        widget.question.answers.map((element) => element.text).toList();
-    for (int i = 0; i < _textFieldHints.length; i++) {
-      _controllers.add(TextEditingController());
-    }
+        widget.question.answers.map((element) => element.text).toList()
+          ..forEach((element) {
+            _controllers.add(TextEditingController());
+          });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          for (var textAndControllerPair in IterableZip([
+          for (final textAndControllerPair in IterableZip([
             _textFieldHints,
             _controllers,
           ]))
