@@ -8,6 +8,7 @@ import 'package:flutter_survey/ui/form/widget/form_survey_answer_nps.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_dropdown.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_emoji.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_smiley.dart';
+import 'package:flutter_survey/ui/form/widget/form_survey_answer_text_field.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_textarea.dart';
 
 class FormSurveyQuestionPage extends StatelessWidget {
@@ -82,6 +83,8 @@ class FormSurveyQuestionPage extends StatelessWidget {
         return FormSurveyAnswerDropdown(question: question);
       case DisplayType.choice:
         return FormSurveyAnswerMultiChoice(question: question);
+      case DisplayType.textfield:
+        return FormSurveyAnswerTextField(question: question);
       default:
         return Text(displayType.name);
     }
