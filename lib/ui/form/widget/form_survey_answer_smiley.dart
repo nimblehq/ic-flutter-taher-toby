@@ -8,13 +8,31 @@ final selectedEmojiProvider = StateProvider.autoDispose<String>(
   (_) => '😐',
 );
 
-class FormSurveyAnswerSmiley extends ConsumerWidget {
+class FormSurveyAnswerSmiley extends ConsumerStatefulWidget {
+  final ValueChanged<List<int>> onSelectedAnswer;
+
   const FormSurveyAnswerSmiley({
     Key? key,
+    required this.onSelectedAnswer,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<FormSurveyAnswerSmiley> createState() =>
+      _FormSurveyAnswerSmileyState();
+}
+
+class _FormSurveyAnswerSmileyState
+    extends ConsumerState<FormSurveyAnswerSmiley> {
+  final int defaultSelectedAnswer = 2;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.onSelectedAnswer([defaultSelectedAnswer]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final emojiState = ref.read(selectedEmojiProvider.notifier);
     return Container(
       width: double.infinity,
@@ -27,7 +45,10 @@ class FormSurveyAnswerSmiley extends ConsumerWidget {
         itemBuilder: (context, index) {
           final emoji = _emojis[index];
           return GestureDetector(
-            onTap: () => emojiState.state = emoji,
+            onTap: () {
+              widget.onSelectedAnswer([index]);
+              emojiState.state = emoji;
+            },
             child: Padding(
               padding: const EdgeInsets.all(AppDimensions.spacing8),
               child: _buildEmoji(emoji, ref),

@@ -12,12 +12,14 @@ import 'package:flutter_survey/usecases/get_surveys_use_case.dart';
 import 'package:flutter_survey/usecases/log_in_use_case.dart';
 import 'package:flutter_survey/usecases/store_auth_token_use_case.dart';
 import 'package:flutter_survey/database/secure_storage.dart';
+import 'package:flutter_survey/usecases/submit_survey_use_case.dart';
 import 'package:mockito/annotations.dart';
 
 @GenerateMocks([
   GetCachedSurveysUseCase,
   GetSurveyDetailsUseCase,
   GetSurveysUseCase,
+  SubmitSurveyUseCase,
   SurveyService,
   SurveyStorage,
   SurveyRepository,

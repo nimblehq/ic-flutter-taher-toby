@@ -4,9 +4,14 @@ import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class FormSurveyAnswerDropdown extends StatefulWidget {
+  final ValueChanged<List<int>> onSelectedAnswer;
   final QuestionModel question;
 
-  const FormSurveyAnswerDropdown({super.key, required this.question});
+  const FormSurveyAnswerDropdown({
+    super.key,
+    required this.question,
+    required this.onSelectedAnswer,
+  });
 
   @override
   State<FormSurveyAnswerDropdown> createState() =>
@@ -25,6 +30,7 @@ class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
     _pickerOptions =
         widget.question.answers.map((element) => element.text).toList();
     _selectedIndex = (_pickerOptions.length / 2).round();
+    widget.onSelectedAnswer([_selectedIndex]);
     _scrollController =
         FixedExtentScrollController(initialItem: _selectedIndex);
   }

@@ -6,11 +6,13 @@ import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FormSurveyAnswerNps extends ConsumerStatefulWidget {
+  final ValueChanged<List<int>> onSelectedAnswer;
   final QuestionModel question;
 
   const FormSurveyAnswerNps({
     Key? key,
     required this.question,
+    required this.onSelectedAnswer,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,9 @@ class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
   void initState() {
     super.initState();
     scoresLength = widget.question.answers.length;
-    ref.read(selectedScoreProvider.notifier).state = (scoresLength / 2).floor();
+    final int defaultSelectedAnswer = (scoresLength / 2).floor();
+    ref.read(selectedScoreProvider.notifier).state = defaultSelectedAnswer;
+    widget.onSelectedAnswer([defaultSelectedAnswer]);
   }
 
   @override
@@ -58,7 +62,10 @@ class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
                 children: List.generate(scoresLength, (index) {
                   final score = scores[index];
                   return GestureDetector(
-                    onTap: () => scoreState.state = score,
+                    onTap: () {
+                      scoreState.state = score;
+                      widget.onSelectedAnswer([index]);
+                    },
                     child: _buildScore(context, ref, score, scoresLength),
                   );
                 }),

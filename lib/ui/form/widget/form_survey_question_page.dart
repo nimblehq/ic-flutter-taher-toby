@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/api/response/question_response.dart';
 import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/text_answer_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_multi_choice.dart';
@@ -12,6 +13,8 @@ import 'package:flutter_survey/ui/form/widget/form_survey_answer_text_field.dart
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_textarea.dart';
 
 class FormSurveyQuestionPage extends StatelessWidget {
+  final ValueChanged<List<int>> onSelectedIndexedAnswers;
+  final ValueChanged<List<TextAnswerModel>> onUpdatedTextAnswers;
   final QuestionModel question;
   final int questionIndex;
   final int questionTotal;
@@ -21,6 +24,8 @@ class FormSurveyQuestionPage extends StatelessWidget {
     required this.question,
     required this.questionIndex,
     required this.questionTotal,
+    required this.onSelectedIndexedAnswers,
+    required this.onUpdatedTextAnswers,
   }) : super(key: key);
 
   @override
@@ -66,25 +71,69 @@ class FormSurveyQuestionPage extends StatelessWidget {
     final displayType = question.displayType;
     switch (displayType) {
       case DisplayType.smiley:
-        return const FormSurveyAnswerSmiley();
+        return FormSurveyAnswerSmiley(
+          onSelectedAnswer: (value) {
+            onSelectedIndexedAnswers(value);
+          },
+        );
       case DisplayType.nps:
         return FormSurveyAnswerNps(
           question: question,
+          onSelectedAnswer: (value) {
+            onSelectedIndexedAnswers(value);
+          },
         );
       case DisplayType.heart:
-        return FormSurveyAnswerEmoji(emoji: '❤');
+        return FormSurveyAnswerEmoji(
+          emoji: '❤',
+          onSelectedAnswer: (value) {
+            onSelectedIndexedAnswers(value);
+          },
+        );
       case DisplayType.star:
-        return FormSurveyAnswerEmoji(emoji: '⭐');
+        return FormSurveyAnswerEmoji(
+          emoji: '⭐',
+          onSelectedAnswer: (value) {
+            onSelectedIndexedAnswers(value);
+          },
+        );
       case DisplayType.thumbs:
-        return FormSurveyAnswerEmoji(emoji: '👍🏻');
+        return FormSurveyAnswerEmoji(
+          emoji: '👍🏻',
+          onSelectedAnswer: (value) {
+            onSelectedIndexedAnswers(value);
+          },
+        );
       case DisplayType.textarea:
-        return const FormSurveyAnswerTextarea();
+        String ansTextId =
+            question.answers.map((element) => element.id).first.toString();
+        return FormSurveyAnswerTextarea(
+          answerId: ansTextId,
+          onUpdateText: (textAnswerModel) {
+            onUpdatedTextAnswers(textAnswerModel);
+          },
+        );
       case DisplayType.dropdown:
-        return FormSurveyAnswerDropdown(question: question);
+        return FormSurveyAnswerDropdown(
+          question: question,
+          onSelectedAnswer: (value) {
+            onSelectedIndexedAnswers(value);
+          },
+        );
       case DisplayType.choice:
-        return FormSurveyAnswerMultiChoice(question: question);
+        return FormSurveyAnswerMultiChoice(
+          question: question,
+          onSelectedAnswers: (value) {
+            onSelectedIndexedAnswers(value);
+          },
+        );
       case DisplayType.textfield:
-        return FormSurveyAnswerTextField(question: question);
+        return FormSurveyAnswerTextField(
+          question: question,
+          onUpdateText: (textAnswerModel) {
+            onUpdatedTextAnswers(textAnswerModel);
+          },
+        );
       default:
         return Text(displayType.name);
     }

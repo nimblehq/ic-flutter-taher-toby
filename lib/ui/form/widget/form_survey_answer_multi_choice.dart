@@ -3,9 +3,14 @@ import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class FormSurveyAnswerMultiChoice extends StatefulWidget {
+  final ValueChanged<List<int>> onSelectedAnswers;
   final QuestionModel question;
 
-  const FormSurveyAnswerMultiChoice({super.key, required this.question});
+  const FormSurveyAnswerMultiChoice({
+    super.key,
+    required this.question,
+    required this.onSelectedAnswers,
+  });
 
   @override
   State<FormSurveyAnswerMultiChoice> createState() =>
@@ -21,6 +26,8 @@ class _FormSurveyAnswerMultiChoiceState
   void initState() {
     super.initState();
     _options = widget.question.answers.map((element) => element.text).toList();
+    _selectedIndexes.add((_options.length / 2).round());
+    widget.onSelectedAnswers(_selectedIndexes);
   }
 
   Widget _buildListItem(String title, bool isSelected) {
@@ -87,6 +94,7 @@ class _FormSurveyAnswerMultiChoiceState
             _selectedIndexes.add(index);
             _selectedIndexes.sort();
           }
+          widget.onSelectedAnswers(_selectedIndexes);
         });
       },
       child: _buildListItem(title, isSelected),

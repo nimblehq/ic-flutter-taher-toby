@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_survey/api/response/question_response.dart';
 import 'package:flutter_survey/api/response/survey_details_response.dart';
 import 'package:flutter_survey/model/question_model.dart';
+import 'package:collection/collection.dart';
 
 class SurveyDetailsModel extends Equatable {
   final String id;
@@ -9,6 +10,8 @@ class SurveyDetailsModel extends Equatable {
   final String description;
   final String coverImageUrl;
   final List<QuestionModel> questions;
+  final String intro;
+  final String outro;
 
   const SurveyDetailsModel({
     required this.id,
@@ -16,6 +19,8 @@ class SurveyDetailsModel extends Equatable {
     required this.description,
     required this.coverImageUrl,
     required this.questions,
+    required this.intro,
+    required this.outro,
   });
 
   @override
@@ -35,6 +40,16 @@ class SurveyDetailsModel extends Equatable {
                 element.displayType != DisplayType.outro,
           )
           .toList(),
+      intro: (response.questions ?? [])
+              .firstWhereOrNull(
+                  (question) => question.displayType == DisplayType.intro)
+              ?.text ??
+          '',
+      outro: (response.questions ?? [])
+              .firstWhereOrNull(
+                  (question) => question.displayType == DisplayType.outro)
+              ?.text ??
+          '',
     );
   }
 }

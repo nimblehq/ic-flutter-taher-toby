@@ -38,6 +38,8 @@ void main() {
             ],
           ),
         ],
+        intro: '',
+        outro: '',
       );
       when(mockSurveyRepository.getSurveyDetails(surveyId: "surveyId"))
           .thenAnswer((_) async => surveyDetailsModel);

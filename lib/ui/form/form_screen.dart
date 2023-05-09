@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/app_navigator.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/model/survey_details_model.dart';
+import 'package:flutter_survey/model/text_answer_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/form/form_state.dart';
@@ -14,12 +16,16 @@ import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_survey/ui/widget/next_button.dart';
 import 'package:flutter_survey/ui/widget/snack_bar.dart';
 import 'package:flutter_survey/usecases/get_survey_details_use_case.dart';
+import 'package:flutter_survey/usecases/submit_survey_use_case.dart';
 
 const _navigationDuration = 400;
 
 final formViewModelProvider =
     StateNotifierProvider.autoDispose<FormViewModel, FormState>((ref) {
-  return FormViewModel(getIt.get<GetSurveyDetailsUseCase>());
+  return FormViewModel(
+    getIt.get<GetSurveyDetailsUseCase>(),
+    getIt.get<SubmitSurveyUseCase>(),
+  );
 });
 
 final _surveyDetailsStreamProvider =
@@ -58,14 +64,26 @@ class FormScreenState extends ConsumerState<FormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<FormState>(formViewModelProvider, (_, formState) {
+      formState.maybeWhen(
+        surveySubmissionSuccess: (outroMessage) =>
+            _navigateToSurveySuccessScreen(outroMessage),
+        orElse: () {},
+      );
+    });
+
     final surveyDetails = ref.watch(_surveyDetailsStreamProvider).value;
     final errorMessage = ref.watch(_errorStreamProvider).value ?? "";
+
     return ref.watch(formViewModelProvider).when(
           init: () => _buildFormScreen(isLoading: true),
           loading: () => _buildFormScreen(isLoading: true),
           loadSurveyDetailsSuccess: () => _buildFormScreen(
             surveyDetails: surveyDetails,
           ),
+          surveySubmissionSuccess: (_) {
+            return Container();
+          },
           loadSurveyDetailsError: () => _buildFormScreen(
             errorMessage: errorMessage,
           ),
@@ -105,6 +123,37 @@ class FormScreenState extends ConsumerState<FormScreen> {
                       question: questions[index - 1],
                       questionIndex: index,
                       questionTotal: questionTotal,
+                      onSelectedIndexedAnswers: (selectedIndexes) {
+                        final ansOption = questions[index - 1]
+                            .answers
+                            .map((element) => element.id)
+                            .toList();
+                        final qid = questions[index - 1].id;
+                        List<SubmitSurveyAnswerModel> answerModels = [];
+                        for (int index in selectedIndexes) {
+                          answerModels.add(SubmitSurveyAnswerModel(
+                            id: ansOption[index],
+                            // some answer doesn't have any text, so use index
+                            answer: index.toString(),
+                          ));
+                        }
+                        ref
+                            .read(formViewModelProvider.notifier)
+                            .saveIndexedAnswer(qid, answerModels);
+                      },
+                      onUpdatedTextAnswers: (textAnswers) {
+                        List<SubmitSurveyAnswerModel> answerModels = [];
+                        final qid = questions[index - 1].id;
+                        for (TextAnswerModel textAnswer in textAnswers) {
+                          answerModels.add(SubmitSurveyAnswerModel(
+                            id: textAnswer.answerId,
+                            answer: textAnswer.answerText,
+                          ));
+                        }
+                        ref
+                            .read(formViewModelProvider.notifier)
+                            .saveIndexedAnswer(qid, answerModels);
+                      },
                     );
                   }
                 },
@@ -201,13 +250,20 @@ class FormScreenState extends ConsumerState<FormScreen> {
     );
   }
 
+  void _navigateToSurveySuccessScreen(String message) {
+    _appNavigator.navigateToSurveySuccessScreen(
+        context: context, message: message);
+  }
+
   Widget _buildSubmitSurveyButton() => Visibility(
         visible: _showSubmitSurveyButton,
         child: Padding(
           padding: const EdgeInsets.all(AppDimensions.spacing20),
           child: ElevatedButton(
             onPressed: () {
-              // TODO: Integrate click-event from survey details #41
+              ref
+                  .read(formViewModelProvider.notifier)
+                  .submitAnswer(widget.surveyId);
             },
             child: Text(
               AppLocalizations.of(context)!.submit_survey,
