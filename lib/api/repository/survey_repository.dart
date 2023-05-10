@@ -1,5 +1,8 @@
+import 'package:flutter_survey/api/request/submit_survey_question_request.dart';
+import 'package:flutter_survey/api/request/submit_survey_request.dart';
 import 'package:flutter_survey/api/survey_service.dart';
 import 'package:flutter_survey/api/exception/network_exceptions.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/model/survey_details_model.dart';
 import 'package:flutter_survey/database/survey_storage.dart';
 import 'package:flutter_survey/model/survey_model.dart';
@@ -13,6 +16,11 @@ abstract class SurveyRepository {
 
   Future<SurveyDetailsModel> getSurveyDetails({
     required String surveyId,
+  });
+
+  Future<void> submitSurvey({
+    required String surveyId,
+    required List<SubmitSurveyQuestionModel> questions,
   });
 }
 
@@ -50,6 +58,23 @@ class SurveyRepositoryImpl extends SurveyRepository {
     try {
       final response = await _surveyService.getSurveyDetails(surveyId);
       return SurveyDetailsModel.fromResponse(response);
+    } catch (exception) {
+      throw NetworkExceptions.fromDioException(exception);
+    }
+  }
+
+  @override
+  Future<void> submitSurvey({
+    required String surveyId,
+    required List<SubmitSurveyQuestionModel> questions,
+  }) async {
+    try {
+      await _surveyService.submitSurvey(SubmitSurveyRequest(
+        surveyId: surveyId,
+        questions: questions
+            .map((question) => SubmitSurveyQuestionRequest.fromModel(question))
+            .toList(),
+      ));
     } catch (exception) {
       throw NetworkExceptions.fromDioException(exception);
     }
