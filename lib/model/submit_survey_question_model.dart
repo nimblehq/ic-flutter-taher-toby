@@ -16,11 +16,11 @@ class SubmitSurveyQuestionModel extends Equatable {
 
 class SubmitSurveyAnswerModel extends Equatable {
   final String id;
-  final String answer;
+  final String? answer;
 
   const SubmitSurveyAnswerModel({
     required this.id,
-    required this.answer,
+    this.answer,
   });
 
   @override

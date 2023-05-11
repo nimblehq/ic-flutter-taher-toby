@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_survey/model/submit_answer_model.dart';
+import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class FormSurveyAnswerTextarea extends StatefulWidget {
-  final ValueChanged<List<SubmitAnswerModel>> onUpdateText;
-  final String answerId;
+  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateText;
+  final QuestionModel question;
 
   const FormSurveyAnswerTextarea({
     super.key,
-    required this.answerId,
+    required this.question,
     required this.onUpdateText,
   });
 
@@ -19,6 +20,14 @@ class FormSurveyAnswerTextarea extends StatefulWidget {
 }
 
 class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
+  late String _ansTextId;
+
+  @override
+  void initState() {
+    super.initState();
+    _ansTextId = widget.question.answers.first.id.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -32,9 +41,9 @@ class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
         onChanged: (text) {
           widget.onUpdateText(
             [
-              SubmitAnswerModel(
-                answerId: widget.answerId,
-                answerText: text,
+              SubmitSurveyAnswerModel(
+                id: _ansTextId,
+                answer: text,
               )
             ],
           );

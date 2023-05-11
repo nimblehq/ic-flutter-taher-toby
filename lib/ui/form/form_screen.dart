@@ -3,9 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/app_navigator.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/model/survey_details_model.dart';
-import 'package:flutter_survey/model/submit_answer_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/form/form_state.dart';
@@ -124,17 +122,10 @@ class FormScreenState extends ConsumerState<FormScreen> {
                       questionIndex: index,
                       questionTotal: questionTotal,
                       onUpdatedAnswers: (answers) {
-                        List<SubmitSurveyAnswerModel> answerModels = [];
                         final questionId = questions[index - 1].id;
-                        for (SubmitAnswerModel answer in answers) {
-                          answerModels.add(SubmitSurveyAnswerModel(
-                            id: answer.answerId,
-                            answer: answer.answerText ?? '',
-                          ));
-                        }
                         ref
                             .read(formViewModelProvider.notifier)
-                            .saveIndexedAnswer(questionId, answerModels);
+                            .saveIndexedAnswer(questionId, answers);
                       },
                     );
                   }

@@ -16,7 +16,7 @@ class SubmitSurveyAnswerRequest {
   factory SubmitSurveyAnswerRequest.fromModel(SubmitSurveyAnswerModel model) {
     return SubmitSurveyAnswerRequest(
       id: model.id,
-      answer: model.answer,
+      answer: model.answer ?? '',
     );
   }
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
-import 'package:flutter_survey/model/submit_answer_model.dart';
 
 const _emojis = ['😡', '😕', '😐', '🙂', '😄'];
 final selectedEmojiProvider = StateProvider.autoDispose<String>(
@@ -11,7 +11,7 @@ final selectedEmojiProvider = StateProvider.autoDispose<String>(
 );
 
 class FormSurveyAnswerSmiley extends ConsumerStatefulWidget {
-  final ValueChanged<List<SubmitAnswerModel>> onUpdateAnswer;
+  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateAnswer;
   final QuestionModel question;
 
   const FormSurveyAnswerSmiley({
@@ -36,9 +36,8 @@ class _FormSurveyAnswerSmileyState
     answerIds = widget.question.answers.map((element) => element.id).toList();
     widget.onUpdateAnswer(
       [
-        SubmitAnswerModel(
-          answerId: answerIds[defaultSelectedAnswer],
-          answerText: null,
+        SubmitSurveyAnswerModel(
+          id: answerIds[defaultSelectedAnswer],
         )
       ],
     );
@@ -61,9 +60,8 @@ class _FormSurveyAnswerSmileyState
             onTap: () {
               widget.onUpdateAnswer(
                 [
-                  SubmitAnswerModel(
-                    answerId: answerIds[index],
-                    answerText: null,
+                  SubmitSurveyAnswerModel(
+                    id: answerIds[index],
                   )
                 ],
               );

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_survey/model/submit_answer_model.dart';
 
 class FormSurveyAnswerNps extends ConsumerStatefulWidget {
-  final ValueChanged<List<SubmitAnswerModel>> onUpdateAnswer;
+  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateAnswer;
   final QuestionModel question;
 
   const FormSurveyAnswerNps({
@@ -36,9 +36,8 @@ class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
     _answerIds = widget.question.answers.map((element) => element.id).toList();
     widget.onUpdateAnswer(
       [
-        SubmitAnswerModel(
-          answerId: _answerIds[defaultSelectedAnswer],
-          answerText: null,
+        SubmitSurveyAnswerModel(
+          id: _answerIds[defaultSelectedAnswer],
         )
       ],
     );
@@ -76,9 +75,8 @@ class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
                       scoreState.state = score;
                       widget.onUpdateAnswer(
                         [
-                          SubmitAnswerModel(
-                            answerId: _answerIds[index],
-                            answerText: null,
+                          SubmitSurveyAnswerModel(
+                            id: _answerIds[index],
                           )
                         ],
                       );

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
-import 'package:flutter_survey/model/submit_answer_model.dart';
 
 class FormSurveyAnswerDropdown extends StatefulWidget {
-  final ValueChanged<List<SubmitAnswerModel>> onUpdateAnswer;
+  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateAnswer;
   final QuestionModel question;
 
   const FormSurveyAnswerDropdown({
@@ -35,9 +35,9 @@ class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
     _selectedIndex = (_pickerOptions.length / 2).round();
     widget.onUpdateAnswer(
       [
-        SubmitAnswerModel(
-          answerId: _answerIds[_selectedIndex],
-          answerText: _pickerOptions[_selectedIndex],
+        SubmitSurveyAnswerModel(
+          id: _answerIds[_selectedIndex],
+          answer: _pickerOptions[_selectedIndex],
         )
       ],
     );
@@ -58,9 +58,9 @@ class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
               _selectedIndex = index;
               widget.onUpdateAnswer(
                 [
-                  SubmitAnswerModel(
-                    answerId: _answerIds[index],
-                    answerText: _pickerOptions[index],
+                  SubmitSurveyAnswerModel(
+                    id: _answerIds[index],
+                    answer: _pickerOptions[index],
                   )
                 ],
               );

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
-import 'package:flutter_survey/model/submit_answer_model.dart';
 
 class FormSurveyAnswerEmoji extends ConsumerStatefulWidget {
-  final ValueChanged<List<SubmitAnswerModel>> onUpdateAnswer;
+  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateAnswer;
   final QuestionModel question;
   final String emoji;
   final int totalEmojiCount;
@@ -37,9 +37,8 @@ class _FormSurveyAnswerEmojiState extends ConsumerState<FormSurveyAnswerEmoji> {
     _answerIds = widget.question.answers.map((element) => element.id).toList();
     widget.onUpdateAnswer(
       [
-        SubmitAnswerModel(
-          answerId: _answerIds[defaultSelectedAnswer],
-          answerText: null,
+        SubmitSurveyAnswerModel(
+          id: _answerIds[defaultSelectedAnswer],
         )
       ],
     );
@@ -63,9 +62,8 @@ class _FormSurveyAnswerEmojiState extends ConsumerState<FormSurveyAnswerEmoji> {
               emojiState.state = index;
               widget.onUpdateAnswer(
                 [
-                  SubmitAnswerModel(
-                    answerId: _answerIds[index],
-                    answerText: null,
+                  SubmitSurveyAnswerModel(
+                    id: _answerIds[index],
                   )
                 ],
               );

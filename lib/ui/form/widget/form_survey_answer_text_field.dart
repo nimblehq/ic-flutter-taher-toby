@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/widget/custom_text_field.dart';
-import 'package:flutter_survey/model/submit_answer_model.dart';
 
 class FormSurveyAnswerTextField extends StatefulWidget {
   final QuestionModel question;
-  final ValueChanged<List<SubmitAnswerModel>> onUpdateAnswer;
+  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateAnswer;
 
   const FormSurveyAnswerTextField({
     super.key,
@@ -21,7 +21,7 @@ class FormSurveyAnswerTextField extends StatefulWidget {
 
 class _FormSurveyAnswerTextFieldState extends State<FormSurveyAnswerTextField> {
   late List<String> _textFieldHints = [];
-  late List<SubmitAnswerModel> _answerModels = [];
+  late List<SubmitSurveyAnswerModel> _answerModels = [];
 
   @override
   void initState() {
@@ -29,9 +29,8 @@ class _FormSurveyAnswerTextFieldState extends State<FormSurveyAnswerTextField> {
     _textFieldHints =
         widget.question.answers.map((element) => element.text).toList();
     _answerModels = widget.question.answers
-        .map((element) => SubmitAnswerModel(
-              answerId: element.id,
-              answerText: '',
+        .map((element) => SubmitSurveyAnswerModel(
+              id: element.id,
             ))
         .toList();
   }
@@ -54,9 +53,9 @@ class _FormSurveyAnswerTextFieldState extends State<FormSurveyAnswerTextField> {
                 isObscuredText: false,
                 hintText: _textFieldHints[index],
                 onChanged: (text) {
-                  _answerModels[index] = SubmitAnswerModel(
-                    answerId: _answerModels[index].answerId,
-                    answerText: text,
+                  _answerModels[index] = SubmitSurveyAnswerModel(
+                    id: _answerModels[index].id,
+                    answer: text,
                   );
                   widget.onUpdateAnswer(_answerModels);
                 },

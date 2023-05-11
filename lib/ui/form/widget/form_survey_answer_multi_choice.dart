@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
-import 'package:flutter_survey/model/submit_answer_model.dart';
 
 class FormSurveyAnswerMultiChoice extends StatefulWidget {
-  final ValueChanged<List<SubmitAnswerModel>> onUpdateAnswer;
+  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateAnswer;
   final QuestionModel question;
 
   const FormSurveyAnswerMultiChoice({
@@ -20,20 +20,22 @@ class FormSurveyAnswerMultiChoice extends StatefulWidget {
 
 class _FormSurveyAnswerMultiChoiceState
     extends State<FormSurveyAnswerMultiChoice> {
-  final List<SubmitAnswerModel> _selectedAnswers = [];
-  late List<SubmitAnswerModel> _options = [];
+  late List<SubmitSurveyAnswerModel> _selectedAnswers;
+  final List<int> _selectedIndexes = [];
+  late List<SubmitSurveyAnswerModel> _options = [];
 
   @override
   void initState() {
     super.initState();
     _options = widget.question.answers
-        .map((element) => SubmitAnswerModel(
-              answerId: element.id,
-              answerText: element.text,
+        .map((element) => SubmitSurveyAnswerModel(
+              id: element.id,
+              answer: element.text,
             ))
         .toList();
     final index = (_options.length / 2).round();
-    _selectedAnswers.add(_options[index]);
+    _selectedAnswers = [_options[index]];
+    _selectedIndexes.add(index);
     widget.onUpdateAnswer(_selectedAnswers);
   }
 
@@ -95,11 +97,13 @@ class _FormSurveyAnswerMultiChoiceState
     return GestureDetector(
       onTap: () {
         setState(() {
-          if (_selectedAnswers.contains(_options[index])) {
-            _selectedAnswers.remove(_options[index]);
+          if (_selectedIndexes.contains(index)) {
+            _selectedIndexes.remove(index);
           } else {
-            _selectedAnswers.add(_options[index]);
+            _selectedIndexes.add(index);
           }
+          _selectedAnswers =
+              _selectedIndexes.map((index) => _options[index]).toList();
           widget.onUpdateAnswer(_selectedAnswers);
         });
       },
@@ -114,8 +118,8 @@ class _FormSurveyAnswerMultiChoiceState
         itemBuilder: (_, index) {
           return Center(
             child: _buildItems(
-              _options[index].answerText ?? '',
-              _selectedAnswers.contains(_options[index]),
+              _options[index].answer ?? '',
+              _selectedIndexes.contains(index),
               index,
             ),
           );
