@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/api/response/question_response.dart';
 import 'package:flutter_survey/model/question_model.dart';
-import 'package:flutter_survey/model/text_answer_model.dart';
+import 'package:flutter_survey/model/submit_answer_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_multi_choice.dart';
@@ -13,8 +13,7 @@ import 'package:flutter_survey/ui/form/widget/form_survey_answer_text_field.dart
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_textarea.dart';
 
 class FormSurveyQuestionPage extends StatelessWidget {
-  final ValueChanged<List<int>> onSelectedIndexedAnswers;
-  final ValueChanged<List<TextAnswerModel>> onUpdatedTextAnswers;
+  final ValueChanged<List<SubmitAnswerModel>> onUpdatedAnswers;
   final QuestionModel question;
   final int questionIndex;
   final int questionTotal;
@@ -24,8 +23,7 @@ class FormSurveyQuestionPage extends StatelessWidget {
     required this.question,
     required this.questionIndex,
     required this.questionTotal,
-    required this.onSelectedIndexedAnswers,
-    required this.onUpdatedTextAnswers,
+    required this.onUpdatedAnswers,
   }) : super(key: key);
 
   @override
@@ -72,66 +70,69 @@ class FormSurveyQuestionPage extends StatelessWidget {
     switch (displayType) {
       case DisplayType.smiley:
         return FormSurveyAnswerSmiley(
-          onSelectedAnswer: (value) {
-            onSelectedIndexedAnswers(value);
+          question: question,
+          onUpdateAnswer: (answers) {
+            onUpdatedAnswers(answers);
           },
         );
       case DisplayType.nps:
         return FormSurveyAnswerNps(
           question: question,
-          onSelectedAnswer: (value) {
-            onSelectedIndexedAnswers(value);
+          onUpdateAnswer: (answers) {
+            onUpdatedAnswers(answers);
           },
         );
       case DisplayType.heart:
         return FormSurveyAnswerEmoji(
           emoji: '❤',
-          onSelectedAnswer: (value) {
-            onSelectedIndexedAnswers(value);
+          question: question,
+          onUpdateAnswer: (answers) {
+            onUpdatedAnswers(answers);
           },
         );
       case DisplayType.star:
         return FormSurveyAnswerEmoji(
           emoji: '⭐',
-          onSelectedAnswer: (value) {
-            onSelectedIndexedAnswers(value);
+          question: question,
+          onUpdateAnswer: (answers) {
+            onUpdatedAnswers(answers);
           },
         );
       case DisplayType.thumbs:
         return FormSurveyAnswerEmoji(
           emoji: '👍🏻',
-          onSelectedAnswer: (value) {
-            onSelectedIndexedAnswers(value);
+          question: question,
+          onUpdateAnswer: (answers) {
+            onUpdatedAnswers(answers);
           },
         );
       case DisplayType.textarea:
-        String ansTextId =
-            question.answers.map((element) => element.id).first.toString();
+        String ansTextId = question.answers.first.id.toString();
         return FormSurveyAnswerTextarea(
           answerId: ansTextId,
           onUpdateText: (textAnswerModel) {
-            onUpdatedTextAnswers(textAnswerModel);
+            onUpdatedAnswers(textAnswerModel);
           },
         );
       case DisplayType.dropdown:
         return FormSurveyAnswerDropdown(
           question: question,
-          onSelectedAnswer: (value) {
-            onSelectedIndexedAnswers(value);
+          onUpdateAnswer: (answers) {
+            onUpdatedAnswers(answers);
           },
         );
       case DisplayType.choice:
         return FormSurveyAnswerMultiChoice(
           question: question,
-          onSelectedAnswers: (value) {
-            onSelectedIndexedAnswers(value);
+          onUpdateAnswer: (answers) {
+            onUpdatedAnswers(answers);
           },
         );
       case DisplayType.textfield:
         return FormSurveyAnswerTextField(
           question: question,
-          onUpdateText: (textAnswerModel) {
-            onUpdatedTextAnswers(textAnswerModel);
+          onUpdateAnswer: (answers) {
+            onUpdatedAnswers(answers);
           },
         );
       default:

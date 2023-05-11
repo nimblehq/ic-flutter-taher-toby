@@ -5,7 +5,7 @@ import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/model/survey_details_model.dart';
-import 'package:flutter_survey/model/text_answer_model.dart';
+import 'package:flutter_survey/model/submit_answer_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/form/form_state.dart';
@@ -123,36 +123,18 @@ class FormScreenState extends ConsumerState<FormScreen> {
                       question: questions[index - 1],
                       questionIndex: index,
                       questionTotal: questionTotal,
-                      onSelectedIndexedAnswers: (selectedIndexes) {
-                        final ansOption = questions[index - 1]
-                            .answers
-                            .map((element) => element.id)
-                            .toList();
-                        final qid = questions[index - 1].id;
+                      onUpdatedAnswers: (answers) {
                         List<SubmitSurveyAnswerModel> answerModels = [];
-                        for (int index in selectedIndexes) {
+                        final questionId = questions[index - 1].id;
+                        for (SubmitAnswerModel answer in answers) {
                           answerModels.add(SubmitSurveyAnswerModel(
-                            id: ansOption[index],
-                            // some answer doesn't have any text, so use index
-                            answer: index.toString(),
+                            id: answer.answerId,
+                            answer: answer.answerText ?? '',
                           ));
                         }
                         ref
                             .read(formViewModelProvider.notifier)
-                            .saveIndexedAnswer(qid, answerModels);
-                      },
-                      onUpdatedTextAnswers: (textAnswers) {
-                        List<SubmitSurveyAnswerModel> answerModels = [];
-                        final qid = questions[index - 1].id;
-                        for (TextAnswerModel textAnswer in textAnswers) {
-                          answerModels.add(SubmitSurveyAnswerModel(
-                            id: textAnswer.answerId,
-                            answer: textAnswer.answerText,
-                          ));
-                        }
-                        ref
-                            .read(formViewModelProvider.notifier)
-                            .saveIndexedAnswer(qid, answerModels);
+                            .saveIndexedAnswer(questionId, answerModels);
                       },
                     );
                   }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
+import 'package:flutter_survey/model/submit_answer_model.dart';
 
 const _emojis = ['😡', '😕', '😐', '🙂', '😄'];
 final selectedEmojiProvider = StateProvider.autoDispose<String>(
@@ -9,11 +11,13 @@ final selectedEmojiProvider = StateProvider.autoDispose<String>(
 );
 
 class FormSurveyAnswerSmiley extends ConsumerStatefulWidget {
-  final ValueChanged<List<int>> onSelectedAnswer;
+  final ValueChanged<List<SubmitAnswerModel>> onUpdateAnswer;
+  final QuestionModel question;
 
   const FormSurveyAnswerSmiley({
     Key? key,
-    required this.onSelectedAnswer,
+    required this.question,
+    required this.onUpdateAnswer,
   }) : super(key: key);
 
   @override
@@ -24,11 +28,20 @@ class FormSurveyAnswerSmiley extends ConsumerStatefulWidget {
 class _FormSurveyAnswerSmileyState
     extends ConsumerState<FormSurveyAnswerSmiley> {
   final int defaultSelectedAnswer = 2;
+  late List<String> answerIds;
 
   @override
   void initState() {
     super.initState();
-    widget.onSelectedAnswer([defaultSelectedAnswer]);
+    answerIds = widget.question.answers.map((element) => element.id).toList();
+    widget.onUpdateAnswer(
+      [
+        SubmitAnswerModel(
+          answerId: answerIds[defaultSelectedAnswer],
+          answerText: null,
+        )
+      ],
+    );
   }
 
   @override
@@ -46,7 +59,14 @@ class _FormSurveyAnswerSmileyState
           final emoji = _emojis[index];
           return GestureDetector(
             onTap: () {
-              widget.onSelectedAnswer([index]);
+              widget.onUpdateAnswer(
+                [
+                  SubmitAnswerModel(
+                    answerId: answerIds[index],
+                    answerText: null,
+                  )
+                ],
+              );
               emojiState.state = emoji;
             },
             child: Padding(

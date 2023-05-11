@@ -4,15 +4,16 @@ import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_survey/model/submit_answer_model.dart';
 
 class FormSurveyAnswerNps extends ConsumerStatefulWidget {
-  final ValueChanged<List<int>> onSelectedAnswer;
+  final ValueChanged<List<SubmitAnswerModel>> onUpdateAnswer;
   final QuestionModel question;
 
   const FormSurveyAnswerNps({
     Key? key,
     required this.question,
-    required this.onSelectedAnswer,
+    required this.onUpdateAnswer,
   }) : super(key: key);
 
   @override
@@ -24,6 +25,7 @@ class FormSurveyAnswerNps extends ConsumerStatefulWidget {
 class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
   final selectedScoreProvider = StateProvider.autoDispose<int>((_) => 0);
   late int scoresLength;
+  late List<String> _answerIds;
 
   @override
   void initState() {
@@ -31,7 +33,15 @@ class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
     scoresLength = widget.question.answers.length;
     final int defaultSelectedAnswer = (scoresLength / 2).floor();
     ref.read(selectedScoreProvider.notifier).state = defaultSelectedAnswer;
-    widget.onSelectedAnswer([defaultSelectedAnswer]);
+    _answerIds = widget.question.answers.map((element) => element.id).toList();
+    widget.onUpdateAnswer(
+      [
+        SubmitAnswerModel(
+          answerId: _answerIds[defaultSelectedAnswer],
+          answerText: null,
+        )
+      ],
+    );
   }
 
   @override
@@ -64,7 +74,14 @@ class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
                   return GestureDetector(
                     onTap: () {
                       scoreState.state = score;
-                      widget.onSelectedAnswer([index]);
+                      widget.onUpdateAnswer(
+                        [
+                          SubmitAnswerModel(
+                            answerId: _answerIds[index],
+                            answerText: null,
+                          )
+                        ],
+                      );
                     },
                     child: _buildScore(context, ref, score, scoresLength),
                   );

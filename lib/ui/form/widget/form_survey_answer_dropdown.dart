@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/model/question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
+import 'package:flutter_survey/model/submit_answer_model.dart';
 
 class FormSurveyAnswerDropdown extends StatefulWidget {
-  final ValueChanged<List<int>> onSelectedAnswer;
+  final ValueChanged<List<SubmitAnswerModel>> onUpdateAnswer;
   final QuestionModel question;
 
   const FormSurveyAnswerDropdown({
     super.key,
     required this.question,
-    required this.onSelectedAnswer,
+    required this.onUpdateAnswer,
   });
 
   @override
@@ -20,6 +21,7 @@ class FormSurveyAnswerDropdown extends StatefulWidget {
 
 class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
   late List<String> _pickerOptions = [];
+  late List<String> _answerIds;
 
   int _selectedIndex = 1;
   late FixedExtentScrollController _scrollController;
@@ -29,8 +31,16 @@ class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
     super.initState();
     _pickerOptions =
         widget.question.answers.map((element) => element.text).toList();
+    _answerIds = widget.question.answers.map((element) => element.id).toList();
     _selectedIndex = (_pickerOptions.length / 2).round();
-    widget.onSelectedAnswer([_selectedIndex]);
+    widget.onUpdateAnswer(
+      [
+        SubmitAnswerModel(
+          answerId: _answerIds[_selectedIndex],
+          answerText: _pickerOptions[_selectedIndex],
+        )
+      ],
+    );
     _scrollController =
         FixedExtentScrollController(initialItem: _selectedIndex);
   }
@@ -46,6 +56,14 @@ class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
           onSelectedItemChanged: (index) {
             setState(() {
               _selectedIndex = index;
+              widget.onUpdateAnswer(
+                [
+                  SubmitAnswerModel(
+                    answerId: _answerIds[index],
+                    answerText: _pickerOptions[index],
+                  )
+                ],
+              );
             });
           },
           children: List.generate(

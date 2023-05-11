@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_survey/model/text_answer_model.dart';
+import 'package:flutter_survey/model/submit_answer_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class FormSurveyAnswerTextarea extends StatefulWidget {
-  final ValueChanged<List<TextAnswerModel>> onUpdateText;
+  final ValueChanged<List<SubmitAnswerModel>> onUpdateText;
   final String answerId;
 
   const FormSurveyAnswerTextarea({
@@ -32,7 +32,7 @@ class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
         onChanged: (text) {
           widget.onUpdateText(
             [
-              TextAnswerModel(
+              SubmitAnswerModel(
                 answerId: widget.answerId,
                 answerText: text,
               )
