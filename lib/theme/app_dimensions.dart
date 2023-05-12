@@ -44,6 +44,8 @@ class AppDimensions {
   static const answerMultiChoiceItemHeight = 56.0;
   static const answerMultiChoiceMarginLength = 160.0;
 
+  static const surveyCompletionAnimationSize = 200.0;
+
   static const homeAvatarSize = 36.0;
   static const homeSurveyPageIndicatorSize = 8.0;
   static const homeSkeletonLoadingDefaultHeight = 20.0;

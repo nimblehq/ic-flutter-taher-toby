@@ -39,6 +39,7 @@ dependencies:
   intl: ^0.17.0
   japx: ^2.0.4
   json_annotation: ^4.6.0
+  lottie: ^2.1.0
   package_info_plus: ^1.4.2
   page_view_dot_indicator: ^2.0.1
   permission_handler: ^10.2.0
@@ -78,6 +79,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/fonts/
+    - assets/animations/
 
   fonts:
     - family: Neuzeit
