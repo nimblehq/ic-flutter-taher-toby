@@ -7,7 +7,7 @@ TextField customTextField({
   required bool isObscuredText,
   required String hintText,
   ValueChanged<String>? onChanged,
-  String? widgetKey,
+  required String widgetKey,
 }) =>
     TextField(
       style: Theme.of(context).textTheme.bodySmall,
