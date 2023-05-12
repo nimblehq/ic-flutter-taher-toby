@@ -65,13 +65,13 @@ class FormViewModel extends StateNotifier<FormState> {
     state = const FormState.loading();
     final result = await _submitSurveyUseCase.call(
       SubmitSurveyInput(
-        surveyId: _surveyDetails.value.id,
+        surveyId: _surveyDetails.valueOrNull?.id ?? '',
         questions: submitSurveyQuestions,
       ),
     );
     if (result is Success<void>) {
       state = FormState.surveySubmissionSuccess(
-          _surveyDetails.value.thankYouMessage);
+          _surveyDetails.valueOrNull?.thankYouMessage ?? '');
     } else {
       _error.add((result as Failed).getErrorMessage());
       state = const FormState.loadSurveyDetailsError();

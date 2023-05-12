@@ -38,7 +38,6 @@ void main() {
           ],
         ),
       ],
-      intro: '',
       thankYouMessage: '',
     );
 
@@ -126,7 +125,7 @@ void main() {
             const FormState.surveySubmissionSuccess(''),
           ]));
 
-      formViewModel.submitAnswer('surveyId');
+      formViewModel.submitAnswer();
     });
 
     test(
@@ -149,7 +148,7 @@ void main() {
         ]),
       );
 
-      formViewModel.submitAnswer('surveyId');
+      formViewModel.submitAnswer();
     });
 
     tearDown(() {

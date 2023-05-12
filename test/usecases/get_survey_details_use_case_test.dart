@@ -38,7 +38,6 @@ void main() {
             ],
           ),
         ],
-        intro: '',
         thankYouMessage: '',
       );
       when(mockSurveyRepository.getSurveyDetails(surveyId: "surveyId"))

@@ -236,9 +236,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
           padding: const EdgeInsets.all(AppDimensions.spacing20),
           child: ElevatedButton(
             onPressed: () {
-              ref
-                  .read(formViewModelProvider.notifier)
-                  .submitAnswer();
+              ref.read(formViewModelProvider.notifier).submitAnswer();
             },
             child: Text(
               AppLocalizations.of(context)!.submit_survey,
