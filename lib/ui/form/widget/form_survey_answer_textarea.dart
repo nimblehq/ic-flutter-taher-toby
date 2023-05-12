@@ -21,6 +21,17 @@ class FormSurveyAnswerTextarea extends StatefulWidget {
 
 class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
   @override
+  void initState() {
+    super.initState();
+    widget.onUpdateText(
+      SubmitSurveyAnswerModel(
+        id: widget.answers.first.id.toString(),
+        answer: '',
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: AppDimensions.answerTextareaHeight,

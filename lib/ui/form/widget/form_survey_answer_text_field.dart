@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/model/answer_model.dart';
 import 'package:flutter_survey/model/submit_survey_question_model.dart';
@@ -37,23 +38,21 @@ class _FormSurveyAnswerTextFieldState extends State<FormSurveyAnswerTextField> {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: _answerModels
-            .asMap()
-            .entries
-            .map(
-              (answerEntry) => Padding(
+        children: widget.answers
+            .mapIndexed(
+              (index, element) => Padding(
                 padding: const EdgeInsets.only(bottom: AppDimensions.spacing20),
                 child: customTextField(
                   context: context,
                   controller: null,
-                  textInputType: widget.answers[answerEntry.key].text == 'Email'
+                  textInputType: widget.answers[index].text == 'Email'
                       ? TextInputType.emailAddress
                       : TextInputType.text,
                   isObscuredText: false,
-                  hintText: widget.answers[answerEntry.key].text,
+                  hintText: widget.answers[index].text,
                   onChanged: (text) {
-                    _answerModels[answerEntry.key] = SubmitSurveyAnswerModel(
-                      id: _answerModels[answerEntry.key].id,
+                    _answerModels[index] = SubmitSurveyAnswerModel(
+                      id: _answerModels[index].id,
                       answer: text,
                     );
                     widget.onUpdateAnswer(_answerModels);
