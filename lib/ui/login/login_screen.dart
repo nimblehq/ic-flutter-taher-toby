@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter_survey/app_navigator.dart';
+import 'package:flutter_survey/constant/widget_keys.dart';
 import 'package:flutter_survey/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
@@ -94,6 +95,7 @@ class LoginScreenState extends ConsumerState<LoginScreen>
         onPressed: () {
           logIn();
         },
+        key: const ValueKey(WidgetKeys.loginButtonKey),
         style: ButtonStyle(
           backgroundColor: const MaterialStatePropertyAll(Colors.white),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -162,6 +164,7 @@ class LoginScreenState extends ConsumerState<LoginScreen>
                   textInputType: TextInputType.emailAddress,
                   isObscuredText: false,
                   hintText: AppLocalizations.of(context)!.email,
+                  widgetKey: WidgetKeys.emailTextFieldKey,
                 ),
               ),
               Padding(
@@ -176,6 +179,7 @@ class LoginScreenState extends ConsumerState<LoginScreen>
                   textInputType: TextInputType.text,
                   isObscuredText: true,
                   hintText: AppLocalizations.of(context)!.password,
+                  widgetKey: WidgetKeys.passwordTextFieldKey,
                 ),
               ),
               Padding(

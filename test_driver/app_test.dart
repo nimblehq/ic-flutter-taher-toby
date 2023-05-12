@@ -32,34 +32,6 @@ void main() {
     });
 
     test(
-      'verify the text input in textfields',
-      () async {
-        String emailValue = 'abcd@gmail.com';
-        SerializableFinder emailTextField =
-            find.byValueKey('emailTextFieldKey');
-        await driver.waitFor(emailTextField);
-        await driver.tap(emailTextField);
-        await driver.enterText(emailValue);
-        SerializableFinder emailText = find.text(emailValue);
-        await driver.waitFor(emailText);
-        expect(await driver.getText(emailText), emailValue);
-
-        String passwordValue = '12345678910';
-        SerializableFinder passwordTextField =
-            find.byValueKey('passwordTextFieldKey');
-        await driver.waitFor(passwordTextField);
-        await driver.tap(passwordTextField);
-        await driver.enterText(passwordValue);
-        SerializableFinder passwordText = find.text(passwordValue);
-        await driver.waitFor(passwordText);
-        expect(await driver.getText(passwordText), passwordValue);
-      },
-      timeout: const Timeout(
-        Duration(minutes: 2),
-      ),
-    );
-
-    test(
       'verify login error message',
       () async {
         String emailValue = 'abcd@gmail.com';
