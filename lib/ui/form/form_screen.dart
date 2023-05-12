@@ -77,7 +77,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
           ),
           surveyCompletion: () => FormSurveyCompletionPage(
             outroMessage: surveyDetails?.thankYouMessage,
-          )
+          ),
         );
   }
 
