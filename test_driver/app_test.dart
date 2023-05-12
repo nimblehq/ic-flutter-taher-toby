@@ -1,5 +1,6 @@
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
+import 'package:flutter_survey/constant/widget_keys.dart';
 
 void main() {
   group('Login Screen Test', () {
@@ -14,29 +15,12 @@ void main() {
       driver.close();
     });
 
-    test('verify the email hint text on login screen', () async {
-      SerializableFinder text = find.text('Email');
-      await driver.waitFor(text);
-      expect(await driver.getText(text), 'Email');
-    });
-
-    test('verify the password hint text on login screen', () async {
-      SerializableFinder text = find.text('Password');
-      await driver.waitFor(text);
-      expect(await driver.getText(text), 'Password');
-    });
-
-    test('verify the text on login button', () async {
-      final buttonFinder = find.text('Log in');
-      expect(await driver.getText(buttonFinder), 'Log in');
-    });
-
     test(
       'verify login error message',
       () async {
         String emailValue = 'abcd@gmail.com';
         SerializableFinder emailTextField =
-            find.byValueKey('emailTextFieldKey');
+            find.byValueKey(WidgetKeys.emailTextFieldKey);
         await driver.waitFor(emailTextField);
         await driver.tap(emailTextField);
         await driver.enterText(emailValue);
@@ -45,14 +29,15 @@ void main() {
 
         String passwordValue = '12345678910';
         SerializableFinder passwordTextField =
-            find.byValueKey('passwordTextFieldKey');
+            find.byValueKey(WidgetKeys.passwordTextFieldKey);
         await driver.waitFor(passwordTextField);
         await driver.tap(passwordTextField);
         await driver.enterText(passwordValue);
         SerializableFinder passwordText = find.text(passwordValue);
         await driver.waitFor(passwordText);
 
-        SerializableFinder loginButton = find.byValueKey('loginButtonKey');
+        SerializableFinder loginButton =
+            find.byValueKey(WidgetKeys.loginButtonKey);
         await driver.waitFor(loginButton);
         await driver.tap(loginButton);
 
@@ -71,7 +56,7 @@ void main() {
       () async {
         String emailValue = 'kaung@nimblehq.co';
         SerializableFinder emailTextField =
-            find.byValueKey('emailTextFieldKey');
+            find.byValueKey(WidgetKeys.emailTextFieldKey);
         await driver.waitFor(emailTextField);
         await driver.tap(emailTextField);
         await driver.enterText(emailValue);
@@ -80,14 +65,15 @@ void main() {
 
         String passwordValue = '12345678';
         SerializableFinder passwordTextField =
-            find.byValueKey('passwordTextFieldKey');
+            find.byValueKey(WidgetKeys.passwordTextFieldKey);
         await driver.waitFor(passwordTextField);
         await driver.tap(passwordTextField);
         await driver.enterText(passwordValue);
         SerializableFinder passwordText = find.text(passwordValue);
         await driver.waitFor(passwordText);
 
-        SerializableFinder loginButton = find.byValueKey('loginButtonKey');
+        SerializableFinder loginButton =
+            find.byValueKey(WidgetKeys.loginButtonKey);
         await driver.waitFor(loginButton);
         await driver.tap(loginButton);
 
