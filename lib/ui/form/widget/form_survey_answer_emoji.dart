@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/answer_model.dart';
 import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class FormSurveyAnswerEmoji extends ConsumerStatefulWidget {
-  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateAnswer;
-  final QuestionModel question;
+  final ValueChanged<SubmitSurveyAnswerModel> onUpdateAnswer;
+  final List<AnswerModel> answers;
   final String emoji;
   final int totalEmojiCount;
 
@@ -16,7 +16,7 @@ class FormSurveyAnswerEmoji extends ConsumerStatefulWidget {
     required this.emoji,
     this.totalEmojiCount = 5,
     required this.onUpdateAnswer,
-    required this.question,
+    required this.answers,
   }) : super(key: key);
 
   @override
@@ -26,7 +26,6 @@ class FormSurveyAnswerEmoji extends ConsumerStatefulWidget {
 
 class _FormSurveyAnswerEmojiState extends ConsumerState<FormSurveyAnswerEmoji> {
   final int defaultSelectedAnswer = 2;
-  late List<String> _answerIds;
   final _selectedEmojiRatingIndexProvider = StateProvider.autoDispose<int>(
     (_) => 2,
   );
@@ -34,13 +33,10 @@ class _FormSurveyAnswerEmojiState extends ConsumerState<FormSurveyAnswerEmoji> {
   @override
   void initState() {
     super.initState();
-    _answerIds = widget.question.answers.map((element) => element.id).toList();
     widget.onUpdateAnswer(
-      [
-        SubmitSurveyAnswerModel(
-          id: _answerIds[defaultSelectedAnswer],
-        )
-      ],
+      SubmitSurveyAnswerModel(
+        id: widget.answers[defaultSelectedAnswer].id,
+      ),
     );
   }
 
@@ -61,11 +57,9 @@ class _FormSurveyAnswerEmojiState extends ConsumerState<FormSurveyAnswerEmoji> {
             onTap: () {
               emojiState.state = index;
               widget.onUpdateAnswer(
-                [
-                  SubmitSurveyAnswerModel(
-                    id: _answerIds[index],
-                  )
-                ],
+                SubmitSurveyAnswerModel(
+                  id: widget.answers[index].id,
+                ),
               );
             },
             child: Padding(

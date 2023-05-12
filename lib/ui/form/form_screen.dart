@@ -80,7 +80,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
             surveyDetails: surveyDetails,
           ),
           surveySubmissionSuccess: (_) {
-            return Container();
+            return const SizedBox.shrink();
           },
           loadSurveyDetailsError: () => _buildFormScreen(
             errorMessage: errorMessage,
@@ -225,7 +225,9 @@ class FormScreenState extends ConsumerState<FormScreen> {
 
   void _navigateToSurveySuccessScreen(String message) {
     _appNavigator.navigateToSurveySuccessScreen(
-        context: context, message: message);
+      context: context,
+      message: message,
+    );
   }
 
   Widget _buildSubmitSurveyButton() => Visibility(
@@ -236,7 +238,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
             onPressed: () {
               ref
                   .read(formViewModelProvider.notifier)
-                  .submitAnswer(widget.surveyId);
+                  .submitAnswer();
             },
             child: Text(
               AppLocalizations.of(context)!.submit_survey,

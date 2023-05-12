@@ -39,7 +39,7 @@ void main() {
         ),
       ],
       intro: '',
-      outro: '',
+      thankYouMessage: '',
     );
 
     final UseCaseException exception =

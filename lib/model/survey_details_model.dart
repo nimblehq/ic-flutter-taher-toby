@@ -10,8 +10,7 @@ class SurveyDetailsModel extends Equatable {
   final String description;
   final String coverImageUrl;
   final List<QuestionModel> questions;
-  final String intro;
-  final String outro;
+  final String thankYouMessage;
 
   const SurveyDetailsModel({
     required this.id,
@@ -19,8 +18,7 @@ class SurveyDetailsModel extends Equatable {
     required this.description,
     required this.coverImageUrl,
     required this.questions,
-    required this.intro,
-    required this.outro,
+    required this.thankYouMessage,
   });
 
   @override
@@ -40,12 +38,7 @@ class SurveyDetailsModel extends Equatable {
                 element.displayType != DisplayType.outro,
           )
           .toList(),
-      intro: (response.questions ?? [])
-              .firstWhereOrNull(
-                  (question) => question.displayType == DisplayType.intro)
-              ?.text ??
-          '',
-      outro: (response.questions ?? [])
+      thankYouMessage: (response.questions ?? [])
               .firstWhereOrNull(
                   (question) => question.displayType == DisplayType.outro)
               ?.text ??

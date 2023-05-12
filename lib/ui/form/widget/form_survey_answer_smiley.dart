@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/answer_model.dart';
 import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
@@ -11,12 +11,12 @@ final selectedEmojiProvider = StateProvider.autoDispose<String>(
 );
 
 class FormSurveyAnswerSmiley extends ConsumerStatefulWidget {
-  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateAnswer;
-  final QuestionModel question;
+  final ValueChanged<SubmitSurveyAnswerModel> onUpdateAnswer;
+  final List<AnswerModel> answers;
 
   const FormSurveyAnswerSmiley({
     Key? key,
-    required this.question,
+    required this.answers,
     required this.onUpdateAnswer,
   }) : super(key: key);
 
@@ -28,18 +28,14 @@ class FormSurveyAnswerSmiley extends ConsumerStatefulWidget {
 class _FormSurveyAnswerSmileyState
     extends ConsumerState<FormSurveyAnswerSmiley> {
   final int defaultSelectedAnswer = 2;
-  late List<String> answerIds;
 
   @override
   void initState() {
     super.initState();
-    answerIds = widget.question.answers.map((element) => element.id).toList();
     widget.onUpdateAnswer(
-      [
-        SubmitSurveyAnswerModel(
-          id: answerIds[defaultSelectedAnswer],
-        )
-      ],
+      SubmitSurveyAnswerModel(
+        id: widget.answers[defaultSelectedAnswer].id,
+      ),
     );
   }
 
@@ -59,11 +55,9 @@ class _FormSurveyAnswerSmileyState
           return GestureDetector(
             onTap: () {
               widget.onUpdateAnswer(
-                [
-                  SubmitSurveyAnswerModel(
-                    id: answerIds[index],
-                  )
-                ],
+                SubmitSurveyAnswerModel(
+                  id: widget.answers[index].id,
+                ),
               );
               emojiState.state = emoji;
             },

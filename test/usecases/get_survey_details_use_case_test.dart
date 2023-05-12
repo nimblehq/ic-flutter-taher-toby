@@ -39,7 +39,7 @@ void main() {
           ),
         ],
         intro: '',
-        outro: '',
+        thankYouMessage: '',
       );
       when(mockSurveyRepository.getSurveyDetails(surveyId: "surveyId"))
           .thenAnswer((_) async => surveyDetailsModel);

@@ -11,7 +11,6 @@ import 'package:collection/collection.dart';
 class FormViewModel extends StateNotifier<FormState> {
   final GetSurveyDetailsUseCase _getSurveyDetailsUseCase;
   final SubmitSurveyUseCase _submitSurveyUseCase;
-  String? _outroMessage;
 
   FormViewModel(
     this._getSurveyDetailsUseCase,
@@ -37,7 +36,6 @@ class FormViewModel extends StateNotifier<FormState> {
     );
     if (result is Success<SurveyDetailsModel>) {
       _surveyDetails.add(result.value);
-      _outroMessage = result.value.outro;
       state = const FormState.loadSurveyDetailsSuccess();
     } else {
       _error.add((result as Failed).getErrorMessage());
@@ -63,16 +61,17 @@ class FormViewModel extends StateNotifier<FormState> {
     }
   }
 
-  void submitAnswer(String surveyId) async {
+  void submitAnswer() async {
     state = const FormState.loading();
     final result = await _submitSurveyUseCase.call(
       SubmitSurveyInput(
-        surveyId: surveyId,
+        surveyId: _surveyDetails.value.id,
         questions: submitSurveyQuestions,
       ),
     );
     if (result is Success<void>) {
-      state = FormState.surveySubmissionSuccess(_outroMessage ?? '');
+      state = FormState.surveySubmissionSuccess(
+          _surveyDetails.value.thankYouMessage);
     } else {
       _error.add((result as Failed).getErrorMessage());
       state = const FormState.loadSurveyDetailsError();

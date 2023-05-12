@@ -70,66 +70,66 @@ class FormSurveyQuestionPage extends StatelessWidget {
     switch (displayType) {
       case DisplayType.smiley:
         return FormSurveyAnswerSmiley(
-          question: question,
-          onUpdateAnswer: (answers) {
-            onUpdatedAnswers(answers);
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
           },
         );
       case DisplayType.nps:
         return FormSurveyAnswerNps(
-          question: question,
-          onUpdateAnswer: (answers) {
-            onUpdatedAnswers(answers);
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
           },
         );
       case DisplayType.heart:
         return FormSurveyAnswerEmoji(
           emoji: '❤',
-          question: question,
-          onUpdateAnswer: (answers) {
-            onUpdatedAnswers(answers);
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
           },
         );
       case DisplayType.star:
         return FormSurveyAnswerEmoji(
           emoji: '⭐',
-          question: question,
-          onUpdateAnswer: (answers) {
-            onUpdatedAnswers(answers);
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
           },
         );
       case DisplayType.thumbs:
         return FormSurveyAnswerEmoji(
           emoji: '👍🏻',
-          question: question,
-          onUpdateAnswer: (answers) {
-            onUpdatedAnswers(answers);
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
           },
         );
       case DisplayType.textarea:
         return FormSurveyAnswerTextarea(
-          question: question,
-          onUpdateText: (textAnswerModel) {
-            onUpdatedAnswers(textAnswerModel);
+          answers: question.answers,
+          onUpdateText: (answer) {
+            onUpdatedAnswers([answer]);
           },
         );
       case DisplayType.dropdown:
         return FormSurveyAnswerDropdown(
-          question: question,
-          onUpdateAnswer: (answers) {
-            onUpdatedAnswers(answers);
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
           },
         );
       case DisplayType.choice:
         return FormSurveyAnswerMultiChoice(
-          question: question,
-          onUpdateAnswer: (answers) {
-            onUpdatedAnswers(answers);
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswers) {
+            onUpdatedAnswers(selectedAnswers);
           },
         );
       case DisplayType.textfield:
         return FormSurveyAnswerTextField(
-          question: question,
+          answers: question.answers,
           onUpdateAnswer: (answers) {
             onUpdatedAnswers(answers);
           },

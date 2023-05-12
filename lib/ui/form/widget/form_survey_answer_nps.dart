@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/answer_model.dart';
 import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FormSurveyAnswerNps extends ConsumerStatefulWidget {
-  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateAnswer;
-  final QuestionModel question;
+  final ValueChanged<SubmitSurveyAnswerModel> onUpdateAnswer;
+  final List<AnswerModel> answers;
 
   const FormSurveyAnswerNps({
     Key? key,
-    required this.question,
+    required this.answers,
     required this.onUpdateAnswer,
   }) : super(key: key);
 
@@ -25,21 +25,17 @@ class FormSurveyAnswerNps extends ConsumerStatefulWidget {
 class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
   final selectedScoreProvider = StateProvider.autoDispose<int>((_) => 0);
   late int scoresLength;
-  late List<String> _answerIds;
 
   @override
   void initState() {
     super.initState();
-    scoresLength = widget.question.answers.length;
+    scoresLength = widget.answers.length;
     final int defaultSelectedAnswer = (scoresLength / 2).floor();
     ref.read(selectedScoreProvider.notifier).state = defaultSelectedAnswer;
-    _answerIds = widget.question.answers.map((element) => element.id).toList();
     widget.onUpdateAnswer(
-      [
-        SubmitSurveyAnswerModel(
-          id: _answerIds[defaultSelectedAnswer],
-        )
-      ],
+      SubmitSurveyAnswerModel(
+        id: widget.answers[defaultSelectedAnswer].id,
+      ),
     );
   }
 
@@ -74,11 +70,9 @@ class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
                     onTap: () {
                       scoreState.state = score;
                       widget.onUpdateAnswer(
-                        [
-                          SubmitSurveyAnswerModel(
-                            id: _answerIds[index],
-                          )
-                        ],
+                        SubmitSurveyAnswerModel(
+                          id: widget.answers[index].id,
+                        ),
                       );
                     },
                     child: _buildScore(context, ref, score, scoresLength),
