@@ -112,7 +112,7 @@ void main() {
     });
 
     test(
-        'When submit answers successfully, it emits an object with state surveySubmissionSuccess',
+        'When submit answers successfully, it emits an object with state surveyCompletion',
         () {
       when(mockSubmitSurveyUseCase.call(any)).thenAnswer(
         (_) async => Success(null),
@@ -122,7 +122,7 @@ void main() {
           stateStream,
           emitsInOrder([
             const FormState.loading(),
-            const FormState.surveySubmissionSuccess(''),
+            const FormState.surveyCompletion(),
           ]));
 
       formViewModel.submitAnswer();
