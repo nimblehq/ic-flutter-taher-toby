@@ -8,6 +8,7 @@ import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/form/form_state.dart';
 import 'package:flutter_survey/ui/form/form_view_model.dart';
+import 'package:flutter_survey/ui/form/widget/form_survey_completion_page.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_detail_page.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_question_page.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
@@ -62,14 +63,6 @@ class FormScreenState extends ConsumerState<FormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<FormState>(formViewModelProvider, (_, formState) {
-      formState.maybeWhen(
-        surveySubmissionSuccess: (outroMessage) =>
-            _navigateToSurveySuccessScreen(outroMessage),
-        orElse: () {},
-      );
-    });
-
     final surveyDetails = ref.watch(_surveyDetailsStreamProvider).value;
     final errorMessage = ref.watch(_errorStreamProvider).value ?? "";
 
@@ -79,11 +72,11 @@ class FormScreenState extends ConsumerState<FormScreen> {
           loadSurveyDetailsSuccess: () => _buildFormScreen(
             surveyDetails: surveyDetails,
           ),
-          surveySubmissionSuccess: (_) {
-            return const SizedBox.shrink();
-          },
           loadSurveyDetailsError: () => _buildFormScreen(
             errorMessage: errorMessage,
+          ),
+          surveyCompletion: () => FormSurveyCompletionPage(
+            outroMessage: surveyDetails?.thankYouMessage,
           ),
         );
   }
@@ -220,13 +213,6 @@ class FormScreenState extends ConsumerState<FormScreen> {
     _pageController.nextPage(
       duration: const Duration(milliseconds: _navigationDuration),
       curve: Curves.easeInOut,
-    );
-  }
-
-  void _navigateToSurveySuccessScreen(String message) {
-    _appNavigator.navigateToSurveySuccessScreen(
-      context: context,
-      message: message,
     );
   }
 

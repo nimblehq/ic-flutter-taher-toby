@@ -70,8 +70,7 @@ class FormViewModel extends StateNotifier<FormState> {
       ),
     );
     if (result is Success<void>) {
-      state = FormState.surveySubmissionSuccess(
-          _surveyDetails.valueOrNull?.thankYouMessage ?? '');
+      state = const FormState.surveyCompletion();
     } else {
       _error.add((result as Failed).getErrorMessage());
       state = const FormState.loadSurveyDetailsError();
