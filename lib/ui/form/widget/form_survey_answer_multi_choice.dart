@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/answer_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class FormSurveyAnswerMultiChoice extends StatefulWidget {
-  final QuestionModel question;
+  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateAnswer;
+  final List<AnswerModel> answers;
 
-  const FormSurveyAnswerMultiChoice({super.key, required this.question});
+  const FormSurveyAnswerMultiChoice({
+    super.key,
+    required this.answers,
+    required this.onUpdateAnswer,
+  });
 
   @override
   State<FormSurveyAnswerMultiChoice> createState() =>
@@ -14,13 +20,16 @@ class FormSurveyAnswerMultiChoice extends StatefulWidget {
 
 class _FormSurveyAnswerMultiChoiceState
     extends State<FormSurveyAnswerMultiChoice> {
+  late List<SubmitSurveyAnswerModel> _selectedAnswers;
   final List<int> _selectedIndexes = [];
-  late List<String> _options = [];
 
   @override
   void initState() {
     super.initState();
-    _options = widget.question.answers.map((element) => element.text).toList();
+    final index = (widget.answers.length / 2).round();
+    _selectedAnswers = [SubmitSurveyAnswerModel(id: widget.answers[index].id)];
+    _selectedIndexes.add(index);
+    widget.onUpdateAnswer(_selectedAnswers);
   }
 
   Widget _buildListItem(String title, bool isSelected) {
@@ -85,8 +94,15 @@ class _FormSurveyAnswerMultiChoiceState
             _selectedIndexes.remove(index);
           } else {
             _selectedIndexes.add(index);
-            _selectedIndexes.sort();
           }
+          _selectedAnswers = _selectedIndexes
+              .map(
+                (index) => SubmitSurveyAnswerModel(
+                  id: widget.answers[index].id,
+                ),
+              )
+              .toList();
+          widget.onUpdateAnswer(_selectedAnswers);
         });
       },
       child: _buildListItem(title, isSelected),
@@ -100,7 +116,7 @@ class _FormSurveyAnswerMultiChoiceState
         itemBuilder: (_, index) {
           return Center(
             child: _buildItems(
-              _options[index],
+              widget.answers[index].text,
               _selectedIndexes.contains(index),
               index,
             ),
@@ -114,7 +130,7 @@ class _FormSurveyAnswerMultiChoiceState
             thickness: AppDimensions.answerDropdownSeparatorThickness,
           );
         },
-        itemCount: _options.length,
+        itemCount: widget.answers.length,
       ),
     );
   }

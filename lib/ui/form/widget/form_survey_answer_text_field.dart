@@ -1,12 +1,19 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/answer_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/widget/custom_text_field.dart';
-import 'package:collection/collection.dart';
 
 class FormSurveyAnswerTextField extends StatefulWidget {
-  final QuestionModel question;
-  const FormSurveyAnswerTextField({super.key, required this.question});
+  final List<AnswerModel> answers;
+  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdateAnswer;
+
+  const FormSurveyAnswerTextField({
+    super.key,
+    required this.answers,
+    required this.onUpdateAnswer,
+  });
 
   @override
   State<FormSurveyAnswerTextField> createState() =>
@@ -14,17 +21,16 @@ class FormSurveyAnswerTextField extends StatefulWidget {
 }
 
 class _FormSurveyAnswerTextFieldState extends State<FormSurveyAnswerTextField> {
-  final List<TextEditingController> _controllers = [];
-  late List<String> _textFieldHints = [];
+  late List<SubmitSurveyAnswerModel> _answerModels = [];
 
   @override
   void initState() {
     super.initState();
-    _textFieldHints =
-        widget.question.answers.map((element) => element.text).toList()
-          ..forEach((element) {
-            _controllers.add(TextEditingController());
-          });
+    _answerModels = widget.answers
+        .map((element) => SubmitSurveyAnswerModel(
+              id: element.id,
+            ))
+        .toList();
   }
 
   @override
@@ -32,33 +38,30 @@ class _FormSurveyAnswerTextFieldState extends State<FormSurveyAnswerTextField> {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          for (final textAndControllerPair in IterableZip([
-            _textFieldHints,
-            _controllers,
-          ]))
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppDimensions.spacing20),
-              child: customTextField(
-                context: context,
-                controller: textAndControllerPair[1] as TextEditingController,
-                textInputType: textAndControllerPair[0] as String == 'Email'
-                    ? TextInputType.emailAddress
-                    : TextInputType.text,
-                isObscuredText: false,
-                hintText: textAndControllerPair[0] as String,
+        children: widget.answers
+            .mapIndexed(
+              (index, answer) => Padding(
+                padding: const EdgeInsets.only(bottom: AppDimensions.spacing20),
+                child: customTextField(
+                  context: context,
+                  controller: null,
+                  textInputType: answer.text == 'Email'
+                      ? TextInputType.emailAddress
+                      : TextInputType.text,
+                  isObscuredText: false,
+                  hintText: answer.text,
+                  onChanged: (text) {
+                    _answerModels[index] = SubmitSurveyAnswerModel(
+                      id: answer.id,
+                      answer: text,
+                    );
+                    widget.onUpdateAnswer(_answerModels);
+                  },
+                ),
               ),
-            ),
-        ],
+            )
+            .toList(),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
-    super.dispose();
   }
 }

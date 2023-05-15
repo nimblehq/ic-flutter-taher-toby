@@ -12,4 +12,7 @@ class FormState with _$FormState {
       _LoadSurveyDetailsSuccess;
 
   const factory FormState.loadSurveyDetailsError() = _LoadSurveyDetailsError;
+
+  const factory FormState.surveySubmissionSuccess(String outroMessage) =
+      _SurveySubmissionSuccess;
 }

@@ -10,6 +10,8 @@ const _routePathRootScreen = '/';
 const _routePathLoginScreen = 'login';
 const _routePathHomeScreen = 'home';
 const _routePathFormScreen = 'form';
+const _routePathSurveySuccess = 'surveySuccess';
+const _paramSurveySuccessMessage = 'message';
 const _paramSurveyId = 'surveyId';
 
 class Routes {
@@ -38,6 +40,20 @@ class Routes {
               return FormScreen(surveyId: surveyId);
             },
           ),
+          GoRoute(
+            path: '$_routePathSurveySuccess/:$_paramSurveySuccessMessage',
+            builder: (BuildContext context, GoRouterState state) {
+              final message =
+                  state.params[_paramSurveySuccessMessage] as String;
+              // TODO: Add new screen at  task #42
+              return Center(
+                child: Text(
+                  message,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              );
+            },
+          ),
         ],
       ),
     ],
@@ -51,6 +67,10 @@ abstract class AppNavigator {
   void navigateToFormScreen({
     required BuildContext context,
     required String surveyId,
+  });
+  void navigateToSurveySuccessScreen({
+    required BuildContext context,
+    required String message,
   });
 }
 
@@ -77,5 +97,13 @@ class AppNavigatorImpl extends AppNavigator {
     required String surveyId,
   }) {
     context.push('/$_routePathFormScreen/$surveyId');
+  }
+
+  @override
+  void navigateToSurveySuccessScreen({
+    required BuildContext context,
+    required String message,
+  }) {
+    context.replace('/$_routePathSurveySuccess/$message');
   }
 }

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 TextField customTextField({
   required BuildContext context,
-  required TextEditingController controller,
+  TextEditingController? controller,
   required TextInputType textInputType,
   required bool isObscuredText,
   required String hintText,
+  ValueChanged<String>? onChanged,
 }) =>
     TextField(
       style: Theme.of(context).textTheme.bodySmall,
@@ -17,4 +18,9 @@ TextField customTextField({
       autocorrect: false,
       enableSuggestions: false,
       controller: controller,
+      onChanged: (text) {
+        if (onChanged != null) {
+          onChanged(text);
+        }
+      },
     );
