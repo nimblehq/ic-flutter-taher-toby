@@ -80,13 +80,56 @@ Future<void> _assertHomeScreen(WidgetTester tester) async {
   String secondSurveyTitleText = 'ibis Bangkok Riverside';
   expect(find.text(secondSurveyTitleText), findsOneWidget);
 
-  final surveyDetailsButtonFinder =
-      find.byKey(const Key(WidgetKeys.surveyDetailsButtonKey));
-  expect(surveyDetailsButtonFinder, findsOneWidget);
-  await tester.tap(surveyDetailsButtonFinder);
+  final nextButton = find.byKey(const Key(WidgetKeys.nextButtonKey));
+  expect(nextButton, findsOneWidget);
+  await tester.tap(nextButton);
   await tester.pumpAndSettle();
 
   final startSurveyButtonFinder =
       find.byKey(const Key(WidgetKeys.startSurveyButtonKey));
   expect(startSurveyButtonFinder, findsOneWidget);
+}
+
+Future<void> _assertFormScreen(WidgetTester tester) async {
+  final nextButton = find.byKey(const Key(WidgetKeys.nextButtonKey));
+  expect(nextButton, findsOneWidget);
+  // star
+  await tester.tap(nextButton);
+  await tester.pumpAndSettle();
+  // star
+  await tester.tap(nextButton);
+  await tester.pumpAndSettle();
+  // star
+  await tester.tap(nextButton);
+  await tester.pumpAndSettle();
+  // star
+  await tester.tap(nextButton);
+  await tester.pumpAndSettle();
+  // heart
+  await tester.tap(nextButton);
+  await tester.pumpAndSettle();
+  // emoji
+  await tester.tap(nextButton);
+  await tester.pumpAndSettle();
+  // multi-choice
+  await tester.tap(nextButton);
+  await tester.pumpAndSettle();
+  // NPS
+  await tester.tap(nextButton);
+  await tester.pumpAndSettle();
+  // text-area
+  await tester.enterText(find.byType(TextField), 'Great hotel!');
+  await tester.pumpAndSettle();
+  await tester.tap(nextButton);
+  await tester.pumpAndSettle();
+  // text-fields
+  await tester.enterText(find.byType(TextField).at(0), 'My first name');
+  await tester.pumpAndSettle();
+  await tester.enterText(find.byType(TextField).at(1), 'My mobile number');
+  await tester.pumpAndSettle();
+
+  final submitSurveyButton =
+      find.byKey(const Key(WidgetKeys.submitSurveyButtonKey));
+  await tester.tap(submitSurveyButton);
+  await tester.pumpAndSettle();
 }

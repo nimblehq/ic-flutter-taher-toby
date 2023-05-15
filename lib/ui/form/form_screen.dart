@@ -192,8 +192,8 @@ class FormScreenState extends ConsumerState<FormScreen> {
         child: Padding(
           padding: const EdgeInsets.all(AppDimensions.spacing20),
           child: ElevatedButton(
-            onPressed: () => _navigateNextPage(),
             key: const ValueKey(WidgetKeys.startSurveyButtonKey),
+            onPressed: () => _navigateNextPage(),
             child: Text(
               AppLocalizations.of(context)!.start_survey,
             ),
@@ -223,6 +223,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
         child: Padding(
           padding: const EdgeInsets.all(AppDimensions.spacing20),
           child: ElevatedButton(
+            key: const ValueKey(WidgetKeys.submitSurveyButtonKey),
             onPressed: () {
               ref.read(formViewModelProvider.notifier).submitAnswer();
             },

@@ -17,7 +17,7 @@ class NextButton extends StatelessWidget {
       child: FloatingActionButton(
         onPressed: onNextButtonPressed,
         backgroundColor: Colors.white,
-        key: const ValueKey(WidgetKeys.surveyDetailsButtonKey),
+        key: const ValueKey(WidgetKeys.nextButtonKey),
         child: const Icon(Icons.arrow_forward_ios),
       ),
     );
