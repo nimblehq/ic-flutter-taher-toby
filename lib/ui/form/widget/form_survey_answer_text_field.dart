@@ -57,6 +57,7 @@ class _FormSurveyAnswerTextFieldState extends State<FormSurveyAnswerTextField> {
                     );
                     widget.onUpdateAnswer(_answerModels);
                   },
+                  widgetKey: answer.text,
                 ),
               ),
             )
