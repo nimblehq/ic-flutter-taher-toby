@@ -58,4 +58,4 @@ jobs:
           echo "$ENV_STAGING" > .env.staging      
       
       - name: Run UI tests
-        run: flutter drive --target=test_driver/app.dart --flavor staging
+        run: flutter test --flavor staging integration_test/app_test.dart
