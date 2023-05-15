@@ -14,6 +14,7 @@ void main() async {
   await FlutterConfig.loadEnvVariables();
   await configureLocalStorage();
   await configureDependencyInjection();
+  
   testWidgets('Login error test', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(
       child: SurveyApp(),
@@ -62,5 +63,30 @@ void main() async {
 
     String homeScreenTextValue = 'Today';
     expect(find.text(homeScreenTextValue), findsOneWidget);
+  });
+
+  testWidgets('Home screen test', (WidgetTester tester) async {
+    await tester.pumpWidget(const ProviderScope(
+      child: SurveyApp(),
+    ));
+    await tester.pumpAndSettle();
+    String homeScreenTextValue = 'Today';
+    expect(find.text(homeScreenTextValue), findsOneWidget);
+
+    await tester.flingFrom(const Offset(100, 300), const Offset(-100, 0), 500);
+    await tester.pumpAndSettle();
+
+    String surveyTitleText = 'ibis Bangkok Riverside';
+    expect(find.text(surveyTitleText), findsOneWidget);
+
+    final surveyDetailsButtonFinder =
+        find.byKey(const Key(WidgetKeys.surveyDetailsButtonKey));
+    expect(surveyDetailsButtonFinder, findsOneWidget);
+    await tester.tap(surveyDetailsButtonFinder);
+    await tester.pumpAndSettle();
+
+    final startSurveyButtonFinder =
+        find.byKey(const Key(WidgetKeys.startSurveyButtonKey));
+    expect(startSurveyButtonFinder, findsOneWidget);
   });
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide FormState;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/app_navigator.dart';
+import 'package:flutter_survey/constant/widget_keys.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_survey/model/survey_details_model.dart';
@@ -192,6 +193,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
           padding: const EdgeInsets.all(AppDimensions.spacing20),
           child: ElevatedButton(
             onPressed: () => _navigateNextPage(),
+            key: const ValueKey(WidgetKeys.startSurveyButtonKey),
             child: Text(
               AppLocalizations.of(context)!.start_survey,
             ),
