@@ -14,7 +14,7 @@ void main() async {
   await FlutterConfig.loadEnvVariables();
   await configureLocalStorage();
   await configureDependencyInjection();
-  
+
   testWidgets('Login error test', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(
       child: SurveyApp(),
