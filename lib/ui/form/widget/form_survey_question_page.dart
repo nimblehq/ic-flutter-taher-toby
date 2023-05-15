@@ -69,71 +69,108 @@ class FormSurveyQuestionPage extends StatelessWidget {
     final displayType = question.displayType;
     switch (displayType) {
       case DisplayType.smiley:
-        return FormSurveyAnswerSmiley(
-          answers: question.answers,
-          onUpdateAnswer: (selectedAnswer) {
-            onUpdatedAnswers([selectedAnswer]);
-          },
-        );
+        if (question.answers.isNotEmpty) {
+          return FormSurveyAnswerSmiley(
+            answers: question.answers,
+            onUpdateAnswer: (selectedAnswer) {
+              onUpdatedAnswers([selectedAnswer]);
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       case DisplayType.nps:
-        return FormSurveyAnswerNps(
-          answers: question.answers,
-          onUpdateAnswer: (selectedAnswer) {
-            onUpdatedAnswers([selectedAnswer]);
-          },
-        );
+        if (question.answers.isNotEmpty) {
+          return FormSurveyAnswerNps(
+            answers: question.answers,
+            onUpdateAnswer: (selectedAnswer) {
+              onUpdatedAnswers([selectedAnswer]);
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       case DisplayType.heart:
-        return FormSurveyAnswerEmoji(
-          emoji: '❤',
-          answers: question.answers,
-          onUpdateAnswer: (selectedAnswer) {
-            onUpdatedAnswers([selectedAnswer]);
-          },
-        );
+        if (question.answers.isNotEmpty) {
+          return FormSurveyAnswerEmoji(
+            emoji: '❤',
+            answers: question.answers,
+            onUpdateAnswer: (selectedAnswer) {
+              onUpdatedAnswers([selectedAnswer]);
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       case DisplayType.star:
-        return FormSurveyAnswerEmoji(
-          emoji: '⭐',
-          answers: question.answers,
-          onUpdateAnswer: (selectedAnswer) {
-            onUpdatedAnswers([selectedAnswer]);
-          },
-        );
+        if (question.answers.isNotEmpty) {
+          return FormSurveyAnswerEmoji(
+            emoji: '⭐',
+            answers: question.answers,
+            onUpdateAnswer: (selectedAnswer) {
+              onUpdatedAnswers([selectedAnswer]);
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       case DisplayType.thumbs:
-        return FormSurveyAnswerEmoji(
-          emoji: '👍🏻',
-          answers: question.answers,
-          onUpdateAnswer: (selectedAnswer) {
-            onUpdatedAnswers([selectedAnswer]);
-          },
-        );
+        if (question.answers.isNotEmpty) {
+          return FormSurveyAnswerEmoji(
+            emoji: '👍🏻',
+            answers: question.answers,
+            onUpdateAnswer: (selectedAnswer) {
+              onUpdatedAnswers([selectedAnswer]);
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       case DisplayType.textarea:
-        return FormSurveyAnswerTextarea(
-          answers: question.answers,
-          onUpdateText: (answer) {
-            onUpdatedAnswers([answer]);
-          },
-        );
+        if (question.answers.isNotEmpty) {
+          return FormSurveyAnswerTextarea(
+            answer: question.answers.first,
+            onUpdateText: (answer) {
+              onUpdatedAnswers([answer]);
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       case DisplayType.dropdown:
-        return FormSurveyAnswerDropdown(
-          answers: question.answers,
-          onUpdateAnswer: (selectedAnswer) {
-            onUpdatedAnswers([selectedAnswer]);
-          },
-        );
+        if (question.answers.isNotEmpty) {
+          return FormSurveyAnswerDropdown(
+            answers: question.answers,
+            onUpdateAnswer: (selectedAnswer) {
+              onUpdatedAnswers([selectedAnswer]);
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       case DisplayType.choice:
-        return FormSurveyAnswerMultiChoice(
-          answers: question.answers,
-          onUpdateAnswer: (selectedAnswers) {
-            onUpdatedAnswers(selectedAnswers);
-          },
-        );
+        if (question.answers.isNotEmpty) {
+          return FormSurveyAnswerMultiChoice(
+            answers: question.answers,
+            onUpdateAnswer: (selectedAnswers) {
+              onUpdatedAnswers(selectedAnswers);
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       case DisplayType.textfield:
-        return FormSurveyAnswerTextField(
-          answers: question.answers,
-          onUpdateAnswer: (answers) {
-            onUpdatedAnswers(answers);
-          },
-        );
+        if (question.answers.isNotEmpty) {
+          return FormSurveyAnswerTextField(
+            answers: question.answers,
+            onUpdateAnswer: (answers) {
+              onUpdatedAnswers(answers);
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+
       default:
         return Text(displayType.name);
     }

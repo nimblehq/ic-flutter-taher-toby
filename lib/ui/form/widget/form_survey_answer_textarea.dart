@@ -6,11 +6,11 @@ import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class FormSurveyAnswerTextarea extends StatefulWidget {
   final ValueChanged<SubmitSurveyAnswerModel> onUpdateText;
-  final List<AnswerModel> answers;
+  final AnswerModel answer;
 
   const FormSurveyAnswerTextarea({
     super.key,
-    required this.answers,
+    required this.answer,
     required this.onUpdateText,
   });
 
@@ -25,7 +25,7 @@ class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
     super.initState();
     widget.onUpdateText(
       SubmitSurveyAnswerModel(
-        id: widget.answers.first.id.toString(),
+        id: widget.answer.id.toString(),
         answer: '',
       ),
     );
@@ -44,7 +44,7 @@ class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
         onChanged: (text) {
           widget.onUpdateText(
             SubmitSurveyAnswerModel(
-              id: widget.answers.first.id.toString(),
+              id: widget.answer.id.toString(),
               answer: text,
             ),
           );

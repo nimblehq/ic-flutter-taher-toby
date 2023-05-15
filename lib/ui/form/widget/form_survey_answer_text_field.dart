@@ -40,19 +40,19 @@ class _FormSurveyAnswerTextFieldState extends State<FormSurveyAnswerTextField> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: widget.answers
             .mapIndexed(
-              (index, element) => Padding(
+              (index, answer) => Padding(
                 padding: const EdgeInsets.only(bottom: AppDimensions.spacing20),
                 child: customTextField(
                   context: context,
                   controller: null,
-                  textInputType: widget.answers[index].text == 'Email'
+                  textInputType: answer.text == 'Email'
                       ? TextInputType.emailAddress
                       : TextInputType.text,
                   isObscuredText: false,
-                  hintText: widget.answers[index].text,
+                  hintText: answer.text,
                   onChanged: (text) {
                     _answerModels[index] = SubmitSurveyAnswerModel(
-                      id: _answerModels[index].id,
+                      id: answer.id,
                       answer: text,
                     );
                     widget.onUpdateAnswer(_answerModels);
