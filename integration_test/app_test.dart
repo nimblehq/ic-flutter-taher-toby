@@ -39,54 +39,54 @@ void main() async {
     expect(find.text('Bad request'), findsOneWidget);
   });
 
-  testWidgets('Login success test', (WidgetTester tester) async {
+  testWidgets('Complete survey test', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(
       child: SurveyApp(),
     ));
     await tester.pumpAndSettle();
-    final finder = find.byKey(const Key(WidgetKeys.emailTextFieldKey));
-    await tester.tap(finder);
-    await tester.pumpAndSettle();
-    String emailValue = 'kaung@nimblehq.co';
-    await tester.enterText(finder, emailValue);
-
-    final passwordFinder =
-        find.byKey(const Key(WidgetKeys.passwordTextFieldKey));
-    await tester.tap(finder);
-    await tester.pumpAndSettle();
-    String passwordValue = '12345678';
-    await tester.enterText(passwordFinder, passwordValue);
-
-    final loginButtonFinder = find.byKey(const Key(WidgetKeys.loginButtonKey));
-    await tester.tap(loginButtonFinder);
-    await tester.pumpAndSettle();
-
-    String homeScreenTextValue = 'Today';
-    expect(find.text(homeScreenTextValue), findsOneWidget);
+    await _assertLoginScreen(tester);
+    await _assertHomeScreen(tester);
   });
+}
 
-  testWidgets('Home screen test', (WidgetTester tester) async {
-    await tester.pumpWidget(const ProviderScope(
-      child: SurveyApp(),
-    ));
-    await tester.pumpAndSettle();
-    String homeScreenTextValue = 'Today';
-    expect(find.text(homeScreenTextValue), findsOneWidget);
+Future<void> _assertLoginScreen(WidgetTester tester) async {
+  final finder = find.byKey(const Key(WidgetKeys.emailTextFieldKey));
+  await tester.tap(finder);
+  await tester.pumpAndSettle();
+  String emailValue = 'kaung@nimblehq.co';
+  await tester.enterText(finder, emailValue);
 
-    await tester.flingFrom(const Offset(100, 300), const Offset(-100, 0), 500);
-    await tester.pumpAndSettle();
+  final passwordFinder = find.byKey(const Key(WidgetKeys.passwordTextFieldKey));
+  await tester.tap(finder);
+  await tester.pumpAndSettle();
+  String passwordValue = '12345678';
+  await tester.enterText(passwordFinder, passwordValue);
 
-    String surveyTitleText = 'ibis Bangkok Riverside';
-    expect(find.text(surveyTitleText), findsOneWidget);
+  final loginButtonFinder = find.byKey(const Key(WidgetKeys.loginButtonKey));
+  await tester.tap(loginButtonFinder);
+  await tester.pumpAndSettle();
+}
 
-    final surveyDetailsButtonFinder =
-        find.byKey(const Key(WidgetKeys.surveyDetailsButtonKey));
-    expect(surveyDetailsButtonFinder, findsOneWidget);
-    await tester.tap(surveyDetailsButtonFinder);
-    await tester.pumpAndSettle();
+Future<void> _assertHomeScreen(WidgetTester tester) async {
+  String homeScreenTextValue = 'Today';
+  expect(find.text(homeScreenTextValue), findsOneWidget);
 
-    final startSurveyButtonFinder =
-        find.byKey(const Key(WidgetKeys.startSurveyButtonKey));
-    expect(startSurveyButtonFinder, findsOneWidget);
-  });
+  String firstSurveyTitleText = 'Scarlett Bangkok';
+  expect(find.text(firstSurveyTitleText), findsOneWidget);
+
+  await tester.flingFrom(const Offset(100, 300), const Offset(-100, 0), 500);
+  await tester.pumpAndSettle();
+
+  String secondSurveyTitleText = 'ibis Bangkok Riverside';
+  expect(find.text(secondSurveyTitleText), findsOneWidget);
+
+  final surveyDetailsButtonFinder =
+      find.byKey(const Key(WidgetKeys.surveyDetailsButtonKey));
+  expect(surveyDetailsButtonFinder, findsOneWidget);
+  await tester.tap(surveyDetailsButtonFinder);
+  await tester.pumpAndSettle();
+
+  final startSurveyButtonFinder =
+      find.byKey(const Key(WidgetKeys.startSurveyButtonKey));
+  expect(startSurveyButtonFinder, findsOneWidget);
 }
