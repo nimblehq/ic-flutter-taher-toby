@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/constant/widget_keys.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class NextButton extends StatelessWidget {
@@ -16,6 +17,7 @@ class NextButton extends StatelessWidget {
       child: FloatingActionButton(
         onPressed: onNextButtonPressed,
         backgroundColor: Colors.white,
+        key: const ValueKey(WidgetKeys.surveyDetailsButtonKey),
         child: const Icon(Icons.arrow_forward_ios),
       ),
     );
