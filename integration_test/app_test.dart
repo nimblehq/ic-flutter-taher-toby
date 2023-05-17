@@ -4,7 +4,6 @@ import 'package:flutter_survey/ui/form/widget/form_survey_answer_dropdown.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_emoji.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_multi_choice.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_nps.dart';
-import 'package:flutter_survey/ui/form/widget/form_survey_answer_text_field.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_textarea.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
