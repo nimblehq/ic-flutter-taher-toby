@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_survey/model/answer_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class FormSurveyAnswerTextarea extends StatefulWidget {
-  const FormSurveyAnswerTextarea({super.key});
+  final ValueChanged<SubmitSurveyAnswerModel> onUpdateText;
+  final AnswerModel answer;
+
+  const FormSurveyAnswerTextarea({
+    super.key,
+    required this.answer,
+    required this.onUpdateText,
+  });
 
   @override
   State<FormSurveyAnswerTextarea> createState() =>
@@ -11,7 +20,16 @@ class FormSurveyAnswerTextarea extends StatefulWidget {
 }
 
 class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
-  final _answerTextFieldController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    widget.onUpdateText(
+      SubmitSurveyAnswerModel(
+        id: widget.answer.id.toString(),
+        answer: '',
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +40,15 @@ class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
         maxLines: null,
         textAlignVertical: TextAlignVertical.top,
         style: Theme.of(context).textTheme.bodySmall,
-        controller: _answerTextFieldController,
+        controller: null,
+        onChanged: (text) {
+          widget.onUpdateText(
+            SubmitSurveyAnswerModel(
+              id: widget.answer.id.toString(),
+              answer: text,
+            ),
+          );
+        },
         decoration: const InputDecoration()
             .applyDefaults(Theme.of(context).inputDecorationTheme)
             .copyWith(
@@ -30,11 +56,5 @@ class _FormSurveyAnswerTextareaState extends State<FormSurveyAnswerTextarea> {
             ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _answerTextFieldController.dispose();
-    super.dispose();
   }
 }

@@ -38,6 +38,14 @@ class AppDimensions {
   static const answerNpsWidth = 40.0;
   static const answerNpsBorderWidth = 1.0;
 
+  static const answerMultiChoiceDividerIndent = 60.0;
+  static const answerMultiChoiceCircleSize = 24.0;
+  static const answerMultiChoiceCircleBorderWidth = 1.0;
+  static const answerMultiChoiceItemHeight = 56.0;
+  static const answerMultiChoiceMarginLength = 160.0;
+
+  static const surveyCompletionAnimationSize = 200.0;
+
   static const homeAvatarSize = 36.0;
   static const homeSurveyPageIndicatorSize = 8.0;
   static const homeSkeletonLoadingDefaultHeight = 20.0;

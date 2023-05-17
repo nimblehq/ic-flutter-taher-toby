@@ -12,4 +12,6 @@ class FormState with _$FormState {
       _LoadSurveyDetailsSuccess;
 
   const factory FormState.loadSurveyDetailsError() = _LoadSurveyDetailsError;
+
+  const factory FormState.surveyCompletion() = _SurveyCompletion;
 }

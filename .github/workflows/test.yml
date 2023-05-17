@@ -11,7 +11,7 @@ on:
 jobs:
   lint_and_test:
     name: Static code analyze & Unit test
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     environment: staging
     steps:
       - uses: actions/checkout@v2.3.2
@@ -20,7 +20,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.3.10'
+          flutter-version: '3.7.12'
 
       - name: Get flutter dependencies.
         run: flutter pub get
@@ -45,3 +45,17 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           fail_ci_if_error: false
           verbose: true
+      
+      - name: Open Simulator for UI tests
+        uses: futureware-tech/simulator-action@v2
+        with:
+          model: 'iPhone 14'
+      
+      - name: Setup .env.staging
+        env:
+          ENV_STAGING: ${{ secrets.ENV_STAGING }}
+        run: |
+          echo "$ENV_STAGING" > .env.staging      
+      
+      - name: Run UI tests
+        run: flutter test --flavor staging integration_test/app_test.dart

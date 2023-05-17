@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/api/response/question_response.dart';
 import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
+import 'package:flutter_survey/ui/form/widget/form_survey_answer_multi_choice.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_nps.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_dropdown.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_emoji.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_smiley.dart';
+import 'package:flutter_survey/ui/form/widget/form_survey_answer_text_field.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_answer_textarea.dart';
 
 class FormSurveyQuestionPage extends StatelessWidget {
+  final ValueChanged<List<SubmitSurveyAnswerModel>> onUpdatedAnswers;
   final QuestionModel question;
   final int questionIndex;
   final int questionTotal;
@@ -19,6 +23,7 @@ class FormSurveyQuestionPage extends StatelessWidget {
     required this.question,
     required this.questionIndex,
     required this.questionTotal,
+    required this.onUpdatedAnswers,
   }) : super(key: key);
 
   @override
@@ -61,24 +66,86 @@ class FormSurveyQuestionPage extends StatelessWidget {
       );
 
   Widget _buildAnswer(BuildContext context) {
+    if (question.answers.isEmpty) {
+      return const SizedBox.shrink();
+    }
     final displayType = question.displayType;
     switch (displayType) {
       case DisplayType.smiley:
-        return const FormSurveyAnswerSmiley();
+        return FormSurveyAnswerSmiley(
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
+          },
+        );
+
       case DisplayType.nps:
         return FormSurveyAnswerNps(
-          question: question,
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
+          },
         );
+
       case DisplayType.heart:
-        return FormSurveyAnswerEmoji(emoji: '❤');
+        return FormSurveyAnswerEmoji(
+          emoji: '❤',
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
+          },
+        );
+
       case DisplayType.star:
-        return FormSurveyAnswerEmoji(emoji: '⭐');
+        return FormSurveyAnswerEmoji(
+          emoji: '⭐',
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
+          },
+        );
+
       case DisplayType.thumbs:
-        return FormSurveyAnswerEmoji(emoji: '👍🏻');
+        return FormSurveyAnswerEmoji(
+          emoji: '👍🏻',
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
+          },
+        );
+
       case DisplayType.textarea:
-        return const FormSurveyAnswerTextarea();
+        return FormSurveyAnswerTextarea(
+          answer: question.answers.first,
+          onUpdateText: (answer) {
+            onUpdatedAnswers([answer]);
+          },
+        );
+
       case DisplayType.dropdown:
-        return FormSurveyAnswerDropdown(question: question);
+        return FormSurveyAnswerDropdown(
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswer) {
+            onUpdatedAnswers([selectedAnswer]);
+          },
+        );
+
+      case DisplayType.choice:
+        return FormSurveyAnswerMultiChoice(
+          answers: question.answers,
+          onUpdateAnswer: (selectedAnswers) {
+            onUpdatedAnswers(selectedAnswers);
+          },
+        );
+
+      case DisplayType.textfield:
+        return FormSurveyAnswerTextField(
+          answers: question.answers,
+          onUpdateAnswer: (answers) {
+            onUpdatedAnswers(answers);
+          },
+        );
+
       default:
         return Text(displayType.name);
     }

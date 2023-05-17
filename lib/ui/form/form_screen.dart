@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide FormState;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_survey/app_navigator.dart';
+import 'package:flutter_survey/constant/widget_keys.dart';
 import 'package:flutter_survey/di/di.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_survey/model/survey_details_model.dart';
@@ -8,18 +9,23 @@ import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_survey/ui/form/form_state.dart';
 import 'package:flutter_survey/ui/form/form_view_model.dart';
+import 'package:flutter_survey/ui/form/widget/form_survey_completion_page.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_detail_page.dart';
 import 'package:flutter_survey/ui/form/widget/form_survey_question_page.dart';
 import 'package:flutter_survey/ui/widget/dimmed_background.dart';
 import 'package:flutter_survey/ui/widget/next_button.dart';
 import 'package:flutter_survey/ui/widget/snack_bar.dart';
 import 'package:flutter_survey/usecases/get_survey_details_use_case.dart';
+import 'package:flutter_survey/usecases/submit_survey_use_case.dart';
 
 const _navigationDuration = 400;
 
 final formViewModelProvider =
     StateNotifierProvider.autoDispose<FormViewModel, FormState>((ref) {
-  return FormViewModel(getIt.get<GetSurveyDetailsUseCase>());
+  return FormViewModel(
+    getIt.get<GetSurveyDetailsUseCase>(),
+    getIt.get<SubmitSurveyUseCase>(),
+  );
 });
 
 final _surveyDetailsStreamProvider =
@@ -60,6 +66,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
   Widget build(BuildContext context) {
     final surveyDetails = ref.watch(_surveyDetailsStreamProvider).value;
     final errorMessage = ref.watch(_errorStreamProvider).value ?? "";
+
     return ref.watch(formViewModelProvider).when(
           init: () => _buildFormScreen(isLoading: true),
           loading: () => _buildFormScreen(isLoading: true),
@@ -68,6 +75,9 @@ class FormScreenState extends ConsumerState<FormScreen> {
           ),
           loadSurveyDetailsError: () => _buildFormScreen(
             errorMessage: errorMessage,
+          ),
+          surveyCompletion: () => FormSurveyCompletionPage(
+            outroMessage: surveyDetails?.thankYouMessage,
           ),
         );
   }
@@ -105,6 +115,12 @@ class FormScreenState extends ConsumerState<FormScreen> {
                       question: questions[index - 1],
                       questionIndex: index,
                       questionTotal: questionTotal,
+                      onUpdatedAnswers: (answers) {
+                        final questionId = questions[index - 1].id;
+                        ref
+                            .read(formViewModelProvider.notifier)
+                            .saveIndexedAnswer(questionId, answers);
+                      },
                     );
                   }
                 },
@@ -176,6 +192,7 @@ class FormScreenState extends ConsumerState<FormScreen> {
         child: Padding(
           padding: const EdgeInsets.all(AppDimensions.spacing20),
           child: ElevatedButton(
+            key: const ValueKey(WidgetKeys.startSurveyButtonKey),
             onPressed: () => _navigateNextPage(),
             child: Text(
               AppLocalizations.of(context)!.start_survey,
@@ -206,8 +223,9 @@ class FormScreenState extends ConsumerState<FormScreen> {
         child: Padding(
           padding: const EdgeInsets.all(AppDimensions.spacing20),
           child: ElevatedButton(
+            key: const ValueKey(WidgetKeys.submitSurveyButtonKey),
             onPressed: () {
-              // TODO: Integrate click-event from survey details #41
+              ref.read(formViewModelProvider.notifier).submitAnswer();
             },
             child: Text(
               AppLocalizations.of(context)!.submit_survey,

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/answer_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_colors.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FormSurveyAnswerNps extends ConsumerStatefulWidget {
-  final QuestionModel question;
+  final ValueChanged<SubmitSurveyAnswerModel> onUpdateAnswer;
+  final List<AnswerModel> answers;
 
   const FormSurveyAnswerNps({
     Key? key,
-    required this.question,
+    required this.answers,
+    required this.onUpdateAnswer,
   }) : super(key: key);
 
   @override
@@ -26,8 +29,14 @@ class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
   @override
   void initState() {
     super.initState();
-    scoresLength = widget.question.answers.length;
-    ref.read(selectedScoreProvider.notifier).state = (scoresLength / 2).floor();
+    scoresLength = widget.answers.length;
+    final int defaultSelectedAnswer = (scoresLength / 2).floor();
+    ref.read(selectedScoreProvider.notifier).state = defaultSelectedAnswer;
+    widget.onUpdateAnswer(
+      SubmitSurveyAnswerModel(
+        id: widget.answers[defaultSelectedAnswer].id,
+      ),
+    );
   }
 
   @override
@@ -58,7 +67,14 @@ class FormSurveyAnswerNpsState extends ConsumerState<FormSurveyAnswerNps> {
                 children: List.generate(scoresLength, (index) {
                   final score = scores[index];
                   return GestureDetector(
-                    onTap: () => scoreState.state = score,
+                    onTap: () {
+                      scoreState.state = score;
+                      widget.onUpdateAnswer(
+                        SubmitSurveyAnswerModel(
+                          id: widget.answers[index].id,
+                        ),
+                      );
+                    },
                     child: _buildScore(context, ref, score, scoresLength),
                   );
                 }),

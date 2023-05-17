@@ -16,6 +16,7 @@ import '../../mocks/generate_mocks.mocks.dart';
 void main() {
   group('FormViewModelTest', () {
     late MockGetSurveyDetailsUseCase mockGetSurveyDetailsUseCase;
+    late MockSubmitSurveyUseCase mockSubmitSurveyUseCase;
     late FormViewModel formViewModel;
     late ProviderContainer providerContainer;
 
@@ -37,6 +38,7 @@ void main() {
           ],
         ),
       ],
+      thankYouMessage: '',
     );
 
     final UseCaseException exception =
@@ -44,11 +46,13 @@ void main() {
 
     setUp(() {
       mockGetSurveyDetailsUseCase = MockGetSurveyDetailsUseCase();
+      mockSubmitSurveyUseCase = MockSubmitSurveyUseCase();
       providerContainer = ProviderContainer(
         overrides: [
           formViewModelProvider.overrideWithValue(
             FormViewModel(
               mockGetSurveyDetailsUseCase,
+              mockSubmitSurveyUseCase,
             ),
           ),
         ],
@@ -105,6 +109,46 @@ void main() {
       );
 
       formViewModel.loadSurveyDetails("surveyId");
+    });
+
+    test(
+        'When submit answers successfully, it emits an object with state surveyCompletion',
+        () {
+      when(mockSubmitSurveyUseCase.call(any)).thenAnswer(
+        (_) async => Success(null),
+      );
+      final stateStream = formViewModel.stream;
+      expect(
+          stateStream,
+          emitsInOrder([
+            const FormState.loading(),
+            const FormState.surveyCompletion(),
+          ]));
+
+      formViewModel.submitAnswer();
+    });
+
+    test(
+        'When submit survey answer failed, it emits an object with state LoadSurveyDetailsError',
+        () {
+      when(mockSubmitSurveyUseCase.call(any))
+          .thenAnswer((_) async => Failed(exception));
+      final errorStream = formViewModel.error;
+      final stateStream = formViewModel.stream;
+
+      expect(
+          errorStream,
+          emitsInOrder(
+              [NetworkExceptions.getErrorMessage(exception.actualException)]));
+      expect(
+        stateStream,
+        emitsInOrder([
+          const FormState.loading(),
+          const FormState.loadSurveyDetailsError(),
+        ]),
+      );
+
+      formViewModel.submitAnswer();
     });
 
     tearDown(() {

@@ -1,12 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_survey/model/question_model.dart';
+import 'package:flutter_survey/model/answer_model.dart';
+import 'package:flutter_survey/model/submit_survey_question_model.dart';
 import 'package:flutter_survey/theme/app_dimensions.dart';
 
 class FormSurveyAnswerDropdown extends StatefulWidget {
-  final QuestionModel question;
+  final ValueChanged<SubmitSurveyAnswerModel> onUpdateAnswer;
+  final List<AnswerModel> answers;
 
-  const FormSurveyAnswerDropdown({super.key, required this.question});
+  const FormSurveyAnswerDropdown({
+    super.key,
+    required this.answers,
+    required this.onUpdateAnswer,
+  });
 
   @override
   State<FormSurveyAnswerDropdown> createState() =>
@@ -14,17 +20,16 @@ class FormSurveyAnswerDropdown extends StatefulWidget {
 }
 
 class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
-  late List<String> _pickerOptions = [];
-
   int _selectedIndex = 1;
   late FixedExtentScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    _pickerOptions =
-        widget.question.answers.map((element) => element.text).toList();
-    _selectedIndex = (_pickerOptions.length / 2).round();
+    _selectedIndex = (widget.answers.length / 2).round();
+    widget.onUpdateAnswer(
+      SubmitSurveyAnswerModel(id: widget.answers[_selectedIndex].id),
+    );
     _scrollController =
         FixedExtentScrollController(initialItem: _selectedIndex);
   }
@@ -40,12 +45,15 @@ class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
           onSelectedItemChanged: (index) {
             setState(() {
               _selectedIndex = index;
+              widget.onUpdateAnswer(
+                SubmitSurveyAnswerModel(id: widget.answers[index].id),
+              );
             });
           },
           children: List.generate(
-            _pickerOptions.length,
+            widget.answers.length,
             (index) {
-              final String item = _pickerOptions[index];
+              final String item = widget.answers[index].text;
               final bool isSelected = _selectedIndex == index;
               final selectedTextStyle = Theme.of(context).textTheme.labelMedium;
               final unSelectedTextStyle = Theme.of(context)
@@ -71,7 +79,7 @@ class _FormSurveyAnswerDropdownState extends State<FormSurveyAnswerDropdown> {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  if (index + 1 != _pickerOptions.length) ...[
+                  if (index + 1 != widget.answers.length) ...[
                     const Divider(
                       color: Colors.white,
                       thickness: AppDimensions.answerDropdownSeparatorThickness,
